@@ -1,7 +1,11 @@
 <resources>
 
     <string name="tlatoa_app_name">Tlatoa</string>
+    <string name="tlatoa_overview_start">Comenzar</string>
     <string name="tlatoa_splash_content_description"></string>
-    <string name="tlatoa_app_overview_start">Comenzar</string>
+    <string name="tlatoa_terms_yes_option">Acepto</string>
+    <string name="tlatoa_terms_title">Términos de uso</string>
+    <string name="tlatoa_terms_message">Please click on the button to accept the terms of service.</string>
+    <string name="app_id">143269149215368</string>
 
 </resources>
