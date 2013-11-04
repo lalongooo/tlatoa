@@ -6,6 +6,7 @@
     <string name="tlatoa_terms_yes_option">Acepto</string>
     <string name="tlatoa_terms_title">Términos de uso</string>
     <string name="tlatoa_terms_message">Please click on the button to accept the terms of service.</string>
+<<<<<<< HEAD
     <string name="tlatoa_fb_login">Facebook login</string>
     <string name="tlatoa_content_descr_for_imageviews">""</string>
 
@@ -43,4 +44,8 @@
         <item>About</item>
     </string-array>
 
+=======
+    <string name="app_id">143269149215368</string>
+
+>>>>>>> 834a43aa41a59d43b5ebab5aeafead3036babf6f
 </resources>
