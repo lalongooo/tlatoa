@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="CustomDarkTheme" parent="@android:style/Theme.Holo.Light.DarkActionBar">
+        <item name="sdlDialogStyle">@style/DialogStyleDark.Custom</item>
+        <item name="android:windowBackground">@color/tlatoa_splash_background</item>
+    </style>
+
+
+    <style name="DialogStyleDark.Custom">
+
+        <!-- anything can be left out: -->
+        <item name="titleTextColor">@color/tlatoa_splash_background</item>
+        <item name="titleSeparatorColor">@color/tlatoa_splash_background</item>
+        <item name="messageTextColor">@color/dialog_message_text_dark</item>
+        <item name="buttonTextColor">@color/dialog_button_text_dark</item>
+        <item name="buttonSeparatorColor">@color/dialog_button_separator_dark</item>
+        <item name="buttonBackgroundColorNormal">@color/dialog_button_normal_dark</item>
+        <item name="buttonBackgroundColorPressed">@color/tlatoa_splash_background</item>
+        <item name="buttonBackgroundColorFocused">@color/tlatoa_splash_background</item>
+    </style>
+
+</resources>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/tlatoa_main_activity_background"
+    android:orientation="vertical" xmlns:app="http://schemas.android.com/apk/res/com.xihuanicode.tlatoa.activity">
+
+    <RelativeLayout
+        android:id="@+id/linearLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/ivProfilePhoto"
+        android:layout_marginBottom="77dp"
+        android:orientation="vertical" >
+
+        <Button
+            android:id="@+id/btnConfirmRegistration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/tlatoa_start_button_selector"
+            android:text="@string/tlatoa_registration_button_confirm_registration" />
+
+        <TextView
+            android:id="@+id/txtFirstName"
+            style="@style/BigLabelsForRegistrationConfirmation"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:text="@string/tlatoa_registration_username" />
+
+        <TextView
+            android:id="@+id/txtUserMail"
+            style="@style/BigLabelsForRegistrationConfirmation"
+            android:layout_below="@+id/txtFirstName"
+            android:layout_centerHorizontal="true"
+            android:text="@string/tlatoa_registration_user_mail" />
+    </RelativeLayout>
+
+    <com.makeramen.RoundedImageView
+        android:id="@+id/ivProfilePhoto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:padding="10dip"
+        android:scaleType="fitCenter"
+        android:src="@drawable/tlatoa_profile_default_photo"
+        app:border_color="#FFFFFF"
+        app:border_width="4dip"
+        app:corner_radius="10dp" />
+
+</RelativeLayout>

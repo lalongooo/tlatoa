@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res/com.xihuanicode.tlatoa.activity"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/tlatoa_gray_main_color"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="@color/tlatoa_gray_main_color" >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/tlatoa_splash_background" >
+
+            <com.makeramen.RoundedImageView
+                android:id="@+id/ivUserProfilePhoto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:padding="10dip"
+                android:scaleType="fitCenter"
+                android:src="@drawable/tlatoa_profile_default_photo"
+                app:border_color="#FFFFFF"
+                app:border_width="4dip"
+                app:corner_radius="10dp" />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="4"
+        android:background="@drawable/tlatoa_main_activity_background" >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/tlatoa_main_activity_background" >
+
+            <TextView
+                android:id="@+id/textView1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:text="@string/tlatoa_profile_username"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@color/tlatoa_splash_background" />
+
+            <Button
+                android:id="@+id/btnFacebookLogout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/tlatoa_fb_button_selector"
+                android:drawableLeft="@drawable/com_facebook_inverse_icon"
+                android:paddingLeft="12sp"
+                android:text="@string/tlatoa_facebook_logout_button"
+                android:textColor="#FFFFFF"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+        </RelativeLayout>
+    </LinearLayout>
+
+</LinearLayout>
