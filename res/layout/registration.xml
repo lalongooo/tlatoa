@@ -1,56 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/tlatoa_main_activity_background"
-    android:orientation="vertical" xmlns:app="http://schemas.android.com/apk/res/com.xihuanicode.tlatoa.activity">
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res/com.xihuanicode.tlatoa"
+    android:id="@+id/scrollView1"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/tlatoa_background_main_activity" >
 
-    <RelativeLayout
-        android:id="@+id/linearLayout1"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/ivProfilePhoto"
-        android:layout_marginBottom="77dp"
-        android:orientation="vertical" >
-
-        <Button
-            android:id="@+id/btnConfirmRegistration"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="20dp"
-            android:background="@drawable/tlatoa_start_button_selector"
-            android:text="@string/tlatoa_registration_button_confirm_registration" />
-
-        <TextView
-            android:id="@+id/txtFirstName"
-            style="@style/BigLabelsForRegistrationConfirmation"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:text="@string/tlatoa_registration_username" />
-
-        <TextView
-            android:id="@+id/txtUserMail"
-            style="@style/BigLabelsForRegistrationConfirmation"
-            android:layout_below="@+id/txtFirstName"
-            android:layout_centerHorizontal="true"
-            android:text="@string/tlatoa_registration_user_mail" />
-    </RelativeLayout>
-
-    <com.makeramen.RoundedImageView
-        android:id="@+id/ivProfilePhoto"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:padding="10dip"
-        android:scaleType="fitCenter"
-        android:src="@drawable/tlatoa_profile_default_photo"
-        app:border_color="#FFFFFF"
-        app:border_width="4dip"
-        app:corner_radius="10dp" />
+        android:orientation="vertical" >
 
-</RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <com.makeramen.RoundedImageView
+                android:id="@+id/ivProfilePhoto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dip"
+                android:scaleType="fitCenter"
+                android:src="@drawable/tlatoa_profile_default_photo"
+                app:border_color="#FFFFFF"
+                app:border_width="4dip"
+                app:corner_radius="10dp" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/txRegistrationUsername"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/tlatoa_regisration_edittext"
+                android:gravity="center_horizontal"
+                android:padding="12dp"
+                android:text="@string/tlatoa_registration_username_default"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@android:color/darker_gray" >
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/txRegistrationEmail"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/tlatoa_regisration_edittext"
+                android:gravity="center_horizontal"
+                android:padding="12dp"
+                android:text="@string/tlatoa_registration_email_default"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@android:color/darker_gray" >
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <Button
+                    android:id="@+id/btnConfirmRegistration"
+                    style="@style/tlatoa_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="24dp"
+                    android:background="@drawable/tlatoa_button"
+                    android:text="@string/tlatoa_registration_button_confirm_registration" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+</ScrollView>

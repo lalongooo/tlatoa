@@ -4,8 +4,8 @@
 
     <corners android:radius="14dp" />
 
+    <solid android:color="@color/tlatoa_main_color_orange" />
 
-	<solid android:color="#EAEAEA" />
     <padding
         android:bottom="0dp"
         android:left="0dp"
@@ -20,4 +20,5 @@
         android:width="3dp"
         android:color="#FFFFFF" />
 
+    
 </shape>

@@ -17,18 +17,33 @@
     <color name="blue">#f66039</color>
     <color name="navy">#000080</color>
     <color name="black">#000000</color>
-    <color name="tlatoa_splash_background">#F66139</color>
+    <color name="tlatoa_main_color_orange">#F66139</color>
+    <color name="tlatoa_main_color_orange_light">#E38D76</color>
+    <color name="tlatoa_main_color_gray">#eaeaea</color>
     <color name="tlatoa_splash_icon_background">#ead9c7</color>
-    <color name="tlatoa_gray_main_color">#eaeaea</color>
-	<color name="dialog_message_text_dark">#FFFFFF</color>
-	<color name="dialog_title_text_dark">#F8A500</color>
-	<color name="dialog_title_separator_dark">#F8A500</color>
-	<color name="dialog_button_text_dark">#FFFFFF</color>
-	<color name="dialog_button_normal_dark">@android:color/transparent</color>
-	<color name="dialog_button_pressed_dark">#99F8A500</color> <!-- 60 % opacity -->
-	<color name="dialog_button_focused_dark">#4CF8A500</color> <!-- 30 % opacity -->
-	<color name="dialog_button_separator_dark">#12FFFFFF</color> <!-- 7% opacity -->
-	<color name="background_dark">#C35817</color>
- <!-- 60 % opacity -->
+    <color name="dialog_message_text_dark">#FFFFFF</color>
+    <color name="dialog_title_text_dark">#F8A500</color>
+    <color name="dialog_title_separator_dark">#F8A500</color>
+    <color name="dialog_button_text_dark">#FFFFFF</color>
+    <color name="dialog_button_normal_dark">@android:color/transparent</color>
+    <color name="dialog_button_pressed_dark">#99F8A500</color>
+    <!-- 60 % opacity -->
+    <color name="dialog_button_focused_dark">#4CF8A500</color>
+    <!-- 30 % opacity -->
+    <color name="dialog_button_separator_dark">#12FFFFFF</color>
+    <!-- 7% opacity -->
+    <color name="background_dark">#C35817</color>
+    <color name="tlatoa_about_developer_list_font_color">#51555a</color>
+    <color name="tlatoa_actionbar_background_color">#f8f8f8</color>
+    <color name="tlatoa_actionbar_red_dark">#871f08</color>
+    <color name="tlatoa_actionbar_peach">#ffeddb</color>
+    <color name="tlatoa_actionbar_red_dark_washedout">#9e402c</color>
+    <color name="tlatoa_actionbar_title_text_color">#F66139</color>
+
+    <!-- Colors for Facebook -->
+    <color name="facebook_main_color_blue">#3b5998</color>
+    <color name="facebook_main_color_blue_light">#8b9dc3</color>
+
+    <!-- 60 % opacity -->
 
 </resources>

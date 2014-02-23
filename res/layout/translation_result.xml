@@ -4,23 +4,33 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_weight="1"
-        android:orientation="vertical" >
+        android:background="@color/tlatoa_main_color_orange" >
 
-        <ImageSwitcher
-            android:id="@+id/imageSwitcher"
+        <ImageView
+            android:id="@+id/ivTranslationResultAnimation"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/tlatoa_signal_result_default" >
-        </ImageSwitcher>
-    </LinearLayout>
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:contentDescription="@string/tlatoa_content_descr_for_imageviews"
+            android:scaleType="fitCenter"
+            android:src="@drawable/buenos_dias_0" />
+
+        <ImageView
+            android:id="@+id/ivTranslationResultPlayButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:contentDescription="@string/tlatoa_content_descr_for_imageviews"
+            android:src="@drawable/tlatoa_play_button" />
+    </FrameLayout>
 
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_weight="1"
         android:orientation="vertical" >
 
@@ -28,9 +38,9 @@
             android:id="@+id/list"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:divider="@color/tlatoa_splash_background"
+            android:divider="@color/tlatoa_main_color_orange"
             android:dividerHeight="1dp"
-            android:listSelector="@drawable/list_selector" />
+            android:listSelector="@drawable/tlatoa_translations_list_item" />
     </LinearLayout>
 
 </LinearLayout>

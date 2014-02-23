@@ -14,9 +14,6 @@ import java.util.WeakHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import com.xihuanicode.tlatoa.activity.R;
-
-
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -35,7 +32,6 @@ public class ImageLoader {
         executorService=Executors.newFixedThreadPool(5);
     }
     
-    final int stub_id = R.drawable.no_image;
     public void DisplayImage(String url, ImageView imageView)
     {
         imageViews.put(imageView, url);
@@ -45,7 +41,7 @@ public class ImageLoader {
         else
         {
             queuePhoto(url, imageView);
-            imageView.setImageResource(stub_id);
+            imageView.setImageResource(0);
         }
     }
         
@@ -163,7 +159,7 @@ public class ImageLoader {
             if(bitmap!=null)
                 photoToLoad.imageView.setImageBitmap(bitmap);
             else
-                photoToLoad.imageView.setImageResource(stub_id);
+                photoToLoad.imageView.setImageResource(0);
         }
     }
 

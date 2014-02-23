@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/tlatoa_translations_list_item"
+    android:orientation="horizontal"
+    android:padding="5sp" >
+
+    <TextView
+        android:id="@+id/tlatoa_phrase_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:text="@string/tlatoa_default_phrase_id"/>
+
+    <TextView
+        android:id="@+id/tlatoa_phrase"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/tlatoa_phrase_id"
+        android:layout_marginLeft="10sp"
+        android:layout_toRightOf="@+id/tlatoa_phrase_id"
+        android:text="@string/default_song_title"
+        android:textColor="#040404"
+        android:textSize="15sp" />
+
+    <TextView
+        android:id="@+id/tlatoa_phrase_created_at"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/tlatoa_phrase"
+        android:layout_below="@+id/tlatoa_phrase"
+        android:text="@string/tlatoa_default_phrase_created_at"
+        android:textColor="#343434"
+        android:textSize="12sp" />
+
+    <Button
+        android:id="@+id/tlatoa_share_phrase_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_alignBottom="@+id/tlatoa_play_button"
+        android:layout_alignTop="@+id/tlatoa_play_button"
+        android:layout_marginRight="40sp"
+        android:layout_toLeftOf="@+id/tlatoa_play_button"
+        android:background="@drawable/tlatoa_playlist_share_button_selector"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:text="@string/tlatoa_share_button_title"
+        android:textColor="#FFFFFF"
+        android:textSize="12sp" />
+
+    <ImageView
+        android:id="@+id/tlatoa_play_button"
+        android:layout_width="25sp"
+        android:layout_height="25sp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="10sp"
+        android:contentDescription="@string/tlatoa_content_descr_for_imageviews"
+        android:src="@drawable/tlatoa_playlist_play_button" />
+
+</RelativeLayout>

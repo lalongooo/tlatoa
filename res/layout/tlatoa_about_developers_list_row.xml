@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/tlatoa_translations_list_item"
+    android:orientation="horizontal"
+    android:padding="5sp" >
+
+    <ImageView
+        android:id="@+id/ivAboutTwitterIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:contentDescription="@string/tlatoa_content_descr_for_imageviews"
+        android:src="@drawable/tlatoa_about_twitter_icon" >
+    </ImageView>
+
+    <TextView
+        android:id="@+id/tvAboutDeveloperTwitterUsername"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="14dp"
+        android:layout_toRightOf="@+id/ivAboutTwitterIcon"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/tlatoa_about_developer_list_font_color" />
+
+    <ImageView
+        android:id="@+id/ivAboutListRowIndicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/tvAboutDeveloperTwitterUsername"
+        android:layout_marginRight="16dp"
+        android:contentDescription="@string/tlatoa_content_descr_for_imageviews"
+        android:src="@drawable/tlatoa_about_list_row_indicator" />
+
+</RelativeLayout>

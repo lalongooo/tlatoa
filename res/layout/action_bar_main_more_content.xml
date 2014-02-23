@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <Button
+        android:id="@+id/main_more_content_profile"
+        style="@style/tlatoa_action_bar_menu_button"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="1dp"
+        android:text="@string/tlatoa_main_action_bar_option_profile" />
+
+    <Button
+        android:id="@+id/main_more_content_about"
+        style="@style/tlatoa_action_bar_menu_button"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/tlatoa_main_action_bar_option_about" />
+
+</LinearLayout>

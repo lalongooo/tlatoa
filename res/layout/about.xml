@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/tlatoa_main_color_gray"
+    android:orientation="vertical" >
+    
+    <LinearLayout
+        android:id="@+id/layoutAbout"
+        android:layout_width="130dp"
+        android:layout_height="130dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/tlatoa_custom_border"
+        android:orientation="vertical" >
+
+        <ImageView
+            android:id="@+id/ivAboutTlatoaIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/tlatoa_content_descr_for_imageviews"
+            android:src="@drawable/test_app_overview_image1" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tvAboutAppVersionLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/layoutAbout"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="14dp"
+        android:text="@string/tlatoa_app_version_label"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/tlatoa_main_color_orange"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tvAboutMainText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/tvAboutAppVersionLabel"
+        android:gravity="center"
+        android:padding="20dp"
+        android:text="@string/tlatoa_about_main_text" />
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvAboutMainText"
+        android:layout_centerHorizontal="true"
+        android:orientation="vertical"
+        android:padding="40dp" >
+
+        <ListView
+            android:id="@+id/lvAboutDevelopersList"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:listSelector="@drawable/tlatoa_about_developers_list_item"
+            android:minHeight="?android:attr/listPreferredItemHeightSmall" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

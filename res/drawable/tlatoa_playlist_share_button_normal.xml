@@ -4,20 +4,11 @@
 
     <corners android:radius="5dp" />
 
-    <solid android:color="#F66139" />
-
-    <padding
-        android:bottom="0dp"
-        android:left="dp"
-        android:right="0dp"
-        android:top="0dp" />
+    <solid android:color="@color/tlatoa_main_color_orange" />
 
     <size
         android:height="25dp"
         android:width="100dp" />
-<!--     <size -->
-<!--         android:height="40dp" -->
-<!--         android:width="200dp" /> -->
 
     <stroke
         android:width="2dp"

@@ -4,7 +4,7 @@
 
     <corners android:radius="14dp" />
 
-    <solid android:color="@color/tlatoa_splash_background" />
+    <solid android:color="@color/tlatoa_main_color_orange" />
 
     <padding
         android:bottom="0dp"

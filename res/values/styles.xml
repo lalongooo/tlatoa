@@ -1,17 +1,17 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <style name="AppTheme" parent="android:Theme.Light" />
+    <!-- Styles for the custom dialogs library -->
 
     <style name="leftBehindMenuScroll">
         <item name="android:layout_width">240dp</item>
         <item name="android:layout_height">fill_parent</item>
-        <item name="android:background">@color/tlatoa_splash_background</item>
+        <item name="android:background">@color/tlatoa_main_color_orange</item>
     </style>
 
     <style name="rightBehindMenuScroll">
         <item name="android:layout_width">200dp</item>
         <item name="android:layout_height">fill_parent</item>
-        <item name="android:background">@color/tlatoa_splash_background</item>
+        <item name="android:background">@color/tlatoa_main_color_orange</item>
     </style>
 
     <style name="behindMenuScrollContent">
@@ -49,8 +49,69 @@
         <item name="android:layout_marginTop">24dp</item>
         <item name="android:textSize">26sp</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:textColor">@color/tlatoa_splash_background</item>
-<!--         <item name="android:background">@color/background_dark</item> -->
+        <item name="android:textColor">@color/tlatoa_main_color_orange</item>
+        <!-- <item name="android:background">@color/background_dark</item> -->
+    </style>
+
+    <style name="CustomDarkTheme" parent="@android:style/Theme.Holo.Light.DarkActionBar">
+        <item name="sdlDialogStyle">@style/DialogStyleDark.Custom</item>
+        <item name="android:windowBackground">@color/tlatoa_main_color_orange</item>
+    </style>
+
+    <style name="DialogStyleDark.Custom">
+
+        <!-- anything can be left out: -->
+        <item name="titleTextColor">@color/tlatoa_main_color_orange</item>
+        <item name="titleSeparatorColor">@color/tlatoa_main_color_orange</item>
+        <item name="messageTextColor">@color/dialog_message_text_dark</item>
+        <item name="buttonTextColor">@color/dialog_button_text_dark</item>
+        <item name="buttonSeparatorColor">@color/dialog_button_separator_dark</item>
+        <item name="buttonBackgroundColorNormal">@color/dialog_button_normal_dark</item>
+        <item name="buttonBackgroundColorPressed">@color/tlatoa_main_color_orange</item>
+        <item name="buttonBackgroundColorFocused">@color/tlatoa_main_color_orange</item>
+    </style>
+
+    <style name="TlatoaSplashTheme" parent="@android:style/Theme.NoTitleBar.Fullscreen">
+        <item name="sdlDialogStyle">@style/DialogStyleDark.Custom</item>
+    </style>
+    
+    <style name="TlatoaTheme" parent="@style/Theme.Base.AppCompat.Light">
+        <item name="android:actionBarStyle">@style/TlatoaActionBar</item>
+        <item name="sdlDialogStyle">@style/DialogStyleDark.Custom</item>
+    </style>
+    
+    <style name="TlatoaActionBar" parent="@style/Widget.AppCompat.Light.Base.ActionBar">
+        <item name="android:background">@color/tlatoa_actionbar_background_color</item>
+        <item name="android:textColor">@color/tlatoa_main_color_orange</item>
+        <item name="android:titleTextStyle">@style/TlatoaActionBarTextAppearance</item>
+    </style>
+
+    <style name="TlatoaActionBarTextAppearance" parent="android:TextAppearance.Holo.Widget.ActionBar.Title">
+        <item name="android:textColor">@color/tlatoa_main_color_orange</item>
+    </style>
+
+    <style name="facebook_button">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_margin">24dp</item>
+    </style>
+
+    <style name="tlatoa_button">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_margin">24dp</item>
+    </style>
+
+    <style name="tlatoa_action_bar_menu_button">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:background">@color/tlatoa_main_color_orange</item>
+        <item name="android:padding">16dp</item>
+        <item name="android:gravity">left</item>
     </style>
 
 </resources>

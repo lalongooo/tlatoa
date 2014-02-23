@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+	<!--
+		solid.color - color de fondo del botón cuando está presionado
+		stroke.width - ancho del contorno del botón cuando está presionado
+		stroke.color - color del contorno del botón cuando está presionado
+		corner.raduis - determina la curva de las esquinas del boton, entre mas alto el valor, mas se parece a un circulo.
+		padding espacio entre el contenido del centro y los  lados (arriba, abajo, izq y der)
+		
+	-->
+    
+    <item android:state_pressed="true">
+        <shape>
+			<solid android:color="@color/tlatoa_main_color_orange_light" />
+			<corners android:radius="1dp" />
+        </shape>
+	</item>
+
+    <item>
+        <shape>
+            <solid android:color="@color/tlatoa_main_color_orange" />
+            <corners android:radius="1dp" />
+        </shape>
+	</item>
+
+</selector>

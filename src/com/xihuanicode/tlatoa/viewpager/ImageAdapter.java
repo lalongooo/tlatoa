@@ -1,6 +1,6 @@
 package com.xihuanicode.tlatoa.viewpager;
 
-import com.xihuanicode.tlatoa.activity.R;
+import com.xihuanicode.tlatoa.R;
 
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;
@@ -11,8 +11,12 @@ import android.widget.ImageView;
 
 public class ImageAdapter extends PagerAdapter {
 	Context context;
-	private int[] GalImages = new int[] { R.drawable.test_app_overview_image1,
-			R.drawable.test_app_overview_image2 };
+	private int[] imagesArray = new int[]
+	        {
+				R.drawable.test_app_overview_image1,
+				R.drawable.test_app_overview_image3,
+				R.drawable.test_app_overview_image2
+			};
 
 	public ImageAdapter(Context context) {
 		this.context = context;
@@ -20,7 +24,7 @@ public class ImageAdapter extends PagerAdapter {
 
 	@Override
 	public int getCount() {
-		return GalImages.length;
+		return imagesArray.length;
 	}
 
 	@Override
@@ -35,7 +39,7 @@ public class ImageAdapter extends PagerAdapter {
 		int padding = context.getResources().getDimensionPixelSize(R.dimen.default_title_indicator_footer_padding);
 		imageView.setPadding(padding, padding, padding, padding);
 		imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-		imageView.setImageResource(GalImages[position]);
+		imageView.setImageResource(imagesArray[position]);
 
 		((ViewPager) container).addView(imageView, 0);
 
