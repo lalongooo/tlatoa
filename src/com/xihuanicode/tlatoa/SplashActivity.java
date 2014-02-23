@@ -11,7 +11,7 @@ import android.support.v4.app.FragmentActivity;
 import android.widget.TextView;
 
 import com.google.analytics.tracking.android.EasyTracker;
-import com.xihuanicode.tlatoa.db.PhraseDataSource;
+import com.xihuanicode.tlatoa.db.SentenceDataSource;
 import com.xihuanicode.tlatoa.utils.Utils;
 
 import eu.inmite.android.lib.dialogs.ISimpleDialogCancelListener;
@@ -29,7 +29,7 @@ public class SplashActivity extends FragmentActivity implements
 	private TextView tvTlatoa;
 	private Typeface typeFace;
 	
-	private PhraseDataSource datasource;
+	private SentenceDataSource datasource;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -37,7 +37,7 @@ public class SplashActivity extends FragmentActivity implements
 		setContentView(R.layout.splash);
 		
 		// Create database
-		datasource = new PhraseDataSource(this);
+		datasource = new SentenceDataSource(this);
 		datasource.open();
 
 		// Set typeface

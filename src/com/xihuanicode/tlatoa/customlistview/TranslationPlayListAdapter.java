@@ -4,10 +4,12 @@ import java.util.List;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.xihuanicode.tlatoa.R;
@@ -52,6 +54,14 @@ public class TranslationPlayListAdapter extends BaseAdapter {
 		TextView tvPhraseId = (TextView) vi.findViewById(R.id.tlatoa_phrase_id);
 		TextView tvPhrase = (TextView) vi.findViewById(R.id.tlatoa_phrase);
 		TextView tvPhraseCreatedAt = (TextView) vi.findViewById(R.id.tlatoa_phrase_created_at);
+		Button btnSharePhrase = (Button) vi.findViewById(R.id.tlatoa_share_phrase_button);
+		
+		// Get font
+		Typeface typeface = Typeface.createFromAsset(activity.getAssets(), "candara.ttf");
+		tvPhraseId.setTypeface(typeface);
+		tvPhrase.setTypeface(typeface);
+		tvPhraseCreatedAt.setTypeface(typeface);
+		btnSharePhrase.setTypeface(typeface);
 
 		Phrase phrase = data.get(position);
 		

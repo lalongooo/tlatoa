@@ -1,26 +1,46 @@
 package com.xihuanicode.tlatoa.entity;
 
 public class SentenceResource {
-   	private int resourceId;
-   	private String resourceURL;
-   	private int sequenceOrder;
+	
+	private int resourceId;
+	private String resourceURL;
+	private int sequenceOrder;
+	private byte[] resourceImage;
 
- 	public int getResourceId(){
+	// Resource Id
+	public int getResourceId() {
 		return this.resourceId;
 	}
-	public void setResourceId(int resourceId){
+
+	public void setResourceId(int resourceId) {
 		this.resourceId = resourceId;
 	}
- 	public String getResourceURL(){
+
+	// Resource URL
+	public String getResourceURL() {
 		return this.resourceURL;
 	}
-	public void setResourceURL(String resourceURL){
+
+	public void setResourceURL(String resourceURL) {
 		this.resourceURL = resourceURL;
 	}
- 	public int getSequenceOrder(){
+
+	// Resource sequenceOrder
+	public int getSequenceOrder() {
 		return this.sequenceOrder;
 	}
-	public void setSequenceOrder(int sequenceOrder){
+
+	public void setSequenceOrder(int sequenceOrder) {
 		this.sequenceOrder = sequenceOrder;
 	}
+
+	// Resource image
+	public byte[] getResourceImage() {
+		return resourceImage;
+	}
+
+	public void setResourceImage(byte[] resourceImage) {
+		this.resourceImage = resourceImage;
+	}
+
 }

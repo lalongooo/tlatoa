@@ -1,29 +1,37 @@
-
 package com.xihuanicode.tlatoa.entity;
 
 import java.util.List;
 
 public class Sentence {
-   	private List<SentenceResource> resources;
-   	private String sentence;
-   	private int sentenceId;
 
- 	public List<SentenceResource> getSentenceResource(){
+	private List<SentenceResource> resources;
+	private int sentenceId;
+	private String sentence;
+
+	// Resources
+	public List<SentenceResource> getSentenceResource() {
 		return this.resources;
 	}
-	public void setSentenceResource(List<SentenceResource> resources){
+
+	public void setSentenceResource(List<SentenceResource> resources) {
 		this.resources = resources;
 	}
- 	public String getSentence(){
+
+	// Sentence
+	public String getSentence() {
 		return this.sentence;
 	}
-	public void setSentence(String sentence){
+
+	public void setSentence(String sentence) {
 		this.sentence = sentence;
 	}
- 	public int getSentenceId(){
+
+	// Sentence Id
+	public int getSentenceId() {
 		return this.sentenceId;
 	}
-	public void setSentenceId(int sentenceId){
+
+	public void setSentenceId(int sentenceId) {
 		this.sentenceId = sentenceId;
 	}
 }

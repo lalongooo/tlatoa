@@ -3,6 +3,7 @@ package com.xihuanicode.tlatoa;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.http.HttpResponse;
@@ -17,6 +18,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources.NotFoundException;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -26,90 +28,107 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.xihuanicode.tlatoa.customlistview.TranslationPlayListAdapter;
 import com.xihuanicode.tlatoa.db.Phrase;
-import com.xihuanicode.tlatoa.db.PhraseDataSource;
+import com.xihuanicode.tlatoa.db.SentenceDataSource;
+import com.xihuanicode.tlatoa.entity.Sentence;
+import com.xihuanicode.tlatoa.entity.SentenceResource;
 import com.xihuanicode.tlatoa.utils.BitmapDownloader;
 import com.xihuanicode.tlatoa.utils.Utils;
 
 public class TranslationResultActivity extends Activity implements
 		View.OnClickListener {
 
-	private static final String TAG = "com.xihuanicode.tlatoa.TranslationResultActivity";
+	private static final String TAG = "ResultActivity";
 
 	private static final int ANIMATION_DURATION = 500;
 
-	// The phrase catched by the Google speech to text intent
-	private String phrase;
+	public static final String TLATOA_SENTENCE_WS_URL = "http://tlatoa.herokuapp.com/manager/api/sentence?phrase=";
+
 
 	// The images sequence returned for the phrase from the web service
 	private Bitmap[] imagesSequence;
 
-	// All static variables
-	static final String URL = "http://api.androidhive.info/music/music.xml";
-
-	// XML node keys
-	public static final String KEY_SONG = "song"; // parent node
-	public static final String KEY_ID = "id";
-	public static final String KEY_PHRASE = "title";
-	public static final String KEY_CREATED_AT = "artist";
-	public static final String KEY_DURATION = "duration";
-	public static final String KEY_THUMB_URL = "thumb_url";
-
 	// UI items
-	private ImageView ivTranslationResultAnimation,
-			ivTranslationResultPlayButton;
-	private ListView list;
+	private ImageView ivTranslationResultAnimation, ivTranslationResultPlayButton;
+	private ListView lvTranslationList;
 	private TranslationPlayListAdapter adapter;
 
 	// Database classes
-	private PhraseDataSource datasource;
+	private SentenceDataSource datasource;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.translation_result);
 
-		getIntentData();
-		setUI();
+		// Database object initialization
+		datasource = new SentenceDataSource(this);
 
+		setUI();
+		
+		Bundle extras = getIntent().getExtras();
+		String phrase = null;
+		
+		if(extras != null){
+			phrase = extras.getString("phrase");
+		}
+		
 		if(phrase != null){
 			new Translate(this, "We are translating...").execute(phrase);
 		}
 		
 	}
 
-	private void getIntentData() {
-		Bundle extras = getIntent().getExtras();
-		
-		if(extras != null){
-			phrase = extras.getString("phrase");
-		}		
-
-		datasource = new PhraseDataSource(this);
-		datasource.open();
-		datasource.createPhrase(phrase);
-
-	}
-
 	private void setUI() {
 
 		// Get views
-		list = (ListView) findViewById(R.id.list);
+		lvTranslationList = (ListView) findViewById(R.id.list);
 		ivTranslationResultAnimation = (ImageView) findViewById(R.id.ivTranslationResultAnimation);
 		ivTranslationResultPlayButton = (ImageView) findViewById(R.id.ivTranslationResultPlayButton);
 
 		// Add listeners
 		ivTranslationResultPlayButton.setOnClickListener(this);
 
-		List<Phrase> phrases = datasource.getAllPhrase();
+		// Load all translated sentences
+		List<Phrase> phrases = datasource.getAllSentences();
+		
+		// Listview configuration
 		if (phrases.size() > 0) {
 			adapter = new TranslationPlayListAdapter(this, phrases);
-			list.setAdapter(adapter);
+			lvTranslationList.setAdapter(adapter);
 		}
+		
+		lvTranslationList.setOnItemClickListener(new OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				
+				int sentenceId = Integer.valueOf(((TextView)view.findViewById(R.id.tlatoa_phrase_id)).getText().toString());
+				Sentence s = datasource.getSentenceById(sentenceId);
+				
+				int sentenceResourcesCount = s.getSentenceResource().size();
+				
+				imagesSequence = new Bitmap [sentenceResourcesCount];
+				
+				for(int i = 0; i < sentenceResourcesCount; i++){
+					
+					byte [] imageBytes =((SentenceResource) s.getSentenceResource().get(i)).getResourceImage(); 
+					
+					imagesSequence[i] = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+
+				}
+				
+				playTranslation(imagesSequence);
+				
+				
+			}
+		});		
 
 	}
 
@@ -161,10 +180,10 @@ public class TranslationResultActivity extends Activity implements
 			try {
 
 				String url = URLEncoder.encode(phrase[0], "UTF8");
-
-				response = Utils.doResponse("http://tlatoa.herokuapp.com/manager/api/sentence?phrase=" + url, 2);
+				response = Utils.doResponse(TLATOA_SENTENCE_WS_URL + url, 2);
 				stringResult = Utils.inputStreamToString(response.getEntity().getContent());
 				Log.i(TAG, stringResult);
+				
 			} catch (IllegalStateException e) {
 				// TODO: Candidate code to send for reporting
 				Log.i(TAG, e.getMessage());
@@ -182,10 +201,19 @@ public class TranslationResultActivity extends Activity implements
 				return null;
 			} else {
 				try {
+					
+					// Getting the first and unique element
 					JSONArray jsonArray = new JSONArray(stringResult);
 					JSONObject jsonObject = jsonArray.getJSONObject(0);
+										
+					// Creating the entity object to store it in the database
+					Sentence sentence = new Sentence();
+					sentence.setSentenceId(jsonObject.getInt("sentenceId"));
+					sentence.setSentence(jsonObject.getString("sentence"));
+					List<SentenceResource> resources = new ArrayList<SentenceResource>();
+										
+					// Looping into the resources element
 					JSONArray resourcesArray = (JSONArray) jsonObject.get("resources");
-
 					photos = new Bitmap[resourcesArray.length()];
 
 					for (int i = 0; i < resourcesArray.length(); i++) {
@@ -195,8 +223,7 @@ public class TranslationResultActivity extends Activity implements
 
 						// Get bitmap from HerokuApp
 						BitmapDownloader bitmapDownloader = new BitmapDownloader();
-						bitmap = bitmapDownloader.downloadBitmap(jsonObject
-								.getString("resourceURL"));
+						bitmap = bitmapDownloader.downloadBitmap(jsonObject.getString("resourceURL"));
 
 						// Get bytes from bitmap
 						ByteArrayOutputStream stream = new ByteArrayOutputStream();
@@ -204,8 +231,20 @@ public class TranslationResultActivity extends Activity implements
 
 						// Add bitmap to array
 						photos[i] = bitmap;
-
+						
+						SentenceResource sr = new SentenceResource();
+						sr.setResourceId(jsonObject.getInt("resourceId"));
+						sr.setResourceURL(jsonObject.getString("resourceURL"));
+						sr.setSequenceOrder(jsonObject.getInt("sequenceOrder"));
+						sr.setResourceImage(stream.toByteArray());
+						
+						resources.add(sr);
 					}
+					
+					sentence.setSentenceResource(resources);
+					
+					datasource = new SentenceDataSource(getApplication());
+					datasource.createSentence(sentence);
 
 					Log.i(TAG, jsonObject.toString());
 				} catch (JSONException e) {
@@ -251,35 +290,29 @@ public class TranslationResultActivity extends Activity implements
 			try {
 				ivTranslationResultPlayButton.setVisibility(View.INVISIBLE);
 
-				AnimationDrawable animationDrawable = (AnimationDrawable) getResources()
-						.getDrawable(R.drawable.tlatoa_translation_result_anim);
+				AnimationDrawable animationDrawable = (AnimationDrawable) getResources().getDrawable(R.drawable.tlatoa_translation_result_anim);
 				animationDrawable.setOneShot(true);
 
 				if (animationDrawable.getNumberOfFrames() == 0) {
 					for (int i = 0; i < images.length; i++) {
 
-						BitmapDrawable bitmapDrawable = new BitmapDrawable(
-								getResources(), images[i]);
+						BitmapDrawable bitmapDrawable = new BitmapDrawable(getResources(), images[i]);
 						Drawable drawable = (Drawable) bitmapDrawable;
-						animationDrawable
-								.addFrame(drawable, ANIMATION_DURATION);
+						animationDrawable.addFrame(drawable, ANIMATION_DURATION);
 
 					}
 				}
 
 				// Pass our animation drawable to our custom drawable class
-				CustomAnimationDrawable cad = new CustomAnimationDrawable(
-						animationDrawable) {
+				CustomAnimationDrawable cad = new CustomAnimationDrawable(animationDrawable) {
 					@Override
 					void onAnimationFinish() {
-						ivTranslationResultPlayButton
-								.setVisibility(View.VISIBLE);
+						ivTranslationResultPlayButton.setVisibility(View.VISIBLE);
 					}
 				};
 
 				// Set the views drawable to our custom drawable
-				ivTranslationResultAnimation
-						.setImageResource(android.R.color.transparent);
+				ivTranslationResultAnimation.setImageResource(android.R.color.transparent);
 				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
 					setBakgroundJELLYBean(cad);
 				} else {
@@ -288,6 +321,7 @@ public class TranslationResultActivity extends Activity implements
 
 				// Start the animation
 				cad.start();
+
 			} catch (NotFoundException e) {
 				// TODO: Candidate code to send for reporting
 				Log.i(TAG, e.getMessage());
@@ -300,13 +334,11 @@ public class TranslationResultActivity extends Activity implements
 
 	@Override
 	protected void onResume() {
-		datasource.open();
 		super.onResume();
 	}
 
 	@Override
 	protected void onPause() {
-		datasource.close();
 		super.onPause();
 	}
 
