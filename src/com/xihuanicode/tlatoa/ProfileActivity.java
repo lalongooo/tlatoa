@@ -52,7 +52,6 @@ implements View.OnClickListener, ISimpleDialogListener, ISimpleDialogCancelListe
 
 	private void setUI() {
 		
-		// Enable the ActionBar
 		// TODO: Configure theme
 		setTheme(R.style.CustomDarkTheme);
 		

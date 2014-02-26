@@ -4,6 +4,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.apache.http.HttpResponse;
@@ -53,7 +54,7 @@ public class TranslationResultActivity extends Activity implements
 
 
 	// The images sequence returned for the phrase from the web service
-	private Bitmap[] imagesSequence;
+	private Sentence sentence;
 
 	// UI items
 	private ImageView ivTranslationResultAnimation, ivTranslationResultPlayButton;
@@ -111,20 +112,7 @@ public class TranslationResultActivity extends Activity implements
 				
 				int sentenceId = Integer.valueOf(((TextView)view.findViewById(R.id.tlatoa_phrase_id)).getText().toString());
 				Sentence s = datasource.getSentenceById(sentenceId);
-				
-				int sentenceResourcesCount = s.getSentenceResource().size();
-				
-				imagesSequence = new Bitmap [sentenceResourcesCount];
-				
-				for(int i = 0; i < sentenceResourcesCount; i++){
-					
-					byte [] imageBytes =((SentenceResource) s.getSentenceResource().get(i)).getResourceImage(); 
-					
-					imagesSequence[i] = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
-
-				}
-				
-				playTranslation(imagesSequence);
+				playTranslation(s);
 				
 				
 			}
@@ -136,13 +124,13 @@ public class TranslationResultActivity extends Activity implements
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.ivTranslationResultPlayButton:
-			playTranslation(imagesSequence);
+			playTranslation(this.sentence);
 			break;
 		}
 
 	}
 
-	private class Translate extends AsyncTask<String, Integer, Bitmap[]> {
+	private class Translate extends AsyncTask<String, Integer, Sentence> {
 
 		private ProgressDialog pDlg;
 		private Context mContext;
@@ -171,18 +159,19 @@ public class TranslationResultActivity extends Activity implements
 		}
 
 		@Override
-		protected Bitmap[] doInBackground(String... phrase) {
+		protected Sentence doInBackground(String... phrase) {
 
-			String stringResult = null;
-			Bitmap[] photos = null;
+			// Creating the entity object to store it in the database
+			Sentence sentence = new Sentence();
+			String jsonResult = null;
 			HttpResponse response = null;
 
 			try {
 
 				String url = URLEncoder.encode(phrase[0], "UTF8");
 				response = Utils.doResponse(TLATOA_SENTENCE_WS_URL + url, 2);
-				stringResult = Utils.inputStreamToString(response.getEntity().getContent());
-				Log.i(TAG, stringResult);
+				jsonResult = Utils.inputStreamToString(response.getEntity().getContent());
+				Log.i(TAG, jsonResult);
 				
 			} catch (IllegalStateException e) {
 				// TODO: Candidate code to send for reporting
@@ -203,18 +192,15 @@ public class TranslationResultActivity extends Activity implements
 				try {
 					
 					// Getting the first and unique element
-					JSONArray jsonArray = new JSONArray(stringResult);
+					JSONArray jsonArray = new JSONArray(jsonResult);
 					JSONObject jsonObject = jsonArray.getJSONObject(0);
-										
-					// Creating the entity object to store it in the database
-					Sentence sentence = new Sentence();
+
 					sentence.setSentenceId(jsonObject.getInt("sentenceId"));
 					sentence.setSentence(jsonObject.getString("sentence"));
 					List<SentenceResource> resources = new ArrayList<SentenceResource>();
 										
 					// Looping into the resources element
 					JSONArray resourcesArray = (JSONArray) jsonObject.get("resources");
-					photos = new Bitmap[resourcesArray.length()];
 
 					for (int i = 0; i < resourcesArray.length(); i++) {
 						jsonObject = resourcesArray.getJSONObject(i);
@@ -228,9 +214,6 @@ public class TranslationResultActivity extends Activity implements
 						// Get bytes from bitmap
 						ByteArrayOutputStream stream = new ByteArrayOutputStream();
 						bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-
-						// Add bitmap to array
-						photos[i] = bitmap;
 						
 						SentenceResource sr = new SentenceResource();
 						sr.setResourceId(jsonObject.getInt("resourceId"));
@@ -254,16 +237,16 @@ public class TranslationResultActivity extends Activity implements
 				}
 			}
 
-			return photos;
+			return sentence;
 
 		}
 
 		@Override
-		protected void onPostExecute(Bitmap[] images) {
+		protected void onPostExecute(Sentence s) {			
 
 			pDlg.dismiss();
-			imagesSequence = images;
-			playTranslation(images);
+			sentence = s;
+			playTranslation(s);
 
 		}
 
@@ -283,9 +266,13 @@ public class TranslationResultActivity extends Activity implements
 	}
 
 	@SuppressWarnings("deprecation")
-	private void playTranslation(Bitmap... images) {
+	private void playTranslation(Sentence s) {
+		
+		int resourceCount = s.getSentenceResource().size();
+		List<SentenceResource> sr = s.getSentenceResource();
+		Collections.sort(sr);
 
-		if (images != null) {
+		if (resourceCount > 0) {
 
 			try {
 				ivTranslationResultPlayButton.setVisibility(View.INVISIBLE);
@@ -294,9 +281,13 @@ public class TranslationResultActivity extends Activity implements
 				animationDrawable.setOneShot(true);
 
 				if (animationDrawable.getNumberOfFrames() == 0) {
-					for (int i = 0; i < images.length; i++) {
-
-						BitmapDrawable bitmapDrawable = new BitmapDrawable(getResources(), images[i]);
+					for (int i = 0; i < resourceCount; i++) {
+						
+						SentenceResource r = sr.get(i);
+						
+						Bitmap bitmap = BitmapFactory.decodeByteArray(r.getResourceImage(), 0, r.getResourceImage().length);
+						
+						BitmapDrawable bitmapDrawable = new BitmapDrawable(getResources(), bitmap);
 						Drawable drawable = (Drawable) bitmapDrawable;
 						animationDrawable.addFrame(drawable, ANIMATION_DURATION);
 

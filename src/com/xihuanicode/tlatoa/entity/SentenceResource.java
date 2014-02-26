@@ -1,7 +1,7 @@
 package com.xihuanicode.tlatoa.entity;
 
-public class SentenceResource {
-	
+public class SentenceResource implements Comparable<SentenceResource> {
+
 	private int resourceId;
 	private String resourceURL;
 	private int sequenceOrder;
@@ -43,4 +43,9 @@ public class SentenceResource {
 		this.resourceImage = resourceImage;
 	}
 
+	@Override
+	public int compareTo(SentenceResource sr) {
+		return this.sequenceOrder - sr.getSequenceOrder();
+	}	
+	
 }
