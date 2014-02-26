@@ -50,7 +50,7 @@ public class TranslationResultActivity extends Activity implements
 
 	private static final int ANIMATION_DURATION = 500;
 
-	public static final String TLATOA_SENTENCE_WS_URL = "http://tlatoa.herokuapp.com/manager/api/sentence?phrase=";
+	private static final String TLATOA_SENTENCE_WS_URL = "http://tlatoa.herokuapp.com/manager/api/sentence?phrase=";
 
 
 	// The images sequence returned for the phrase from the web service
@@ -163,77 +163,93 @@ public class TranslationResultActivity extends Activity implements
 
 			// Creating the entity object to store it in the database
 			Sentence sentence = new Sentence();
+			
+			// Http request objects
 			String jsonResult = null;
 			HttpResponse response = null;
-
-			try {
-
-				String url = URLEncoder.encode(phrase[0], "UTF8");
-				response = Utils.doResponse(TLATOA_SENTENCE_WS_URL + url, 2);
-				jsonResult = Utils.inputStreamToString(response.getEntity().getContent());
-				Log.i(TAG, jsonResult);
+			
+			// Check for sentence in the local database			
+			sentence.setSentence(phrase[0]);
+			
+			int sentenceId = datasource.existsInLocalDb(sentence);
+			
+			if(sentenceId > 0){
+				sentence = datasource.getSentenceById(sentenceId);
+			}else{
 				
-			} catch (IllegalStateException e) {
-				// TODO: Candidate code to send for reporting
-				Log.i(TAG, e.getMessage());
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO: Candidate code to send for reporting
-				Log.i(TAG, e.getMessage());
-				e.printStackTrace();
-			}catch (Exception e) {
-				// TODO: Candidate code to send for reporting
-				e.printStackTrace();
-			}
-
-			if (response == null) {
-				return null;
-			} else {
+				// Get the first JSON result from the Tlatoa Web Service
 				try {
+	
+					String url = URLEncoder.encode(phrase[0], "UTF8");
+					response = Utils.doResponse(TLATOA_SENTENCE_WS_URL + url, 2);
+					jsonResult = Utils.inputStreamToString(response.getEntity().getContent());
+					Log.i(TAG, jsonResult);
 					
-					// Getting the first and unique element
-					JSONArray jsonArray = new JSONArray(jsonResult);
-					JSONObject jsonObject = jsonArray.getJSONObject(0);
-
-					sentence.setSentenceId(jsonObject.getInt("sentenceId"));
-					sentence.setSentence(jsonObject.getString("sentence"));
-					List<SentenceResource> resources = new ArrayList<SentenceResource>();
-										
-					// Looping into the resources element
-					JSONArray resourcesArray = (JSONArray) jsonObject.get("resources");
-
-					for (int i = 0; i < resourcesArray.length(); i++) {
-						jsonObject = resourcesArray.getJSONObject(i);
-
-						Bitmap bitmap;
-
-						// Get bitmap from HerokuApp
-						BitmapDownloader bitmapDownloader = new BitmapDownloader();
-						bitmap = bitmapDownloader.downloadBitmap(jsonObject.getString("resourceURL"));
-
-						// Get bytes from bitmap
-						ByteArrayOutputStream stream = new ByteArrayOutputStream();
-						bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-						
-						SentenceResource sr = new SentenceResource();
-						sr.setResourceId(jsonObject.getInt("resourceId"));
-						sr.setResourceURL(jsonObject.getString("resourceURL"));
-						sr.setSequenceOrder(jsonObject.getInt("sequenceOrder"));
-						sr.setResourceImage(stream.toByteArray());
-						
-						resources.add(sr);
-					}
-					
-					sentence.setSentenceResource(resources);
-					
-					datasource = new SentenceDataSource(getApplication());
-					datasource.createSentence(sentence);
-
-					Log.i(TAG, jsonObject.toString());
-				} catch (JSONException e) {
+				} catch (IllegalStateException e) {
 					// TODO: Candidate code to send for reporting
 					Log.i(TAG, e.getMessage());
 					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO: Candidate code to send for reporting
+					Log.i(TAG, e.getMessage());
+					e.printStackTrace();
+				}catch (Exception e) {
+					// TODO: Candidate code to send for reporting
+					e.printStackTrace();
+				}
+				
+				
+				// Get the image elements
+				if (response == null) {
+					return null;
+				} else {
+					
+					try {
+						
+						// Getting the first and unique element
+						JSONArray jsonArray = new JSONArray(jsonResult);
+						JSONObject jsonObject = jsonArray.getJSONObject(0);
+	
+						sentence.setSentenceId(jsonObject.getInt("sentenceId"));
+						sentence.setSentence(jsonObject.getString("sentence"));
+						List<SentenceResource> resources = new ArrayList<SentenceResource>();
+											
+						// Looping into the resources element
+						JSONArray resourcesArray = (JSONArray) jsonObject.get("resources");
+	
+						for (int i = 0; i < resourcesArray.length(); i++) {
+							jsonObject = resourcesArray.getJSONObject(i);
+	
+							Bitmap bitmap;
+	
+							// Get bitmap from HerokuApp
+							BitmapDownloader bitmapDownloader = new BitmapDownloader();
+							bitmap = bitmapDownloader.downloadBitmap(jsonObject.getString("resourceURL"));
+	
+							// Get bytes from bitmap
+							ByteArrayOutputStream stream = new ByteArrayOutputStream();
+							bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+							
+							SentenceResource sr = new SentenceResource();
+							sr.setResourceId(jsonObject.getInt("resourceId"));
+							sr.setResourceURL(jsonObject.getString("resourceURL"));
+							sr.setSequenceOrder(jsonObject.getInt("sequenceOrder"));
+							sr.setResourceImage(stream.toByteArray());
+							
+							resources.add(sr);
+						}
+						
+						sentence.setSentenceResource(resources);
+						
+						datasource = new SentenceDataSource(getApplication());
+						datasource.createSentence(sentence);
+	
+						Log.i(TAG, jsonObject.toString());
+					} catch (JSONException e) {
+						// TODO: Candidate code to send for reporting
+						Log.i(TAG, e.getMessage());
+						e.printStackTrace();
+					}
 				}
 			}
 

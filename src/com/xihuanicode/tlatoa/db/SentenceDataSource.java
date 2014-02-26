@@ -208,7 +208,6 @@ public class SentenceDataSource {
 			
 			sentence.setSentenceResource(resources);
 			
-			
 		}
 		
 		// Close database
@@ -217,26 +216,83 @@ public class SentenceDataSource {
 		return sentence;
 	}
 	
-	private SentenceResource cursorToSentenceResource(Cursor cursor){
+	/**
+	 * <p>
+	 * Checks if the Sentence (s) pased as the parameter is saved in the local database. 
+	 * <p>
+	 * @param  s  A Sentence type for searching for it in the local database.
+	 * @return The SentenceId if it exists in the local database, 0 otherwise.  
+	 * @see    Sentence
+	 */
+	
+	public int existsInLocalDb(Sentence s){
+		
+		int exists = 0;
+		
+		// Open database
+		open();		
+		
+		// Get the Sentence from local database
+		Cursor cursor = database.query
+		(
+				
+				SentenceDatabaseHelper.TABLE_SENTENCE, 								// Table
+				TABLE_SENTENCE_COLUMNS, 											// Columns
+				SentenceDatabaseHelper.SENTENCE+ " = '" + s.getSentence() + "'",	// Where (condition)
+				null,																// Group By
+				null,																// Order By
+				null,																// Having
+				null																// Limit
+		);
+		
+		
+		if(cursor.moveToFirst()){
+			
+			while (!cursor.isAfterLast()) {
+				s = cursorToSentence(cursor);
+				cursor.moveToNext();
+			}
+			
+			exists = s.getSentenceId();
+		}
+		
+		// Close database
+		close();
+		
+		return exists;
+	}
+	
+	private Sentence cursorToSentence(Cursor c){
+		
+		Sentence s = new Sentence();
+		
+		s.setSentenceId(c.getInt(0));
+		s.setSentence(c.getString(1));
+		s.setCreatedAt(c.getInt(2));
+		
+		return s;
+	}
+	
+	private SentenceResource cursorToSentenceResource(Cursor c){
 		
 		SentenceResource sr = new SentenceResource();
 		
-		sr.setResourceId(cursor.getInt(1));
-		sr.setResourceURL(cursor.getString(2));
-		sr.setSequenceOrder(cursor.getInt(3));
-		sr.setResourceImage(cursor.getBlob(4));		
+		sr.setResourceId(c.getInt(1));
+		sr.setResourceURL(c.getString(2));
+		sr.setSequenceOrder(c.getInt(3));
+		sr.setResourceImage(c.getBlob(4));		
 		
 		return sr;
 		
 	}
 
-	private Phrase cursorToPhrase(Cursor cursor) {
+	private Phrase cursorToPhrase(Cursor c) {
 		
 		Phrase phrase = new Phrase();
 		
-		phrase.setId(cursor.getLong(0));
-		phrase.setPhrase(cursor.getString(1));
-		phrase.setCreatedAt(cursor.getLong(2));
+		phrase.setId(c.getLong(0));
+		phrase.setPhrase(c.getString(1));
+		phrase.setCreatedAt(c.getLong(2));
 		
 		return phrase;
 	}

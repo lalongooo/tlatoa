@@ -7,6 +7,7 @@ public class Sentence {
 	private List<SentenceResource> resources;
 	private int sentenceId;
 	private String sentence;
+	private int createdAt;
 
 	// Resources
 	public List<SentenceResource> getSentenceResource() {
@@ -33,5 +34,14 @@ public class Sentence {
 
 	public void setSentenceId(int sentenceId) {
 		this.sentenceId = sentenceId;
+	}
+
+	// Created at
+	public void setCreatedAt(int createdAt) {
+		this.createdAt = createdAt;
+	}
+
+	public int getCreatedAt() {
+		return createdAt;
 	}
 }
