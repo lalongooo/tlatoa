@@ -124,7 +124,8 @@ implements View.OnClickListener, ISimpleDialogListener, ISimpleDialogCancelListe
 			showConfirmationMessage();			
 			break;
 		case R.id.actionbar_back:
-			finish();			
+			actionBarBack.setSelected(true);
+			finish();
 			break;
 		}
 	}

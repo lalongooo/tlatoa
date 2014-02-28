@@ -32,7 +32,7 @@
         <activity
             android:name=".ProfileActivity"
             android:label="@string/tlatoa_app_name"
-            android:theme="@android:style/Theme.Light.NoTitleBar" />
+            android:theme="@style/TlatoaMainTheme" />
         <activity
             android:name=".TermsAndConditionsActivity"
             android:label="@string/tlatoa_app_name" />
@@ -44,7 +44,7 @@
         <activity
             android:name=".MainActivity"
             android:label="@string/tlatoa_app_name"
-            android:theme="@android:style/Theme.Light.NoTitleBar" />
+            android:theme="@style/TlatoaMainTheme" />
         <activity
             android:name=".TranslationResultActivity"
             android:label="@string/tlatoa_app_name" />
@@ -53,7 +53,8 @@
             android:label="@string/tlatoa_app_name" />
         <activity
             android:name=".AboutActivity"
-            android:label="@string/tlatoa_app_name" />
+            android:label="@string/tlatoa_app_name"
+            android:theme="@android:style/Theme.Light.NoTitleBar" />
         <activity
             android:name="com.facebook.LoginActivity"
             android:label="@string/tlatoa_app_name" />

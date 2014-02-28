@@ -36,7 +36,7 @@ public class AppOverviewActivity extends Activity implements
 	private ViewPager viewPager;
 	
 	// ActionBar item
-	TextView actionBarTitle;
+	private TextView actionBarTitle;
 
 	// Facebook user properties
 	private static final String FB_PROFILE_PICTURE_URL_BASE = "http://graph.facebook.com/fbUserId/picture?type=large";

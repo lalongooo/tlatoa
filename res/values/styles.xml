@@ -70,7 +70,11 @@
         <item name="buttonBackgroundColorPressed">@color/tlatoa_main_color_orange</item>
         <item name="buttonBackgroundColorFocused">@color/tlatoa_main_color_orange</item>
     </style>
-
+    
+    <style name="TlatoaMainTheme" parent="@android:style/Theme.Light.NoTitleBar">
+        <item name="sdlDialogStyle">@style/DialogStyleDark.Custom</item>
+    </style>
+    
     <style name="TlatoaSplashTheme" parent="@android:style/Theme.NoTitleBar.Fullscreen">
         <item name="sdlDialogStyle">@style/DialogStyleDark.Custom</item>
     </style>

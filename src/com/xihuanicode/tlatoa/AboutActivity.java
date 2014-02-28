@@ -1,22 +1,29 @@
 package com.xihuanicode.tlatoa;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.xihuanicode.tlatoa.customlistview.AboutDeveloperListAdapter;
 
-public class AboutActivity extends ActionBarActivity {
+public class AboutActivity extends Activity  implements View.OnClickListener {
 	
-	ListView lvAboutDevelopersList;
+	private Typeface typeface;
+	private ListView lvAboutDevelopersList;
 	private AboutDeveloperListAdapter adapter;
+	
+	// ActionBar item
+	private ImageView actionBarBack;
+	private TextView actionBarTitle;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -27,13 +34,18 @@ public class AboutActivity extends ActionBarActivity {
 	}
 
 	private void setUI() {
-
-		// Enable the ActionBar
-		setTheme(R.style.CustomDarkTheme);
-		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		
 		// Get views
 		lvAboutDevelopersList = (ListView) findViewById(R.id.lvAboutDevelopersList);
+		actionBarBack = (ImageView) findViewById(R.id.actionbar_back);
+		actionBarTitle = (TextView) findViewById(R.id.actionbar_title);
+		
+		// Set typeface
+		typeface = Typeface.createFromAsset(getAssets(), "DANUBE.TTF");
+		actionBarTitle.setTypeface(typeface);
+		
+		// Set listeners
+		actionBarBack.setOnClickListener(this);
 
 		// Init adapter
 		adapter = new AboutDeveloperListAdapter(getApplicationContext(), new String[]{"@krescruz","@elisasdiego","@lalongooo", "@srrobo"});		
@@ -65,12 +77,22 @@ public class AboutActivity extends ActionBarActivity {
 		switch (item.getItemId()) {
 			case android.R.id.home:
 				finish();
+				
 			default:
 				returnValue = super.onOptionsItemSelected(item);
 		}
 		return returnValue;
 	}
-	
+
+	@Override
+	public void onClick(View view) {
+		switch (view.getId()) {
+		case R.id.actionbar_back:
+			actionBarBack.setSelected(true);
+			finish();			
+			break;
+		}
+	}
 	
 
 }

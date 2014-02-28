@@ -31,7 +31,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignTop="@+id/tvAboutDeveloperTwitterUsername"
-        android:layout_marginRight="16dp"
+        android:layout_marginRight="20dp"
         android:contentDescription="@string/tlatoa_content_descr_for_imageviews"
         android:src="@drawable/tlatoa_about_list_row_indicator" />
 
