@@ -169,8 +169,7 @@ public class TranslationResultActivity extends Activity implements
 			HttpResponse response = null;
 			
 			// Check for sentence in the local database			
-			sentence.setSentence(phrase[0]);
-			
+			sentence.setSentence(phrase[0]);			
 			int sentenceId = datasource.existsInLocalDb(sentence);
 			
 			if(sentenceId > 0){
@@ -182,7 +181,11 @@ public class TranslationResultActivity extends Activity implements
 	
 					String url = URLEncoder.encode(phrase[0], "UTF8");
 					response = Utils.doResponse(TLATOA_SENTENCE_WS_URL + url, 2);
-					jsonResult = Utils.inputStreamToString(response.getEntity().getContent());
+					
+					if (response != null) {
+						jsonResult = Utils.inputStreamToString(response.getEntity().getContent());
+					}
+					
 					Log.i(TAG, jsonResult);
 					
 				} catch (IllegalStateException e) {
@@ -284,57 +287,61 @@ public class TranslationResultActivity extends Activity implements
 	@SuppressWarnings("deprecation")
 	private void playTranslation(Sentence s) {
 		
-		int resourceCount = s.getSentenceResource().size();
-		List<SentenceResource> sr = s.getSentenceResource();
-		Collections.sort(sr);
+		if(s != null){
+		
+			int resourceCount = s.getSentenceResource().size();
+			List<SentenceResource> sr = s.getSentenceResource();
+			Collections.sort(sr);
 
-		if (resourceCount > 0) {
+			if (resourceCount > 0) {
 
-			try {
-				ivTranslationResultPlayButton.setVisibility(View.INVISIBLE);
+				try {
+					ivTranslationResultPlayButton.setVisibility(View.INVISIBLE);
 
-				AnimationDrawable animationDrawable = (AnimationDrawable) getResources().getDrawable(R.drawable.tlatoa_translation_result_anim);
-				animationDrawable.setOneShot(true);
+					AnimationDrawable animationDrawable = (AnimationDrawable) getResources().getDrawable(R.drawable.tlatoa_translation_result_anim);
+					animationDrawable.setOneShot(true);
 
-				if (animationDrawable.getNumberOfFrames() == 0) {
-					for (int i = 0; i < resourceCount; i++) {
-						
-						SentenceResource r = sr.get(i);
-						
-						Bitmap bitmap = BitmapFactory.decodeByteArray(r.getResourceImage(), 0, r.getResourceImage().length);
-						
-						BitmapDrawable bitmapDrawable = new BitmapDrawable(getResources(), bitmap);
-						Drawable drawable = (Drawable) bitmapDrawable;
-						animationDrawable.addFrame(drawable, ANIMATION_DURATION);
+					if (animationDrawable.getNumberOfFrames() == 0) {
+						for (int i = 0; i < resourceCount; i++) {
+							
+							SentenceResource r = sr.get(i);
+							
+							Bitmap bitmap = BitmapFactory.decodeByteArray(r.getResourceImage(), 0, r.getResourceImage().length);
+							
+							BitmapDrawable bitmapDrawable = new BitmapDrawable(getResources(), bitmap);
+							Drawable drawable = (Drawable) bitmapDrawable;
+							animationDrawable.addFrame(drawable, ANIMATION_DURATION);
 
+						}
 					}
+
+					// Pass our animation drawable to our custom drawable class
+					CustomAnimationDrawable cad = new CustomAnimationDrawable(animationDrawable) {
+						@Override
+						void onAnimationFinish() {
+							ivTranslationResultPlayButton.setVisibility(View.VISIBLE);
+						}
+					};
+
+					// Set the views drawable to our custom drawable
+					ivTranslationResultAnimation.setImageResource(android.R.color.transparent);
+					if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+						setBakgroundJELLYBean(cad);
+					} else {
+						ivTranslationResultAnimation.setBackgroundDrawable(cad);
+					}
+
+					// Start the animation
+					cad.start();
+
+				} catch (NotFoundException e) {
+					// TODO: Candidate code to send for reporting
+					Log.i(TAG, e.getMessage());
+					e.printStackTrace();
 				}
 
-				// Pass our animation drawable to our custom drawable class
-				CustomAnimationDrawable cad = new CustomAnimationDrawable(animationDrawable) {
-					@Override
-					void onAnimationFinish() {
-						ivTranslationResultPlayButton.setVisibility(View.VISIBLE);
-					}
-				};
-
-				// Set the views drawable to our custom drawable
-				ivTranslationResultAnimation.setImageResource(android.R.color.transparent);
-				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-					setBakgroundJELLYBean(cad);
-				} else {
-					ivTranslationResultAnimation.setBackgroundDrawable(cad);
-				}
-
-				// Start the animation
-				cad.start();
-
-			} catch (NotFoundException e) {
-				// TODO: Candidate code to send for reporting
-				Log.i(TAG, e.getMessage());
-				e.printStackTrace();
 			}
-
+			
 		}
 
 	}
