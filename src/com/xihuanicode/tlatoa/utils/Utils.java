@@ -37,13 +37,15 @@ import android.util.Base64;
 import android.util.Log;
 import android.view.ViewGroup;
 
+import com.google.analytics.tracking.android.MapBuilder;
+import com.google.analytics.tracking.android.StandardExceptionParser;
+import com.google.analytics.tracking.android.Tracker;
 import com.google.gson.Gson;
+import com.xihuanicode.tlatoa.Tlatoa;
 import com.xihuanicode.tlatoa.entity.Role;
 import com.xihuanicode.tlatoa.entity.User;
 
 public class Utils {
-	
-	private static final String TAG = "com.xihuanicode.tlatoa.utils.Utils";
 	
 	/**
 	 * Take screenshot of the activity including the action bar
@@ -65,6 +67,9 @@ public class Utils {
 
 	/**
 	 * Print hash key
+	 * 
+	 * @param context The current {@link android.content.Context}
+	 * @return void
 	 */
 	public static void printHashKey(Context context)
 	{
@@ -92,8 +97,9 @@ public class Utils {
 
 	/**
 	 * Update language
-	 * 
+	 * @param context The current {@link android.content.Context}
 	 * @param code The language code. Like: en, cz, iw, ...
+	 * @return void
 	 */
 	public static void updateLanguage(Context context, String code)
 	{
@@ -110,6 +116,7 @@ public class Utils {
 	 * 
 	 * @param is The InputStream from which wi'll get data
 	 * @param os The OutputStream where we'll copy the data
+	 * @return void
 	 */
     public static void CopyStream(InputStream is, OutputStream os)
     {
@@ -125,24 +132,26 @@ public class Utils {
               os.write(bytes, 0, count);
             }
         }
-        catch(Exception ex){
-        	// TODO: Candidate code to send for reporting
+        catch(Exception e){
+        	exceptionToGa(null, e, false);
         }
     }
     
     
 
 	/**
+	 * 
 	 * Check if voice recognition is present
 	 * 
-	 * @param context The current context
+	 * @param context The current {@link android.content.Context}
+	 * @return True if the speech recognition is enabled. Otherwise, false.
 	 */
 	public static Boolean isSpeechRecognitionEnabled(Context context) {
 
 		PackageManager pm = context.getPackageManager();
-		List<ResolveInfo> activities = pm.queryIntentActivities(new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH), 0);
+		List<ResolveInfo> intent = pm.queryIntentActivities(new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH), 0);
 
-		return activities.size() > 0;
+		return intent.size() > 0;
 	}
 	
 	/**
@@ -163,10 +172,10 @@ public class Utils {
 	/**
 	 * Converts the inputstream to a string value
 	 * 
-	 * @param is The InputStream to be converted.
+	 * @param is The {@link java.io.InputStream} to be converted.
+	 * @return The String contained in the {@link java.io.InputStream} object 
 	 */	
     public static String inputStreamToString(InputStream is) {
-    	 
         String line = "";
         StringBuilder total = new StringBuilder();
 
@@ -179,11 +188,22 @@ public class Utils {
                 total.append(line);
             }
         } catch (IOException e) {
-        	// TODO: Candidate code to send for reporting
+        	exceptionToGa(null, e, false);
         }
 
         // Return full string
         return total.toString();
+    }
+
+	/**
+	 * Returns a String resource identified by the id parameter
+	 * 
+	 * @param c The current {@link android.content.Context}
+	 * @param id The resource id
+	 * @return The String resource 
+	 */	
+    public static String getStringResource(Context c, int id){
+    	return c.getResources().getString(id);
     }
     
     
@@ -212,8 +232,7 @@ public class Utils {
                 break;
             }
         } catch (Exception e) {
-        	// TODO: Candidate code to send for reporting
-            Log.e(TAG, e.getLocalizedMessage(), e);
+        	exceptionToGa(null, e, false);
         }
 
         return response;
@@ -234,6 +253,50 @@ public class Utils {
         return htpp;
     }
     
+	public static HttpResponse registerUser(String url, User user) {
+
+		HttpClient httpclient = new DefaultHttpClient(getHttpParams());
+		HttpResponse response = null;
+
+		try {
+
+			Role[] roles = new Role[] { new Role("49", "TestRole") };
+			user.setRoles(roles);
+			String jsonEn = new Gson().toJson(user);
+
+			HttpPost httppost = new HttpPost(url);
+			httppost.setHeader("Content-Type", "application/json");
+			httppost.setEntity(new ByteArrayEntity(jsonEn.toString().getBytes(
+					"UTF8")));
+
+			response = httpclient.execute(httppost);
+
+		} catch (Exception e) {
+			exceptionToGa(null, e, false);
+		}
+
+		return response;
+
+	}
     
+
+	/**
+	 * Sends the exception to Google Analytics
+	 * 
+	 * @param c The current {@link android.content.Context}
+	 * @param e The thrown exception object to be sent to GA. 
+	 * @param isFatal Indicates if the e object is a fatal exception.
+	 */	
+    public static void exceptionToGa(Context c, Exception e, boolean isFatal){
+    	
+  	  Tracker tracker = Tlatoa.getGaTracker();
+  	  tracker.send(MapBuilder
+  	      .createException(new StandardExceptionParser(c, null) 	// Context and optional collection of package names to be used in reporting the exception.
+  	      .getDescription(Thread.currentThread().getName(),    		// The name of the thread on which the exception occurred.
+  	                                       e),                 		// The exception.
+  	                                       	isFatal)             	// False indicates a fatal exception
+  	      .build()
+  	  );
+    }
 
 }

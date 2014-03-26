@@ -29,6 +29,7 @@ import android.widget.TextView;
 import android.widget.PopupWindow.OnDismissListener;
 import android.widget.Toast;
 
+import com.google.analytics.tracking.android.EasyTracker;
 import com.navdrawer.SimpleSideDrawer;
 import com.xihuanicode.tlatoa.utils.Utils;
 
@@ -42,6 +43,8 @@ public class MainActivity extends FragmentActivity implements
 		ISimpleDialogCancelListener {
 
 	private static final int VOICE_RECOGNITION_REQUEST_CODE = 1001;
+	private static final int NOTIFICATION_MESSAGE_REQUEST_CODE = 42;
+	private static final int CONFIRMATION_MESSAGE_REQUEST_CODE = 43;
 
 	private Typeface typeface;
 	private SimpleSideDrawer mNav;
@@ -133,9 +136,7 @@ public class MainActivity extends FragmentActivity implements
 			ListView.OnItemClickListener {
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-			Toast.makeText(getApplicationContext(),
-					"Selected option is: " + menuOptionsTitles[position],
-					Toast.LENGTH_SHORT).show();
+			Toast.makeText(getApplicationContext(), "Selected option is: " + menuOptionsTitles[position], Toast.LENGTH_SHORT).show();
 		}
 	}
 
@@ -145,7 +146,7 @@ public class MainActivity extends FragmentActivity implements
 				.setTitle(R.string.tlatoa_main_speech_not_supported_title)
 				.setMessage(R.string.tlatoa_main_speech_not_supported_message)
 				.setPositiveButtonText(R.string.tlatoa_main_speech_not_supported_ok_option)
-				.setRequestCode(43)
+				.setRequestCode(NOTIFICATION_MESSAGE_REQUEST_CODE)
 				.setCancelable(false)
 				.setTag("custom-tag")
 				.show();
@@ -158,7 +159,7 @@ public class MainActivity extends FragmentActivity implements
 				.setMessage(R.string.tlatoa_main_exit_confirmation_exit_message)
 				.setPositiveButtonText(R.string.tlatoa_main_exit_confirmation_ok_option)
 				.setNegativeButtonText(R.string.tlatoa_main_exit_confirmation_cancel_option)
-				.setRequestCode(42)
+				.setRequestCode(CONFIRMATION_MESSAGE_REQUEST_CODE)
 				.setTag("custom-tag")
 				.show();
 	}
@@ -252,18 +253,17 @@ public class MainActivity extends FragmentActivity implements
 		
 		switch (item.getItemId()) {
 			case R.id.action_profile:
-	
 				// TODO: This code opens the right side menu
-				// mNav.toggleRightDrawer();
-	
+				// mNav.toggleRightDrawer();	
 				intent = new Intent(MainActivity.this, ProfileActivity.class);
-				intent.putExtra("calledFrom", "MainActivity");
+				finish();
 				startActivity(intent);
-	
+				
 				return true;
 	
 			case R.id.action_about:
 				intent = new Intent(MainActivity.this, AboutActivity.class);
+				finish();
 				startActivity(intent);
 				return true;
 			case android.R.id.home:
@@ -289,7 +289,7 @@ public class MainActivity extends FragmentActivity implements
 	// ISimpleDialogListener
 	@Override
 	public void onPositiveButtonClicked(int requestCode) {
-		if (requestCode == 42) {
+		if (requestCode == CONFIRMATION_MESSAGE_REQUEST_CODE) {
 			finish();
 		}
 	}
@@ -297,7 +297,7 @@ public class MainActivity extends FragmentActivity implements
 	// ISimpleDialogListener
 	@Override
 	public void onNegativeButtonClicked(int requestCode) {
-		if (requestCode == 42) {
+		if (requestCode == NOTIFICATION_MESSAGE_REQUEST_CODE) {
 		}
 	}
 
@@ -348,6 +348,7 @@ public class MainActivity extends FragmentActivity implements
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(MainActivity.this, ProfileActivity.class));
+                finish();
                 popupWindow.dismiss();
             }
         });
@@ -357,11 +358,24 @@ public class MainActivity extends FragmentActivity implements
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(MainActivity.this, AboutActivity.class));
+                finish();
                 popupWindow.dismiss();
             }
         });
         
         popupWindow.update(moreContentView.getMeasuredWidth(), moreContentView.getMeasuredHeight());
+	}
+	
+	@Override
+	public void onStart() {
+		super.onStart();
+		EasyTracker.getInstance(this).activityStart(this);
+	}
+
+	@Override
+	public void onStop() {
+		super.onStop();
+		EasyTracker.getInstance(this).activityStop(this);
 	}
 
 }

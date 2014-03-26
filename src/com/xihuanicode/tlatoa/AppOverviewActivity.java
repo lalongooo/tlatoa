@@ -15,11 +15,10 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.sromku.simple.fb.Permissions;
+import com.google.analytics.tracking.android.EasyTracker;
 import com.sromku.simple.fb.SimpleFacebook;
 import com.sromku.simple.fb.SimpleFacebook.OnLoginListener;
 import com.sromku.simple.fb.SimpleFacebook.OnProfileRequestListener;
-import com.sromku.simple.fb.SimpleFacebookConfiguration;
 import com.sromku.simple.fb.entities.Profile;
 import com.viewpagerindicator.CirclePageIndicator;
 import com.viewpagerindicator.PageIndicator;
@@ -57,32 +56,10 @@ public class AppOverviewActivity extends Activity implements
 	
 	SimpleFacebook mSimpleFacebook;
 
-	Permissions[] permissions = new Permissions[]
-    {
-			Permissions.BASIC_INFO,
-			Permissions.EMAIL,
-			Permissions.USER_BIRTHDAY,
-			Permissions.USER_PHOTOS,
-			Permissions.PUBLISH_ACTION,
-			Permissions.PUBLISH_STREAM,
-			Permissions.USER_LOCATION
-    };
-
-	SimpleFacebookConfiguration configuration = new SimpleFacebookConfiguration
-			.Builder()
-			.setAppId("143269149215368")
-			.setNamespace("com.xihuanicode.tlatoa.activity")
-			.setPermissions(permissions)
-			.build();
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		this.setContentView(R.layout.app_overview);
-
-		SimpleFacebook.setConfiguration(configuration);
-		mSimpleFacebook = SimpleFacebook.getInstance(this);
-
 		setUI();
 	}
 
@@ -106,16 +83,7 @@ public class AppOverviewActivity extends Activity implements
 		ComplexAdapter adapter = new ComplexAdapter(this);
 		viewPager.setAdapter(adapter);
 		pIndicator.setViewPager(viewPager);
-
-		// Config UI state
-		if (mSimpleFacebook.isLogin()) {
-			btnFacebookLogin.setVisibility(Button.INVISIBLE);
-			btnStart.setVisibility(Button.VISIBLE);
-		} else {
-			btnFacebookLogin.setVisibility(Button.VISIBLE);
-			btnStart.setVisibility(Button.INVISIBLE);
-		}
-
+		
 		// Add listeners
 		btnFacebookLogin.setOnClickListener(this);
 		btnStart.setOnClickListener(this);
@@ -323,6 +291,15 @@ public class AppOverviewActivity extends Activity implements
 	public void onResume() {
 		super.onResume();
 		mSimpleFacebook = SimpleFacebook.getInstance(this);
+		// Config UI state
+		if (mSimpleFacebook.isLogin()) {
+			btnFacebookLogin.setVisibility(Button.INVISIBLE);
+			btnStart.setVisibility(Button.VISIBLE);
+		} else {
+			btnFacebookLogin.setVisibility(Button.VISIBLE);
+			btnStart.setVisibility(Button.INVISIBLE);
+		}
+
 	}
 
 	@Override
@@ -341,6 +318,18 @@ public class AppOverviewActivity extends Activity implements
 			goToMainActivity();
 			break;
 		}
+	}
+	
+	@Override
+	public void onStart() {
+		super.onStart();
+		EasyTracker.getInstance(this).activityStart(this);
+	}
+
+	@Override
+	public void onStop() {
+		super.onStop();
+		EasyTracker.getInstance(this).activityStop(this);
 	}
 
 }

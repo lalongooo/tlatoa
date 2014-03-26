@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.analytics.tracking.android.EasyTracker;
 import com.sromku.simple.fb.SimpleFacebook;
 import com.sromku.simple.fb.SimpleFacebook.OnLogoutListener;
 import com.xihuanicode.tlatoa.enums.TlatoaStorageFileName;
@@ -120,14 +121,26 @@ implements View.OnClickListener, ISimpleDialogListener, ISimpleDialogCancelListe
 	@Override
 	public void onClick(View view) {
 		switch (view.getId()) {
-		case R.id.btnFacebookLogout:
-			showConfirmationMessage();			
-			break;
-		case R.id.actionbar_back:
-			actionBarBack.setSelected(true);
-			finish();
-			break;
+			case R.id.btnFacebookLogout:
+				showConfirmationMessage();			
+				break;
+			case R.id.actionbar_back:
+				actionBarBack.setSelected(true);
+				goBack();
+				break;
 		}
+	}
+	
+	@Override
+	public void onBackPressed() {
+		super.onBackPressed();
+		goBack();
+	}
+
+	private void goBack(){
+		Intent intent = new Intent().setClass(ProfileActivity.this, MainActivity.class);
+		startActivity(intent);
+		finish();
 	}
 	
 	private void showConfirmationMessage() {
@@ -195,4 +208,16 @@ implements View.OnClickListener, ISimpleDialogListener, ISimpleDialogCancelListe
 
 	};
 
+	@Override
+	public void onStart() {
+		super.onStart();
+		EasyTracker.getInstance(this).activityStart(this);
+	}
+
+	@Override
+	public void onStop() {
+		super.onStop();
+		EasyTracker.getInstance(this).activityStop(this);
+	}
+	
 }

@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.analytics.tracking.android.EasyTracker;
 import com.xihuanicode.tlatoa.customlistview.AboutDeveloperListAdapter;
 
 public class AboutActivity extends Activity  implements View.OnClickListener {
@@ -87,12 +88,35 @@ public class AboutActivity extends Activity  implements View.OnClickListener {
 	@Override
 	public void onClick(View view) {
 		switch (view.getId()) {
-		case R.id.actionbar_back:
-			actionBarBack.setSelected(true);
-			finish();			
-			break;
+			case R.id.actionbar_back:
+				actionBarBack.setSelected(true);
+				goBack();
+				break;
 		}
 	}
 	
+	@Override
+	public void onBackPressed() {
+		super.onBackPressed();
+		goBack();
+	}
+
+	private void goBack(){
+		Intent intent = new Intent().setClass(AboutActivity.this, MainActivity.class);
+		startActivity(intent);
+		finish();
+	}
+	
+	@Override
+	public void onStart() {
+		super.onStart();
+		EasyTracker.getInstance(this).activityStart(this);
+	}
+
+	@Override
+	public void onStop() {
+		super.onStop();
+		EasyTracker.getInstance(this).activityStop(this);
+	}
 
 }

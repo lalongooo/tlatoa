@@ -8,6 +8,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.widget.TextView;
 
 import com.google.analytics.tracking.android.EasyTracker;
@@ -16,7 +17,6 @@ import com.xihuanicode.tlatoa.utils.Utils;
 
 import eu.inmite.android.lib.dialogs.ISimpleDialogCancelListener;
 import eu.inmite.android.lib.dialogs.ISimpleDialogListener;
-import eu.inmite.android.lib.dialogs.SimpleDialogFragment;
 
 public class SplashActivity extends FragmentActivity implements
 		ISimpleDialogListener, ISimpleDialogCancelListener {
@@ -29,12 +29,15 @@ public class SplashActivity extends FragmentActivity implements
 	private TextView tvTlatoa;
 	private Typeface typeFace;
 	
+	// Database objects
 	private SentenceDataSource datasource;
-
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.splash);
+		
+		Log.i("EVENTS", "On create");
 		
 		// Create database
 		datasource = new SentenceDataSource(this);
@@ -54,14 +57,14 @@ public class SplashActivity extends FragmentActivity implements
 
 				if (isNetworkAvailable) {
 
-					Intent mainIntent = new Intent().setClass(SplashActivity.this, AppOverviewActivity.class);
-					startActivity(mainIntent);
-					overridePendingTransition(R.anim.open_next, R.anim.close_main);
-					finish();
-
 				} else {
-					showNetworkWarningMessage();
+//					showNetworkWarningMessage();
 				}
+				
+				Intent mainIntent = new Intent().setClass(SplashActivity.this, AppOverviewActivity.class);
+				startActivity(mainIntent);
+				overridePendingTransition(R.anim.open_next, R.anim.close_main);
+				finish();
 			}
 
 		};
@@ -71,43 +74,43 @@ public class SplashActivity extends FragmentActivity implements
 	}
 
 	@Override
-	protected void onStart() {
+	public void onStart() {
 		super.onStart();
-		if (isNetworkAvailable) {
-			EasyTracker.getInstance(this).activityStart(this);
-		}
+		Log.i("EVENTS", "On start");
+		EasyTracker.getInstance(this).activityStart(this);
 	}
 
 	@Override
-	protected void onStop() {
+	public void onStop() {
 		super.onStop();
-		if (isNetworkAvailable) {
-			EasyTracker.getInstance(this).activityStop(this);
-		}
+		Log.i("EVENTS", "On stop");
+		EasyTracker.getInstance(this).activityStop(this);
 	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
+		Log.i("EVENTS", "On resume");
 		datasource.open();
 	}
 	
 	@Override
 	protected void onPause() {
 		datasource.close();
+		Log.i("EVENTS", "On pause");
 		super.onPause();
 	}
 
-	private void showNetworkWarningMessage() {
-		SimpleDialogFragment
-				.createBuilder(this, getSupportFragmentManager())
-				.setTitle(R.string.tlatoa_network_warning_title)
-				.setMessage(R.string.tlatoa_network_warning_message)
-				.setPositiveButtonText(android.R.string.ok)
-				.setNegativeButtonText(android.R.string.no)
-				.setRequestCode(42).setTag("custom-tag")
-				.show();
-	}
+//	private void showNetworkWarningMessage() {
+//		SimpleDialogFragment
+//				.createBuilder(this, getSupportFragmentManager())
+//				.setTitle(R.string.tlatoa_network_warning_title)
+//				.setMessage(R.string.tlatoa_network_warning_message)
+//				.setPositiveButtonText(android.R.string.ok)
+//				.setNegativeButtonText(android.R.string.no)
+//				.setRequestCode(42).setTag("custom-tag")
+//				.show();
+//	}
 
 	// ISimpleDialogCancelListener
 	@Override
@@ -123,7 +126,7 @@ public class SplashActivity extends FragmentActivity implements
 	@Override
 	public void onPositiveButtonClicked(int requestCode) {
 		if (requestCode == 42) {
-			startActivity(new Intent(Settings.ACTION_WIRELESS_SETTINGS));
+			startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
 		}
 	}
 

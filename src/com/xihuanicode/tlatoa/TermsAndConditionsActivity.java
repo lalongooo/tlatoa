@@ -8,6 +8,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.analytics.tracking.android.EasyTracker;
+
 public class TermsAndConditionsActivity extends Activity implements View.OnClickListener,
 		DialogInterface.OnClickListener {
 
@@ -52,4 +54,17 @@ public class TermsAndConditionsActivity extends Activity implements View.OnClick
 			break;
 		}
 	}
+
+	@Override
+	public void onStart() {
+		super.onStart();
+		EasyTracker.getInstance(this).activityStart(this);
+	}
+
+	@Override
+	public void onStop() {
+		super.onStop();
+		EasyTracker.getInstance(this).activityStop(this);
+	}
+	
 }

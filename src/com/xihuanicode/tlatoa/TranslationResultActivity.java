@@ -13,7 +13,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -26,6 +25,7 @@ import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -35,6 +35,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.analytics.tracking.android.EasyTracker;
 import com.xihuanicode.tlatoa.customlistview.TranslationPlayListAdapter;
 import com.xihuanicode.tlatoa.db.Phrase;
 import com.xihuanicode.tlatoa.db.SentenceDataSource;
@@ -43,12 +44,19 @@ import com.xihuanicode.tlatoa.entity.SentenceResource;
 import com.xihuanicode.tlatoa.utils.BitmapDownloader;
 import com.xihuanicode.tlatoa.utils.Utils;
 
-public class TranslationResultActivity extends Activity implements
-		View.OnClickListener {
+import eu.inmite.android.lib.dialogs.ISimpleDialogCancelListener;
+import eu.inmite.android.lib.dialogs.ISimpleDialogListener;
+import eu.inmite.android.lib.dialogs.SimpleDialogFragment;
+
+public class TranslationResultActivity extends FragmentActivity implements
+		View.OnClickListener,
+		ISimpleDialogListener,
+		ISimpleDialogCancelListener{
 
 	private static final String TAG = "ResultActivity";
 
 	private static final int ANIMATION_DURATION = 500;
+	private static final int INFORMATION_MESSAGE_REQUEST_CODE = 42;
 
 	private static final String TLATOA_SENTENCE_WS_URL = "http://tlatoa.herokuapp.com/manager/api/sentence?phrase=";
 
@@ -287,7 +295,7 @@ public class TranslationResultActivity extends Activity implements
 	@SuppressWarnings("deprecation")
 	private void playTranslation(Sentence s) {
 		
-		if(s != null){
+		if(s != null && s.getSentenceResource() != null){
 		
 			int resourceCount = s.getSentenceResource().size();
 			List<SentenceResource> sr = s.getSentenceResource();
@@ -342,8 +350,23 @@ public class TranslationResultActivity extends Activity implements
 
 			}
 			
+		} else{
+			
+			showNotificationMessage();
 		}
 
+	}
+	
+	private void showNotificationMessage() {
+		SimpleDialogFragment
+				.createBuilder(this, getSupportFragmentManager())
+				.setTitle(R.string.tlatoa_translation_result_msg_no_result_title)
+				.setMessage(R.string.tlatoa_translation_result_msg_no_result_message)
+				.setPositiveButtonText(R.string.tlatoa_translation_result_msg_no_result_positive_button)
+				.setRequestCode(INFORMATION_MESSAGE_REQUEST_CODE)
+				.setCancelable(false)
+				.setTag("custom-tag")
+				.show();
 	}
 
 	@Override
@@ -361,4 +384,38 @@ public class TranslationResultActivity extends Activity implements
 		ivTranslationResultAnimation.setBackground(cad);
 	}
 
+	// ISimpleDialogCancelListener
+	@Override
+	public void onCancelled(int requestCode) {
+		if (requestCode == INFORMATION_MESSAGE_REQUEST_CODE) {
+		}
+	}
+
+	// ISimpleDialogListener
+	@Override
+	public void onPositiveButtonClicked(int requestCode) {
+		if (requestCode == INFORMATION_MESSAGE_REQUEST_CODE) {
+			finish();
+		}
+	}
+
+	// ISimpleDialogListener
+	@Override
+	public void onNegativeButtonClicked(int requestCode) {
+		if (requestCode == INFORMATION_MESSAGE_REQUEST_CODE) {
+		}
+	}
+	
+	@Override
+	public void onStart() {
+		super.onStart();
+		EasyTracker.getInstance(this).activityStart(this);
+	}
+
+	@Override
+	public void onStop() {
+		super.onStop();
+		EasyTracker.getInstance(this).activityStop(this);
+	}
+	
 }

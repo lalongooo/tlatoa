@@ -9,14 +9,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.ByteArrayEntity;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.params.BasicHttpParams;
-import org.apache.http.params.HttpConnectionParams;
-import org.apache.http.params.HttpParams;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -32,18 +24,25 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
+import com.google.analytics.tracking.android.EasyTracker;
 import com.makeramen.RoundedImageView;
-import com.xihuanicode.tlatoa.entity.Role;
+import com.sromku.simple.fb.SimpleFacebook;
+import com.sromku.simple.fb.SimpleFacebook.OnPublishListener;
+import com.sromku.simple.fb.entities.Feed;
 import com.xihuanicode.tlatoa.entity.User;
 import com.xihuanicode.tlatoa.enums.NetworkAccessResultCode;
 import com.xihuanicode.tlatoa.enums.TlatoaStorageFileName;
 import com.xihuanicode.tlatoa.utils.Utils;
 
-@SuppressWarnings("unused")
 public class RegistrationActivity extends Activity implements OnClickListener {
 
 	private static final String SERVICE_URL = "http://tlatoa.herokuapp.com/kerberos/api/user";
+	
+	private static final String PROGRESS_DIALOG_TITLE = "Processing...";
+	private static final String PROGRESS_DIALOG_MESSAGE = "We're processing your request";
+
+	// Facebook objects
+	private SimpleFacebook mSimpleFacebook;
 	
 	// Facebook user properties
 	private String fbUserId;
@@ -53,9 +52,12 @@ public class RegistrationActivity extends Activity implements OnClickListener {
 	private String fbMiddleName;
 	private String fbLastName;
 	private String fbGender;
-	private String fbBirthday;
 	private String fbEmail;
+	@SuppressWarnings("unused")
+	private String fbBirthday;
+	@SuppressWarnings("unused")
 	private String fbLink;
+	@SuppressWarnings("unused")
 	private String fbBio;
 	private String fbLocationId;
 	private String fbLocale;
@@ -67,12 +69,16 @@ public class RegistrationActivity extends Activity implements OnClickListener {
 	private TextView tvEmail;
 	private Button btnConfirmRegistration;
 	private RoundedImageView ivProfilePhoto;
+	private ProgressDialog pDlg;
+	
+	private Context c;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
 		this.setContentView(R.layout.registration);
+		c = this;
 
 		getIntentData();
 		setUI();
@@ -199,44 +205,16 @@ public class RegistrationActivity extends Activity implements OnClickListener {
     private class WebServiceTask extends AsyncTask<String, Integer, String> {
     	 
         public static final int POST_TASK = 1;
-        public static final int GET_TASK = 2;
          
         private static final String TAG = "WebServiceTask";
-        private static final int CONN_TIMEOUT = 5000;
-        
-        private static final int SOCKET_TIMEOUT = 5000;
-         
-        private int taskType = GET_TASK;
-        private Context mContext = null;
-        private String processMessage = "Processing...";
- 
-        private ProgressDialog pDlg;
  
         public WebServiceTask(int taskType, Context mContext, String processMessage) {
- 
-            this.taskType = taskType;
-            this.mContext = mContext;
-            this.processMessage = processMessage;
-        }
- 
-        @SuppressWarnings("deprecation")
-		private void showProgressDialog() {
-             
-            pDlg = new ProgressDialog(mContext);
-            pDlg.setMessage(processMessage);
-            pDlg.setProgressDrawable(mContext.getWallpaper());
-            pDlg.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-            pDlg.setCancelable(false);
-            pDlg.show();
- 
+        	
         }
  
         @Override
         protected void onPreExecute() {
- 
-//            hideKeyboard();
-            showProgressDialog();
- 
+        	showDialog();
         }
  
         protected String doInBackground(String... urls) {
@@ -244,7 +222,9 @@ public class RegistrationActivity extends Activity implements OnClickListener {
             String url = urls[0];
             String result = "";
  
-            HttpResponse response = Utils.doResponse(url, taskType);
+
+            User user = new User(fbName, fbFirstName, fbLastName, fbMiddleName, fbUserId, fbGender, fbLocationId, fbLocale, fbEmail, fbProfilePictureUrl);
+            HttpResponse response = Utils.registerUser(url, user);
  
             if (response == null) {
                 return result;
@@ -270,21 +250,97 @@ public class RegistrationActivity extends Activity implements OnClickListener {
  
         @Override
         protected void onPostExecute(String response) {
-             
+            
+        	hideDialog();
+        	publishTlatoaFeed();
             handleResponse(response);
-            pDlg.dismiss();
-             
+            
+            
         }
-         
-        // Establish connection and socket (data retrieval) timeouts
-        private HttpParams getHttpParams() {
-             
-            HttpParams htpp = new BasicHttpParams();
-             
-            HttpConnectionParams.setConnectionTimeout(htpp, CONN_TIMEOUT);
-            HttpConnectionParams.setSoTimeout(htpp, SOCKET_TIMEOUT);
-             
-            return htpp;
-        }          
     }
+
+    
+    private void publishTlatoaFeed(){
+    	
+		// feed builder
+		final Feed feed = new Feed.Builder()
+			.setMessage(Utils.getStringResource(getApplicationContext(), R.string.tlatoa_registration_publish_feed_message))
+			.setName(Utils.getStringResource(getApplicationContext(), R.string.tlatoa_registration_publish_feed_name))
+			.setCaption(Utils.getStringResource(getApplicationContext(), R.string.tlatoa_registration_publish_feed_caption))
+			.setDescription(Utils.getStringResource(getApplicationContext(), R.string.tlatoa_registration_publish_feed_description))
+			.setPicture(Utils.getStringResource(getApplicationContext(), R.string.tlatoa_registration_publish_feed_picture_url))
+			.setLink(Utils.getStringResource(getApplicationContext(), R.string.tlatoa_registration_publish_feed_link))
+			.build();
+		mSimpleFacebook.publish(feed, onPublishListener);
+    }
+    
+	/*
+	 * 
+	 * Listener for publishing action
+	 * 
+	 * */
+	final OnPublishListener onPublishListener = new SimpleFacebook.OnPublishListener()
+	{
+
+		@Override
+		public void onFail(String reason)
+		{
+			hideDialog();
+		}
+
+		@Override
+		public void onException(Throwable throwable)
+		{
+			Utils.exceptionToGa(c, (Exception) throwable, false);
+		}
+
+		@Override
+		public void onThinking()
+		{
+//			showDialog();
+		}
+
+		@Override
+		public void onComplete(String postId)
+		{
+			hideDialog();
+		}
+	};
+	
+	private void showDialog()
+	{
+		pDlg = ProgressDialog.show(this, PROGRESS_DIALOG_TITLE , PROGRESS_DIALOG_MESSAGE, true);
+	}
+
+	private void hideDialog()
+	{
+		pDlg.dismiss();
+	}
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data)
+	{
+		mSimpleFacebook.onActivityResult(this, requestCode, resultCode, data);
+		super.onActivityResult(requestCode, resultCode, data);
+	}
+	
+	@Override
+	protected void onResume()
+	{
+		super.onResume();
+		mSimpleFacebook = SimpleFacebook.getInstance(this);
+	}
+	
+	@Override
+	public void onStart() {
+		super.onStart();
+		EasyTracker.getInstance(this).activityStart(this);
+	}
+
+	@Override
+	public void onStop() {
+		super.onStop();
+		EasyTracker.getInstance(this).activityStop(this);
+	}
+	
 }

@@ -33,6 +33,24 @@ public class User {
 		this.profilePictureUrl = profilePictureUrl;
 		this.roles = roles;
 	}
+
+	public User(String name, String firstName, String lastName,
+			String middleName, String socialMediaId, String gender,
+			String locationId, String locationName, String email,
+			String profilePictureUrl) {
+		super();
+		this.name = name;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.middleName = middleName;
+		this.socialMediaId = socialMediaId;
+		this.gender = gender;
+		this.locationId = locationId;
+		this.locationName = locationName;
+		this.email = email;
+		this.profilePictureUrl = profilePictureUrl;
+	}
+	
 	public String getName() {
 		return name;
 	}
