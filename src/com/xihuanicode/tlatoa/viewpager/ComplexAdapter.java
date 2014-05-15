@@ -9,10 +9,14 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.xihuanicode.tlatoa.utils.Utils;
+
 import com.xihuanicode.tlatoa.R;
 
 public class ComplexAdapter extends PagerAdapter {
-	Context context;
+	
+	private Context context;
+	
 	private int[] imagesArray = new int[]
 	        {
 				R.drawable.test_app_overview_image1,
@@ -46,13 +50,13 @@ public class ComplexAdapter extends PagerAdapter {
 		TextView tv = (TextView) vi.findViewById(R.id.tvViewPagerTextView);
 		switch (position) {
 		case 0:
-			tv.setText("Identify the Tlatoa icon in your smartphone apps list and launch!");
+			tv.setText(Utils.getStringResource(context, R.string.tlatoa_appoverview_1st_viewpager_item_text));
 			break;
 		case 1:
-			tv.setText("Press the microphone icon and start talking...");
+			tv.setText(Utils.getStringResource(context, R.string.tlatoa_appoverview_2nd_viewpager_item_text));
 			break;
 		case 2:
-			tv.setText("Receive the translation immediately into signal language");
+			tv.setText(Utils.getStringResource(context, R.string.tlatoa_appoverview_3rd_viewpager_item_text));
 			break;
 		}
 		

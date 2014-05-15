@@ -10,8 +10,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="40dp"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="40dp"
         android:contentDescription="@string/tlatoa_content_descr_for_imageviews"
         android:src="@drawable/test_app_overview_image1" />
 
@@ -21,8 +21,14 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/ivViewPagerImageView"
         android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
         android:layout_marginTop="25dp"
         android:paddingLeft="50dp"
-        android:paddingRight="50dp" />
+        android:paddingRight="50dp"
+        android:text="@string/tlatoa_actionbar_title"
+        android:textColor="@color/gray"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:gravity="center" />
 
 </RelativeLayout>
