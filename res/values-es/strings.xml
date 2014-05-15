@@ -53,7 +53,7 @@
     <string name="tlatoa_translation_result_msg_no_result_message">Ups! No encontramos esa frase</string>
     <string name="tlatoa_translation_result_msg_no_result_positive_button">OK</string>
 
-    <string name="tlatoa_registration_button_confirm_registration">Confirmar registro</string>
+    <string name="tlatoa_registration_button_confirm_registration">CONTINUAR</string>
     <string name="tlatoa_registration_username_default">"@unknown"</string>
     <string name="tlatoa_registration_email_default">email@mail.com</string>
     <string name="tlatoa_registration_data_title">USERNAME</string>

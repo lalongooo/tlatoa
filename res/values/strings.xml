@@ -41,7 +41,7 @@
     <string name="tlatoa_translation_result_msg_no_result_message">Oops! We did not find that phrase</string>
     <string name="tlatoa_translation_result_msg_no_result_positive_button">OK</string>
 
-    <string name="tlatoa_registration_button_confirm_registration">Confirm registration</string>
+    <string name="tlatoa_registration_button_confirm_registration">Continue</string>
     <string name="tlatoa_registration_username_default">"@unknown"</string>
     <string name="tlatoa_registration_email_default">email@mail.com</string>
     <string name="tlatoa_registration_data_title">USERNAME</string>
@@ -90,6 +90,5 @@
     <string name="tlatoa_default_phrase_title">[default phrase]</string>
     <string name="tlatoa_default_phrase_id">123</string>
     <string name="tlatoa_default_phrase_created_at">1 min ago</string>
-    <string name="tlatoa_share_button_title">Share</string>
 
 </resources>

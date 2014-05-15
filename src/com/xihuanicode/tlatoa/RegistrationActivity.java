@@ -16,6 +16,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -41,6 +42,8 @@ public class RegistrationActivity extends Activity implements OnClickListener {
 	private static final String PROGRESS_DIALOG_TITLE = "Processing...";
 	private static final String PROGRESS_DIALOG_MESSAGE = "We're processing your request";
 
+	private Typeface typeface;
+	
 	// Facebook objects
 	private SimpleFacebook mSimpleFacebook;
 	
@@ -111,6 +114,10 @@ public class RegistrationActivity extends Activity implements OnClickListener {
 
 		tvFirstName.setText(fbUsername);
 		tvEmail.setText(fbEmail);
+		
+		// Set typeface
+		typeface = Typeface.createFromAsset(getAssets(), "DANUBE.TTF");
+		btnConfirmRegistration.setTypeface(typeface);
 
 		// Add listeners
 		btnConfirmRegistration.setOnClickListener(this);
@@ -135,7 +142,10 @@ public class RegistrationActivity extends Activity implements OnClickListener {
 				try {
 					
 					// Get profile photo from Facebook
-					profilePhotoBitmap = BitmapFactory.decodeStream((InputStream) new URL(urls[0]).getContent());
+//					profilePhotoBitmap = BitmapFactory.decodeStream((InputStream) new URL(urls[0]).getContent());
+					
+					URL imageURL = new URL(urls[0]);
+					profilePhotoBitmap = BitmapFactory.decodeStream(imageURL.openConnection().getInputStream());
 					
 					try{
 						
