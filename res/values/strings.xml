@@ -7,7 +7,7 @@
     <string name="default_song_title">[default song title]</string>
     <string name="facebook_button_login">Log in with facebook</string>
     <string name="facebook_button_logout">Facebook logout</string>
-    <string name="tlatoa_about_main_text">Beta version for Apporta. \n November 2013</string>
+    <string name="tlatoa_about_main_text">Developed by @xihuani. \n June 2014</string>
     <string name="tlatoa_actionbar_back_to_main">Back To Main</string>
     <string name="tlatoa_actionbar_title">TLATOA</string>
     <string name="tlatoa_actionbar_more">More</string>
@@ -15,7 +15,7 @@
     <string name="tlatoa_app_name">Tlatoa</string>
     <string name="tlatoa_app_overview_start">START</string>
     <string name="tlatoa_app_version">Tlatoa</string>
-    <string name="tlatoa_app_version_label">Version 1.0</string>
+    <string name="tlatoa_app_version_label">Version 1.0.0</string>
     <string name="tlatoa_content_descr_for_imageviews"></string>
     <string name="tlatoa_facebook_login_button">facebook login</string>
     <string name="tlatoa_facebook_logout_button">facebook logout</string>
@@ -23,7 +23,7 @@
     <string name="tlatoa_main_exit_confirmation_cancel_option">Cancel</string>
     <string name="tlatoa_main_exit_confirmation_exit_message">Do you really want to quit?</string>
     <string name="tlatoa_main_exit_confirmation_ok_option">OK</string>
-    <string name="tlatoa_main_exit_confirmation_title">Cancel</string>
+    <string name="tlatoa_main_exit_confirmation_title">Exit</string>
     <string name="tlatoa_main_speech_not_supported_message">Your device doesn not support speech recognition</string>
     <string name="tlatoa_main_speech_not_supported_ok_option">OK</string>
     <string name="tlatoa_main_speech_not_supported_title">Ooops!</string>
@@ -41,7 +41,7 @@
     <string name="tlatoa_translation_result_msg_no_result_message">Oops! We did not find that phrase</string>
     <string name="tlatoa_translation_result_msg_no_result_positive_button">OK</string>
 
-    <string name="tlatoa_registration_button_confirm_registration">Continue</string>
+    <string name="tlatoa_registration_button_confirm_registration">CONTINUE</string>
     <string name="tlatoa_registration_username_default">"@unknown"</string>
     <string name="tlatoa_registration_email_default">email@mail.com</string>
     <string name="tlatoa_registration_data_title">USERNAME</string>

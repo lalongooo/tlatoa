@@ -11,6 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
+        android:layout_marginLeft="20dp"
         android:contentDescription="@string/tlatoa_content_descr_for_imageviews"
         android:src="@drawable/tlatoa_about_twitter_icon" >
     </ImageView>
@@ -33,6 +34,6 @@
         android:layout_alignTop="@+id/tvAboutDeveloperTwitterUsername"
         android:layout_marginRight="20dp"
         android:contentDescription="@string/tlatoa_content_descr_for_imageviews"
-        android:src="@drawable/tlatoa_about_list_row_indicator" />
+        android:src="@drawable/arrow_icon_1_base_36" />
 
 </RelativeLayout>

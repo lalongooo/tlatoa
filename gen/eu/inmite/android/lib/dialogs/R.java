@@ -78,8 +78,8 @@ public final class R {
 		public static final int grid_90 = 0x7f08004c;
 	}
 	public static final class drawable {
-		public static final int sdl_background_dark = 0x7f020086;
-		public static final int sdl_background_light = 0x7f020087;
+		public static final int sdl_background_dark = 0x7f020087;
+		public static final int sdl_background_light = 0x7f020088;
 	}
 	public static final class id {
 		public static final int dialog_button_panel = 0x7f05006c;

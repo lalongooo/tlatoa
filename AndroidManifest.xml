@@ -50,7 +50,8 @@
             android:label="@string/tlatoa_app_name" />
         <activity
             android:name=".RegistrationActivity"
-            android:label="@string/tlatoa_app_name" />
+            android:label="@string/tlatoa_app_name"
+            android:theme="@style/TlatoaMainTheme" />
         <activity
             android:name=".AboutActivity"
             android:label="@string/tlatoa_app_name"

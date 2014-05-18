@@ -32,7 +32,7 @@
     <string name="tlatoa_main_exit_confirmation_cancel_option">Cancelar</string>
     <string name="tlatoa_main_exit_confirmation_exit_message">Se cerrará la aplicación</string>
     <string name="tlatoa_main_exit_confirmation_ok_option">OK</string>
-    <string name="tlatoa_main_exit_confirmation_title">Cancelar</string>
+    <string name="tlatoa_main_exit_confirmation_title">Cerrar</string>
     <string name="tlatoa_main_speech_not_supported_message">Su dispositivo no soporta reconocimiento de voz</string>
     <string name="tlatoa_main_speech_not_supported_ok_option">OK</string>
     <string name="tlatoa_main_speech_not_supported_title">Ups!</string>

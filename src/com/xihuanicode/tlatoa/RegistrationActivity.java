@@ -4,13 +4,11 @@ import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 
 import org.apache.http.HttpResponse;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -19,6 +17,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -35,7 +34,7 @@ import com.xihuanicode.tlatoa.enums.NetworkAccessResultCode;
 import com.xihuanicode.tlatoa.enums.TlatoaStorageFileName;
 import com.xihuanicode.tlatoa.utils.Utils;
 
-public class RegistrationActivity extends Activity implements OnClickListener {
+public class RegistrationActivity extends FragmentActivity  implements OnClickListener {
 
 	private static final String SERVICE_URL = "http://tlatoa.herokuapp.com/kerberos/api/user";
 	
@@ -43,6 +42,9 @@ public class RegistrationActivity extends Activity implements OnClickListener {
 	private static final String PROGRESS_DIALOG_MESSAGE = "We're processing your request";
 
 	private Typeface typeface;
+	
+	// Action bar items
+	private TextView actionBarTitle;
 	
 	// Facebook objects
 	private SimpleFacebook mSimpleFacebook;
@@ -105,8 +107,12 @@ public class RegistrationActivity extends Activity implements OnClickListener {
 	} 
 
 	private void setUI() {
+		
+		// TODO: Configure theme
+		setTheme(R.style.CustomDarkTheme);
 
 		// Get views
+		actionBarTitle = (TextView) findViewById(R.id.actionbar_title);
 		tvFirstName = (TextView) findViewById(R.id.txRegistrationUsername);
 		tvEmail = (TextView) findViewById(R.id.txRegistrationEmail);
 		btnConfirmRegistration = (Button) findViewById(R.id.btnConfirmRegistration);
@@ -118,6 +124,7 @@ public class RegistrationActivity extends Activity implements OnClickListener {
 		// Set typeface
 		typeface = Typeface.createFromAsset(getAssets(), "DANUBE.TTF");
 		btnConfirmRegistration.setTypeface(typeface);
+		actionBarTitle.setTypeface(typeface);
 
 		// Add listeners
 		btnConfirmRegistration.setOnClickListener(this);
@@ -352,5 +359,5 @@ public class RegistrationActivity extends Activity implements OnClickListener {
 		super.onStop();
 		EasyTracker.getInstance(this).activityStop(this);
 	}
-	
+
 }

@@ -11,9 +11,32 @@
         android:layout_height="wrap_content"
         android:orientation="vertical" >
 
+        <FrameLayout
+            android:id="@+id/actionbar"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="@drawable/actionbar_bg_orange"
+            android:gravity="center" >
+
+            <TextView
+                android:id="@+id/actionbar_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:contentDescription="@string/tlatoa_app_name"
+                android:shadowColor="@android:color/black"
+                android:shadowDx="0"
+                android:shadowDy="-1"
+                android:shadowRadius="1"
+                android:text="@string/tlatoa_actionbar_title"
+                android:textColor="@color/tlatoa_actionbar_title_text_color"
+                android:textSize="24sp" />
+        </FrameLayout>
+
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content"
+            android:background="@color/tlatoa_main_color_gray" >
 
             <com.makeramen.RoundedImageView
                 android:id="@+id/ivProfilePhoto"
@@ -59,6 +82,7 @@
                 android:text="@string/tlatoa_registration_email_default"
                 android:textSize="20sp"
                 android:textStyle="bold" />
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
@@ -72,11 +96,12 @@
                 <Button
                     android:id="@+id/btnConfirmRegistration"
                     style="@style/tlatoa_button"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="24dp"
                     android:background="@drawable/tlatoa_button"
-                    android:text="@string/tlatoa_registration_button_confirm_registration" />
+                    android:paddingBottom="4dp"
+                    android:paddingLeft="4dp"
+                    android:paddingTop="4dp"
+                    android:text="@string/tlatoa_registration_button_confirm_registration"
+                    android:textSize="24sp" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
