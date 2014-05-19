@@ -50,4 +50,14 @@
         android:contentDescription="@string/tlatoa_splash_content_description"
         android:src="@drawable/tlatoa_microphone_icon" />
 
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ivMicrophone"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="26dp"
+        android:text="Go to results"
+        android:onClick="goToResults" />
+
 </RelativeLayout>

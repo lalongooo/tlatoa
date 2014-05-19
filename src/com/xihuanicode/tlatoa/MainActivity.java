@@ -377,5 +377,10 @@ public class MainActivity extends FragmentActivity implements
 		super.onStop();
 		EasyTracker.getInstance(this).activityStop(this);
 	}
+	
+	public void goToResults(View v) {
+		Intent intent = new Intent(this, TranslationResultActivity.class);
+		startActivity(intent); 
+	}
 
 }

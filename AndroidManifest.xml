@@ -47,7 +47,8 @@
             android:theme="@style/TlatoaMainTheme" />
         <activity
             android:name=".TranslationResultActivity"
-            android:label="@string/tlatoa_app_name" />
+            android:label="@string/tlatoa_app_name"
+            android:theme="@style/TlatoaMainTheme" />
         <activity
             android:name=".RegistrationActivity"
             android:label="@string/tlatoa_app_name"

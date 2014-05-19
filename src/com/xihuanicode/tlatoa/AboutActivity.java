@@ -65,7 +65,7 @@ public class AboutActivity extends Activity  implements View.OnClickListener {
 					startActivity(intent);
 
 					}catch (Exception e) {
-					startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://twitter.com/#!/" + twitter))); 
+					startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://twitter.com/#!/" + twitter.replace("@", "")))); 
 					}
 			}
 		});
