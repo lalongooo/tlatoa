@@ -12,7 +12,8 @@ public class User {
 	private String locationName;
 	private String email;
 	private String profilePictureUrl;
-	private Role [] roles;
+	
+	private Role [] roles = { new Role("169", "Tlatoa Android App User") };
 	
 	
 	

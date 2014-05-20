@@ -25,7 +25,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:contentDescription="@string/tlatoa_content_descr_for_imageviews"
-                android:src="@drawable/test_app_overview_image1" />
+                android:src="@drawable/splash_tlatoa_icon" />
         </LinearLayout>
 
         <TextView

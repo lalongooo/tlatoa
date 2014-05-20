@@ -24,19 +24,6 @@
             android:text="@string/tlatoa_actionbar_title"
             android:textColor="@color/tlatoa_actionbar_title_text_color"
             android:textSize="24sp" />
-
-        <ImageView
-            android:id="@+id/actionbar_more"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:background="@drawable/actionbar_button_bg"
-            android:contentDescription="@string/tlatoa_actionbar_more"
-            android:paddingBottom="8dp"
-            android:paddingLeft="12dp"
-            android:paddingRight="12dp"
-            android:paddingTop="8dp"
-            android:src="@drawable/actionbar_more" />
     </FrameLayout>
 
     <FrameLayout

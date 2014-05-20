@@ -8,7 +8,6 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v4.app.FragmentActivity;
-import android.util.Log;
 import android.widget.TextView;
 
 import com.google.analytics.tracking.android.EasyTracker;
@@ -23,7 +22,7 @@ public class SplashActivity extends FragmentActivity implements
 
 	// Class members
 	private boolean isNetworkAvailable;
-	private int splashDelay = 1200;
+	private int splashDelay = 120000;
 
 	// UI items
 	private TextView tvTlatoa;
@@ -36,8 +35,6 @@ public class SplashActivity extends FragmentActivity implements
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.splash);
-		
-		Log.i("EVENTS", "On create");
 		
 		// Create database
 		datasource = new SentenceDataSource(this);
@@ -76,28 +73,24 @@ public class SplashActivity extends FragmentActivity implements
 	@Override
 	public void onStart() {
 		super.onStart();
-		Log.i("EVENTS", "On start");
 		EasyTracker.getInstance(this).activityStart(this);
 	}
 
 	@Override
 	public void onStop() {
 		super.onStop();
-		Log.i("EVENTS", "On stop");
 		EasyTracker.getInstance(this).activityStop(this);
 	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
-		Log.i("EVENTS", "On resume");
 		datasource.open();
 	}
 	
 	@Override
 	protected void onPause() {
 		datasource.close();
-		Log.i("EVENTS", "On pause");
 		super.onPause();
 	}
 

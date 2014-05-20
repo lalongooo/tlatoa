@@ -19,6 +19,7 @@ import android.content.Intent;
 import android.content.res.Resources.NotFoundException;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Typeface;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -60,6 +61,10 @@ public class TranslationResultActivity extends FragmentActivity implements
 
 	private static final String TLATOA_SENTENCE_WS_URL = "http://tlatoa.herokuapp.com/manager/api/sentence?phrase=";
 
+	private Typeface typeface;
+	
+	// Action bar items
+	private TextView actionBarTitle;
 
 	// The images sequence returned for the phrase from the web service
 	private Sentence sentence;
@@ -101,6 +106,11 @@ public class TranslationResultActivity extends FragmentActivity implements
 		lvTranslationList = (ListView) findViewById(R.id.list);
 		ivTranslationResultAnimation = (ImageView) findViewById(R.id.ivTranslationResultAnimation);
 		ivTranslationResultPlayButton = (ImageView) findViewById(R.id.ivTranslationResultPlayButton);
+		actionBarTitle = (TextView) findViewById(R.id.actionbar_title);
+		
+		// set typeface
+		typeface = Typeface.createFromAsset(getAssets(), "DANUBE.TTF");
+		actionBarTitle.setTypeface(typeface);
 
 		// Add listeners
 		ivTranslationResultPlayButton.setOnClickListener(this);
