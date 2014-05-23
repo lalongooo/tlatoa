@@ -5,7 +5,7 @@
     <string name="default_row_number">123</string>
     <string name="default_song_duration">[00:00]</string>
     <string name="default_song_title">[default song title]</string>
-    <string name="facebook_button_login">Log in with facebook</string>
+    <string name="facebook_button_login">Facebook login</string>
     <string name="facebook_button_logout">Facebook logout</string>
     <string name="tlatoa_about_main_text">Developed by @xihuani. \n June 2014</string>
     <string name="tlatoa_actionbar_back_to_main">Back To Main</string>

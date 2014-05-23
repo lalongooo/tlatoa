@@ -9,7 +9,7 @@
     <FrameLayout
         android:id="@+id/actionbar"
         android:layout_width="fill_parent"
-        android:layout_height="48dp"
+        android:layout_height="40dp"
         android:background="@drawable/actionbar_bg_orange"
         android:gravity="center" >
 
@@ -45,7 +45,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="50dp"
             android:padding="10dip"
             app:fillColor="@color/tlatoa_main_color_orange"
             app:radius="5sp"
@@ -56,28 +56,33 @@
         android:id="@+id/footer"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1" >
+        android:layout_weight="1">
+
+        <Button
+            android:id="@+id/btnStart"
+            style="@style/tlatoa_button"
+            android:layout_alignBottom="@+id/btnFacebookLogin"
+            android:layout_alignLeft="@+id/btnFacebookLogin"
+            android:background="@drawable/tlatoa_button"
+            android:paddingBottom="4dp"
+            android:paddingLeft="4dp"
+            android:paddingTop="4dp"
+            android:text="@string/tlatoa_app_overview_start"
+            android:textSize="18sp" />
 
         <Button
             android:id="@+id/btnFacebookLogin"
             style="@style/facebook_button"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
             android:background="@drawable/facebook_button"
             android:drawableLeft="@drawable/facebook_icon_60"
             android:paddingBottom="4dp"
             android:paddingLeft="4dp"
             android:paddingTop="4dp"
             android:text="@string/facebook_button_login"
-            android:textSize="24sp" />
+            android:textSize="18sp" />
 
-        <Button
-            android:id="@+id/btnStart"
-            style="@style/tlatoa_button"
-            android:background="@drawable/tlatoa_button"
-            android:paddingBottom="4dp"
-            android:paddingLeft="4dp"
-            android:paddingTop="4dp"
-            android:text="@string/tlatoa_app_overview_start"
-            android:textSize="24sp" />
     </RelativeLayout>
 
 </LinearLayout>

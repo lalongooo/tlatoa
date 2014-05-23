@@ -8,6 +8,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.widget.TextView;
 
 import com.google.analytics.tracking.android.EasyTracker;
@@ -22,7 +23,7 @@ public class SplashActivity extends FragmentActivity implements
 
 	// Class members
 	private boolean isNetworkAvailable;
-	private int splashDelay = 120000;
+	private int splashDelay = 1200;
 
 	// UI items
 	private TextView tvTlatoa;
