@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res/com.xihuanicode.tlatoa"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:background="@drawable/tlatoa_background_app_overview"
     android:orientation="vertical" >
 
@@ -27,62 +27,54 @@
             android:textSize="24sp" />
     </FrameLayout>
 
-    <RelativeLayout
-        android:id="@+id/content"
+    <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:layout_weight="3" >
+        android:layout_height="fill_parent"
+        android:layout_weight="2"
+        android:gravity="center"
+        android:orientation="vertical" >
 
         <android.support.v4.view.ViewPager
             android:id="@+id/pager"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content" >
         </android.support.v4.view.ViewPager>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/LinearLayout1"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="3"
+        android:orientation="vertical" >
 
         <com.viewpagerindicator.CirclePageIndicator
             android:id="@+id/indicator"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true"
-            android:layout_marginTop="50dp"
-            android:padding="10dip"
+            android:layout_gravity="center"
             app:fillColor="@color/tlatoa_main_color_orange"
             app:radius="5sp"
             app:strokeColor="@color/tlatoa_main_color_orange" />
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/footer"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1">
 
         <Button
             android:id="@+id/btnStart"
             style="@style/tlatoa_button"
-            android:layout_alignBottom="@+id/btnFacebookLogin"
-            android:layout_alignLeft="@+id/btnFacebookLogin"
+            android:layout_margin="20dp"
             android:background="@drawable/tlatoa_button"
-            android:paddingBottom="4dp"
-            android:paddingLeft="4dp"
-            android:paddingTop="4dp"
+            android:padding="10dp"
             android:text="@string/tlatoa_app_overview_start"
-            android:textSize="18sp" />
+            android:textSize="16sp" />
 
         <Button
             android:id="@+id/btnFacebookLogin"
             style="@style/facebook_button"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
+            android:layout_margin="20dp"
             android:background="@drawable/facebook_button"
             android:drawableLeft="@drawable/facebook_icon_60"
-            android:paddingBottom="4dp"
-            android:paddingLeft="4dp"
-            android:paddingTop="4dp"
+            android:padding="10dp"
             android:text="@string/facebook_button_login"
-            android:textSize="18sp" />
-
-    </RelativeLayout>
+            android:textSize="16sp" />
+    </LinearLayout>
 
 </LinearLayout>

@@ -293,11 +293,11 @@ public class AppOverviewActivity extends Activity implements
 		mSimpleFacebook = SimpleFacebook.getInstance(this);
 		// Config UI state
 		if (mSimpleFacebook.isLogin()) {
-			btnFacebookLogin.setVisibility(Button.INVISIBLE);
+			btnFacebookLogin.setVisibility(Button.GONE);
 			btnStart.setVisibility(Button.VISIBLE);
 		} else {
 			btnFacebookLogin.setVisibility(Button.VISIBLE);
-			btnStart.setVisibility(Button.INVISIBLE);
+			btnStart.setVisibility(Button.GONE);
 		}
 
 	}
