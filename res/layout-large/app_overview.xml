@@ -27,7 +27,7 @@
             android:textSize="24sp" />
     </FrameLayout>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_weight="2"
@@ -37,9 +37,11 @@
         <android.support.v4.view.ViewPager
             android:id="@+id/pager"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true" >
         </android.support.v4.view.ViewPager>
-    </LinearLayout>
+    </RelativeLayout>
 
     <LinearLayout
         android:id="@+id/LinearLayout1"

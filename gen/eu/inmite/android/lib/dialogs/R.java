@@ -82,24 +82,24 @@ public final class R {
 		public static final int sdl_background_light = 0x7f020088;
 	}
 	public static final class id {
-		public static final int dialog_button_panel = 0x7f05006d;
-		public static final int dialog_button_separator = 0x7f05006e;
-		public static final int dialog_horizontal_separator = 0x7f05006c;
-		public static final int sdl__button_panel = 0x7f05006b;
-		public static final int sdl__content = 0x7f050079;
-		public static final int sdl__contentPanel = 0x7f050073;
-		public static final int sdl__custom = 0x7f050070;
-		public static final int sdl__customPanel = 0x7f05006f;
-		public static final int sdl__datepicker = 0x7f050071;
-		public static final int sdl__listview = 0x7f050072;
-		public static final int sdl__message = 0x7f050074;
+		public static final int dialog_button_panel = 0x7f05006e;
+		public static final int dialog_button_separator = 0x7f05006f;
+		public static final int dialog_horizontal_separator = 0x7f05006d;
+		public static final int sdl__button_panel = 0x7f05006c;
+		public static final int sdl__content = 0x7f05007a;
+		public static final int sdl__contentPanel = 0x7f050074;
+		public static final int sdl__custom = 0x7f050071;
+		public static final int sdl__customPanel = 0x7f050070;
+		public static final int sdl__datepicker = 0x7f050072;
+		public static final int sdl__listview = 0x7f050073;
+		public static final int sdl__message = 0x7f050075;
 		public static final int sdl__negative_button = 0x7f050022;
 		public static final int sdl__neutral_button = 0x7f050021;
 		public static final int sdl__positive_button = 0x7f050020;
-		public static final int sdl__progress = 0x7f050076;
-		public static final int sdl__progressPanel = 0x7f050075;
-		public static final int sdl__title = 0x7f050077;
-		public static final int sdl__titleDivider = 0x7f050078;
+		public static final int sdl__progress = 0x7f050077;
+		public static final int sdl__progressPanel = 0x7f050076;
+		public static final int sdl__title = 0x7f050078;
+		public static final int sdl__titleDivider = 0x7f050079;
 	}
 	public static final class layout {
 		public static final int dialog_part_button = 0x7f030029;
