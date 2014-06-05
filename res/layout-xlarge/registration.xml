@@ -96,6 +96,7 @@
                 <Button
                     android:id="@+id/btnConfirmRegistration"
                     style="@style/tlatoa_button"
+                    android:layout_margin="20dp"
                     android:background="@drawable/tlatoa_button"
                     android:paddingBottom="4dp"
                     android:paddingLeft="4dp"

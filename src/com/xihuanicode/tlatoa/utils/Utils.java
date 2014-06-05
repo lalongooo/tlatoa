@@ -44,6 +44,7 @@ import com.google.gson.Gson;
 import com.xihuanicode.tlatoa.Tlatoa;
 import com.xihuanicode.tlatoa.entity.Role;
 import com.xihuanicode.tlatoa.entity.User;
+import com.xihuanicode.tlatoa.enums.GeneralizedScreenSize;
 
 public class Utils {
 	
@@ -298,5 +299,27 @@ public class Utils {
   	      .build()
   	  );
     }
+    
+    
+	/**
+	 * Determines the generalized screen size of the device.
+	 * 
+	 * @param c The current {@link android.content.Context}
+	 * @return A {@link com.xihuanicode.tlatoa.enums.GeneralizedScreenSize} object with the generalized screen representation.
+	 */
+	public static GeneralizedScreenSize getDeviceGeneralizedScreenSize(Context c) {
+
+		if ((c.getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) == Configuration.SCREENLAYOUT_SIZE_SMALL) {
+			return GeneralizedScreenSize.SCREENLAYOUT_SIZE_SMALL;
+		} else if ((c.getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) == Configuration.SCREENLAYOUT_SIZE_NORMAL) {
+			return GeneralizedScreenSize.SCREENLAYOUT_SIZE_NORMAL;
+		} else if ((c.getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) == Configuration.SCREENLAYOUT_SIZE_LARGE) {
+			return GeneralizedScreenSize.SCREENLAYOUT_SIZE_LARGE;
+		} else if ((c.getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) == Configuration.SCREENLAYOUT_SIZE_XLARGE) {
+			return GeneralizedScreenSize.SCREENLAYOUT_SIZE_XLARGE;
+		} else{
+			return GeneralizedScreenSize.SCREENLAYOUT_SIZE_UNDEFINED;
+		}
+	}
 
 }

@@ -35,13 +35,13 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:background="@color/tlatoa_main_color_gray" >
 
             <com.makeramen.RoundedImageView
                 android:id="@+id/ivProfilePhoto"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:padding="10dip"
                 android:scaleType="fitCenter"
                 android:src="@drawable/tlatoa_profile_default_photo"
@@ -96,6 +96,7 @@
                 <Button
                     android:id="@+id/btnConfirmRegistration"
                     style="@style/tlatoa_button"
+                    android:layout_margin="20dp"
                     android:background="@drawable/tlatoa_button"
                     android:paddingBottom="4dp"
                     android:paddingLeft="4dp"

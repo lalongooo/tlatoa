@@ -22,7 +22,9 @@ import com.sromku.simple.fb.SimpleFacebook.OnProfileRequestListener;
 import com.sromku.simple.fb.entities.Profile;
 import com.viewpagerindicator.CirclePageIndicator;
 import com.viewpagerindicator.PageIndicator;
+import com.xihuanicode.tlatoa.utils.Utils;
 import com.xihuanicode.tlatoa.viewpager.ComplexAdapter;
+import com.xihuanicode.tlatoa.enums.GeneralizedScreenSize;
 
 public class AppOverviewActivity extends Activity implements
 		View.OnClickListener {
@@ -38,7 +40,7 @@ public class AppOverviewActivity extends Activity implements
 	private TextView actionBarTitle;
 
 	// Facebook user properties
-	private static final String FB_PROFILE_PICTURE_URL_BASE = "https://graph.facebook.com/fbUserId/picture?type=large";
+	private static final String FB_PROFILE_PICTURE_URL_BASE = "https://graph.facebook.com/fbUserId/picture?type=";
 	private String fbUserId;
 	private String fbName;
 	private String fbUsername;
@@ -243,7 +245,7 @@ public class AppOverviewActivity extends Activity implements
 				fbBio = profile.getId();
 				fbLocationId = profile.getLocation() != null ? profile.getLocation().getName() : "" ;
 				fbLocale = profile.getLocale();
-				fbProfilePictureUrl = FB_PROFILE_PICTURE_URL_BASE.replace("fbUserId", fbUserId);
+				fbProfilePictureUrl = getFacebookProfilePictureURL(fbUserId, FB_PROFILE_PICTURE_URL_BASE);
 				
 				goToRegistrationActivity();
 				
@@ -285,6 +287,26 @@ public class AppOverviewActivity extends Activity implements
 		startActivity(intent);
 		overridePendingTransition(R.anim.open_next, R.anim.close_main);
 		this.finish();
+	}
+	
+	private String getFacebookProfilePictureURL(String fbUserId, String urlBase){
+		
+		String profilePictureURL = "";
+		
+		if (Utils.getDeviceGeneralizedScreenSize(getApplicationContext()) == GeneralizedScreenSize.SCREENLAYOUT_SIZE_SMALL){
+			profilePictureURL = urlBase .replace("fbUserId", fbUserId) + "normal";
+		}else if(Utils.getDeviceGeneralizedScreenSize(getApplicationContext()) == GeneralizedScreenSize.SCREENLAYOUT_SIZE_NORMAL){
+			profilePictureURL = urlBase .replace("fbUserId", fbUserId) + "large";
+		}else if(Utils.getDeviceGeneralizedScreenSize(getApplicationContext()) == GeneralizedScreenSize.SCREENLAYOUT_SIZE_LARGE){
+			profilePictureURL = urlBase .replace("fbUserId", fbUserId) + "large";
+		}else if(Utils.getDeviceGeneralizedScreenSize(getApplicationContext()) == GeneralizedScreenSize.SCREENLAYOUT_SIZE_XLARGE){
+			profilePictureURL = urlBase .replace("fbUserId", fbUserId) + "large";
+		}else{
+			profilePictureURL = urlBase .replace("fbUserId", fbUserId) + "large";
+		}
+		
+		return profilePictureURL;
+		
 	}
 
 	@Override
