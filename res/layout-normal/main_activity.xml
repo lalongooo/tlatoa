@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/tlatoa_background_main_activity"
+    android:orientation="vertical" >
+
+    <FrameLayout
+        android:id="@+id/actionbar"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@drawable/actionbar_bg_orange"
+        android:gravity="center" >
+
+        <TextView
+            android:id="@+id/actionbar_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:contentDescription="@string/tlatoa_app_name"
+            android:shadowColor="@android:color/black"
+            android:shadowDx="0"
+            android:shadowDy="-1"
+            android:shadowRadius="1"
+            android:text="@string/tlatoa_actionbar_title"
+            android:textColor="@color/tlatoa_actionbar_title_text_color"
+            android:textSize="24sp" />
+
+        <ImageView
+            android:id="@+id/actionbar_more"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:background="@drawable/actionbar_button_bg"
+            android:contentDescription="@string/tlatoa_actionbar_more"
+            android:paddingBottom="8dp"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp"
+            android:paddingTop="8dp"
+            android:src="@drawable/actionbar_more" />
+    </FrameLayout>
+
+    <ImageView
+        android:id="@+id/ivMicrophone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:clickable="true"
+        android:contentDescription="@string/tlatoa_splash_content_description"
+        android:src="@drawable/tlatoa_microphone_icon" />
+
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ivMicrophone"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="26dp"
+        android:text="Go to results"
+        android:onClick="goToResults" />
+
+</RelativeLayout>
