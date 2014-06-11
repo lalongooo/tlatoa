@@ -57,7 +57,7 @@ public class TranslationResultActivity extends FragmentActivity implements
 	private static final int ANIMATION_DURATION = 500;
 	private static final int INFORMATION_MESSAGE_REQUEST_CODE = 42;
 
-	private static final String TLATOA_SENTENCE_WS_URL = "http://tlatoa.herokuapp.com/manager/api/sentence?phrase=";
+	private final String TLATOA_SENTENCE_WS_URL = Utils.getApplicationProperty(this, "tlatoa_web_service_url");
 
 	private Typeface typeface;
 	
