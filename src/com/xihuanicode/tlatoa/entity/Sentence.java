@@ -5,9 +5,10 @@ import java.util.List;
 public class Sentence {
 
 	private List<SentenceResource> resources;
-	private int sentenceId;
-	private String sentence;
-	private int createdAt;
+	private long id;
+	private String text;
+	private long createdAt;
+	private long expiresAt;
 
 	// Resources
 	public List<SentenceResource> getSentenceResource() {
@@ -18,30 +19,39 @@ public class Sentence {
 		this.resources = resources;
 	}
 
-	// Sentence
-	public String getSentence() {
-		return this.sentence;
-	}
-
-	public void setSentence(String sentence) {
-		this.sentence = sentence;
-	}
-
 	// Sentence Id
-	public int getSentenceId() {
-		return this.sentenceId;
+	public long getId() {
+		return this.id;
 	}
 
-	public void setSentenceId(int sentenceId) {
-		this.sentenceId = sentenceId;
+	public void setId(long id) {
+		this.id = id;
+	}
+	
+	// Text
+	public String getText() {
+		return this.text;
+	}
+
+	public void setText(String text) {
+		this.text = text;
 	}
 
 	// Created at
-	public void setCreatedAt(int createdAt) {
+	public void setCreatedAt(long createdAt) {
 		this.createdAt = createdAt;
 	}
 
-	public int getCreatedAt() {
+	public long getCreatedAt() {
 		return createdAt;
+	}
+	
+	// Expires at
+	public void setExpiresAt(long expiresAt) {
+		this.createdAt = expiresAt;
+	}
+
+	public long getExpiresAt() {
+		return expiresAt;
 	}
 }

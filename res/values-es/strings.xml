@@ -52,6 +52,8 @@
     <string name="tlatoa_translation_result_msg_no_result_title">Cancelar</string>
     <string name="tlatoa_translation_result_msg_no_result_message">Ups! No encontramos esa frase</string>
     <string name="tlatoa_translation_result_msg_no_result_positive_button">OK</string>
+        <string name="tlatoa_translation_result_progess_dialog_title">Procesando&#8230;</string>
+    <string name="tlatoa_translation_result_progess_dialog_message">Estamos traduciendo&#8230;</string>
 
     <string name="tlatoa_registration_button_confirm_registration">CONTINUAR</string>
     <string name="tlatoa_registration_username_default">"@unknown"</string>

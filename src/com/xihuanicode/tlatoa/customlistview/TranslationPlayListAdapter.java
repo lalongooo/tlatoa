@@ -13,7 +13,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.xihuanicode.tlatoa.R;
-import com.xihuanicode.tlatoa.db.Phrase;
+import com.xihuanicode.tlatoa.entity.Sentence;
 import com.xihuanicode.tlatoa.utils.ImageLoader;
 import com.xihuanicode.tlatoa.utils.TimeAgo;
 
@@ -21,12 +21,12 @@ public class TranslationPlayListAdapter extends BaseAdapter {
 
 	private static LayoutInflater inflater;
 	private Activity activity;
-	private List<Phrase> data;
+	private List<Sentence> data;
 	public ImageLoader imageLoader;
 
-	public TranslationPlayListAdapter(Activity a, List<Phrase> phrases) {
+	public TranslationPlayListAdapter(Activity a, List<Sentence> sentences) {
 		activity = a;
-		data = phrases;
+		data = sentences;
 		inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		imageLoader = new ImageLoader(activity.getApplicationContext());
 	}
@@ -63,11 +63,11 @@ public class TranslationPlayListAdapter extends BaseAdapter {
 		tvPhraseCreatedAt.setTypeface(typeface);
 		btnSharePhrase.setTypeface(typeface);
 
-		Phrase phrase = data.get(position);
+		Sentence phrase = data.get(position);
 		
 		// Setting all values in listview items
 		tvPhraseId.setText(String.valueOf(phrase.getId()));
-		tvPhrase.setText(String.valueOf(phrase.getPhrase()));
+		tvPhrase.setText(String.valueOf(phrase.getText()));
 		tvPhraseCreatedAt.setText(new TimeAgo(activity).timeAgo(phrase.getCreatedAt()));
 		
 		return vi;

@@ -11,6 +11,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.xihuanicode.tlatoa.entity.Sentence;
 import com.xihuanicode.tlatoa.entity.SentenceResource;
+import com.xihuanicode.tlatoa.utils.*;
 
 public class SentenceDataSource {
 
@@ -21,8 +22,9 @@ public class SentenceDataSource {
 	private static final String[] TABLE_SENTENCE_COLUMNS =
 	{
 		SentenceDatabaseHelper.SENTENCE_ID,
-		SentenceDatabaseHelper.SENTENCE,
-		SentenceDatabaseHelper.SENTENCE_CREATED_AT
+		SentenceDatabaseHelper.SENTENCE_TEXT,
+		SentenceDatabaseHelper.SENTENCE_CREATED_AT,
+		SentenceDatabaseHelper.SENTENCE_EXPIRES_AT
 	};
 	
 	
@@ -57,24 +59,34 @@ public class SentenceDataSource {
 		}
 	}
 
-	public Phrase createSentence(Sentence sentence) {		
+	
+	/**
+	 * <p>
+	 * Creates a new Sentence record in the local SQLite Database 
+	 * <p>
+	 * @param  c  The current application context
+	 * @param  s  The new {@link com.xihuanicode.tlatoa.entity.Sentence} object
+	 * @return The SentenceId if the creation was success, -1 otherwise.  
+	 * @see    {@link com.xihuanicode.tlatoa.entity.Sentence}
+	 */
+	public long createSentence(Context c, Sentence s) {
 		
 		// Content values for header (Sentence)
 		ContentValues values = null;
-		long insertId = 0;
-		
+		long insertId = -1;
+		// Perform the operation in the database
+		open();
 		
 		try {
 
 			values = new ContentValues();
-			values.put(SentenceDatabaseHelper.SENTENCE_ID, sentence.getSentenceId());
-			values.put(SentenceDatabaseHelper.SENTENCE, sentence.getSentence());
+			values.put(SentenceDatabaseHelper.SENTENCE_ID, s.getId());
+			values.put(SentenceDatabaseHelper.SENTENCE_TEXT, s.getText());
 			values.put(SentenceDatabaseHelper.SENTENCE_CREATED_AT,new java.util.Date().getTime());
+			values.put(SentenceDatabaseHelper.SENTENCE_EXPIRES_AT,new java.util.Date().getTime() + Long.parseLong(Utils.getApplicationProperty(c, "cache_expiration_valid_time")));
 			
-			// Perform the operation in the database
-			open();
+			
 			insertId = database.insert(SentenceDatabaseHelper.TABLE_SENTENCE, null, values);
-			close();
 
 		} catch (Exception e) {
 			// TODO: Candidate code to send for reporting
@@ -84,18 +96,15 @@ public class SentenceDataSource {
 		try{
 			if(insertId > 0){
 				
-				for (SentenceResource sr : sentence.getSentenceResource()){
+				for (SentenceResource sr : s.getSentenceResource()){
 					values = new ContentValues();
-					values.put(SentenceDatabaseHelper.RESOURCES_SENTENCE_ID, sentence.getSentenceId());
+					values.put(SentenceDatabaseHelper.RESOURCES_SENTENCE_ID, s.getId());
 					values.put(SentenceDatabaseHelper.RESOURCES_RESOURCE_ID, sr.getResourceId());
 					values.put(SentenceDatabaseHelper.RESOURCES_RESOURCE_URL, sr.getResourceURL());
 					values.put(SentenceDatabaseHelper.RESOURCES_SEQUENCE_ORDER, sr.getSequenceOrder());
 					values.put(SentenceDatabaseHelper.RESOURCES_SENTENCE_IMAGE, sr.getResourceImage());
 					
-					// Perform the operation in the database
-					open();
-					insertId = database.insert(SentenceDatabaseHelper.TABLE_SENTENCE_RESOURCES, null, values);
-					close();
+					database.insert(SentenceDatabaseHelper.TABLE_SENTENCE_RESOURCES, null, values);
 				}				
 
 			}
@@ -104,55 +113,68 @@ public class SentenceDataSource {
 			ex.printStackTrace();
 		}
 		
-		// Open database
-		open();
-		
-		
 		// Get the last inserted row
-		Cursor cursor = null;
-		try {
-			
-			if(insertId > 0){
-				
-				cursor = database.query(
-						SentenceDatabaseHelper.TABLE_SENTENCE, 				// Table
-						TABLE_SENTENCE_COLUMNS, 							// Columns
-						SentenceDatabaseHelper.SENTENCE_ID + " = " + sentence.getSentenceId(), 	// Where (condition)
-						null,												// Group By
-						null,												// Order By
-						null,												// Having
-						null												// Limit
-						);
-			}
-
-		} catch (Exception e) {
-			// TODO: Candidate code to send for reporting
-			e.printStackTrace();
-		}
-		
-		Phrase newPhrase = null;
-		if(cursor != null){
-			cursor.moveToFirst();
-			newPhrase = cursorToPhrase(cursor);
-			cursor.close();
-		}
+//		Cursor cursor = null;
+//		try {
+//			
+//			if(insertId > 0){
+//				
+//				cursor = database.query(
+//						SentenceDatabaseHelper.TABLE_SENTENCE, 				// Table
+//						TABLE_SENTENCE_COLUMNS, 							// Columns
+//						SentenceDatabaseHelper.SENTENCE_ID + " = " + s.getSentenceId(), 	// Where (condition)
+//						null,												// Group By
+//						null,												// Order By
+//						null,												// Having
+//						null												// Limit
+//						);
+//			}
+//
+//		} catch (Exception e) {
+//			// TODO: Candidate code to send for reporting
+//			e.printStackTrace();
+//		}
 		
 		// Close database
 		close();
 
-		return newPhrase;
+		return insertId;
 	}
 
-	public void deletePhrase(Phrase phrase) {
-		long id = phrase.getId();
+	/**
+	 * <p>
+	 * Deletes a Sentence record in the local SQLite Database. Only the sentenceId must be provided. 
+	 * <p>
+	 * @param  s  The {@link com.xihuanicode.tlatoa.entity.Sentence} object to be deleted.
+	 * @return The SentenceId if the creation was success, -1 otherwise.
+	 * @throws IllegalArgumentException If the {@link com.xihuanicode.tlatoa.entity.Sentence} has not a valid ID property.  
+	 * @see    {@link com.xihuanicode.tlatoa.entity.Sentence}
+	 */
+	
+	public void deletePhrase(Sentence s) throws IllegalArgumentException{
+		
+		long id = s.getId();
+		
+		if(id < 1){
+			throw new IllegalArgumentException("The sentence object has to have an ID.");
+		}		
+		
 		open();
 		database.delete(SentenceDatabaseHelper.TABLE_SENTENCE, SentenceDatabaseHelper.SENTENCE_ID + " = " + id, null);
 		close();
 	}
 
-	public List<Phrase> getAllSentences() {
+
+	/**
+	 * <p>
+	 * Returns all the sentences stored in the local database. 
+	 * <p>
+	 * @return A list of {@link com.xihuanicode.tlatoa.entity.Sentence} objects.  
+	 * @see    {@link com.xihuanicode.tlatoa.entity.Sentence}
+	 */
+	public List<Sentence> getAllSentences() {
 		
-		List<Phrase> phrases = new ArrayList<Phrase>();	
+		List<Sentence> phrases = new ArrayList<Sentence>();	
 		
 		// Open database
 		open();
@@ -161,7 +183,7 @@ public class SentenceDataSource {
 		Cursor cursor = database.query(true, SentenceDatabaseHelper.TABLE_SENTENCE, TABLE_SENTENCE_COLUMNS, null, null, null, null, null, null);		
 		cursor.moveToFirst();
 		while (!cursor.isAfterLast()) {
-			Phrase phrase = cursorToPhrase(cursor);
+			Sentence phrase = cursorToSentence(cursor);
 			phrases.add(phrase);
 			cursor.moveToNext();
 		}
@@ -176,8 +198,20 @@ public class SentenceDataSource {
 		return phrases;
 	}
 	
-	public Sentence getSentenceById(int sentenceId){
 
+	/**
+	 * <p>
+	 * Returns the {@link com.xihuanicode.tlatoa.entity.Sentence} object identified by the sentenceId parameter.
+	 * <p>
+	 * @return The {@link com.xihuanicode.tlatoa.entity.Sentence} object identified by the sentenceId parameter.
+	 * @see    {@link com.xihuanicode.tlatoa.entity.Sentence}
+	 */
+	public Sentence getSentenceById(long sentenceId) throws IllegalArgumentException {
+
+		if(sentenceId < 1){
+			throw new IllegalArgumentException("The sentenceId parameter must be greater than zero.");
+		}
+		
 		// Open database
 		open();
 		
@@ -198,7 +232,7 @@ public class SentenceDataSource {
 		
 		if(cursor.moveToFirst()){
 			
-			sentence.setSentenceId(sentenceId);
+			sentence.setId(sentenceId);
 			
 			while (!cursor.isAfterLast()) {
 				SentenceResource sr = cursorToSentenceResource(cursor);
@@ -225,9 +259,9 @@ public class SentenceDataSource {
 	 * @see    Sentence
 	 */
 	
-	public int existsInLocalDb(Sentence s){
+	public long existsInLocalDb(Sentence s){
 		
-		int exists = 0;
+		long exists = 0;
 		
 		// Open database
 		open();		
@@ -238,7 +272,7 @@ public class SentenceDataSource {
 				
 				SentenceDatabaseHelper.TABLE_SENTENCE, 								// Table
 				TABLE_SENTENCE_COLUMNS, 											// Columns
-				SentenceDatabaseHelper.SENTENCE+ " = '" + s.getSentence() + "'",	// Where (condition)
+				SentenceDatabaseHelper.SENTENCE_TEXT + " = '" + s.getText() + "'",	// Where (condition)
 				null,																// Group By
 				null,																// Order By
 				null,																// Having
@@ -253,7 +287,7 @@ public class SentenceDataSource {
 				cursor.moveToNext();
 			}
 			
-			exists = s.getSentenceId();
+			exists = s.getId();
 		}
 		
 		// Close database
@@ -266,9 +300,10 @@ public class SentenceDataSource {
 		
 		Sentence s = new Sentence();
 		
-		s.setSentenceId(c.getInt(0));
-		s.setSentence(c.getString(1));
-		s.setCreatedAt(c.getInt(2));
+		s.setId(c.getInt(0));
+		s.setText(c.getString(1));
+		s.setCreatedAt(c.getLong(2));
+		s.setExpiresAt(c.getLong(3));
 		
 		return s;
 	}
@@ -284,16 +319,5 @@ public class SentenceDataSource {
 		
 		return sr;
 		
-	}
-
-	private Phrase cursorToPhrase(Cursor c) {
-		
-		Phrase phrase = new Phrase();
-		
-		phrase.setId(c.getLong(0));
-		phrase.setPhrase(c.getString(1));
-		phrase.setCreatedAt(c.getLong(2));
-		
-		return phrase;
 	}
 }

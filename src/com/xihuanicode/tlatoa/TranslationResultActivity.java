@@ -14,7 +14,6 @@ import org.json.JSONObject;
 
 import android.annotation.TargetApi;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources.NotFoundException;
 import android.graphics.Bitmap;
@@ -38,7 +37,6 @@ import android.widget.TextView;
 
 import com.google.analytics.tracking.android.EasyTracker;
 import com.xihuanicode.tlatoa.customlistview.TranslationPlayListAdapter;
-import com.xihuanicode.tlatoa.db.Phrase;
 import com.xihuanicode.tlatoa.db.SentenceDataSource;
 import com.xihuanicode.tlatoa.entity.Sentence;
 import com.xihuanicode.tlatoa.entity.SentenceResource;
@@ -73,6 +71,7 @@ public class TranslationResultActivity extends FragmentActivity implements
 	private ImageView ivTranslationResultAnimation, ivTranslationResultPlayButton;
 	private ListView lvTranslationList;
 	private TranslationPlayListAdapter adapter;
+	private ProgressDialog pDlg;
 
 	// Database classes
 	private SentenceDataSource datasource;
@@ -95,13 +94,16 @@ public class TranslationResultActivity extends FragmentActivity implements
 		}
 		
 		if(phrase != null){
-			new Translate(this, "We are translating...").execute(phrase);
+			new Translate().execute(phrase);
 		}
 		
 	}
 
 	private void setUI() {
 
+		// TODO: Configure theme
+		setTheme(R.style.CustomDarkTheme);
+		
 		// Get views
 		lvTranslationList = (ListView) findViewById(R.id.list);
 		ivTranslationResultAnimation = (ImageView) findViewById(R.id.ivTranslationResultAnimation);
@@ -116,7 +118,7 @@ public class TranslationResultActivity extends FragmentActivity implements
 		ivTranslationResultPlayButton.setOnClickListener(this);
 
 		// Load all translated sentences
-		List<Phrase> phrases = datasource.getAllSentences();
+		List<Sentence> phrases = datasource.getAllSentences();
 		
 		// Listview configuration
 		if (phrases.size() > 0) {
@@ -150,30 +152,9 @@ public class TranslationResultActivity extends FragmentActivity implements
 
 	private class Translate extends AsyncTask<String, Integer, Sentence> {
 
-		private ProgressDialog pDlg;
-		private Context mContext;
-		private String processMessage = "Processing...";
-
-		public Translate(Context mContext, String processMessage) {
-			this.mContext = mContext;
-			this.processMessage = processMessage;
-		}
-
-		@SuppressWarnings("deprecation")
-		private void showProgressDialog() {
-
-			pDlg = new ProgressDialog(mContext);
-			pDlg.setMessage(processMessage);
-			pDlg.setProgressDrawable(mContext.getWallpaper());
-			pDlg.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-			pDlg.setCancelable(false);
-			pDlg.show();
-
-		}
-
 		@Override
 		protected void onPreExecute() {
-			showProgressDialog();
+			showDialog();
 		}
 
 		@Override
@@ -187,8 +168,8 @@ public class TranslationResultActivity extends FragmentActivity implements
 			HttpResponse response = null;
 			
 			// Check for sentence in the local database			
-			sentence.setSentence(phrase[0]);			
-			int sentenceId = datasource.existsInLocalDb(sentence);
+			sentence.setText(phrase[0]);			
+			long sentenceId = datasource.existsInLocalDb(sentence);
 			
 			if(sentenceId > 0){
 				sentence = datasource.getSentenceById(sentenceId);
@@ -231,8 +212,8 @@ public class TranslationResultActivity extends FragmentActivity implements
 						JSONArray jsonArray = new JSONArray(jsonResult);
 						JSONObject jsonObject = jsonArray.getJSONObject(0);
 	
-						sentence.setSentenceId(jsonObject.getInt("sentenceId"));
-						sentence.setSentence(jsonObject.getString("sentence"));
+						sentence.setId(jsonObject.getInt("sentenceId"));
+						sentence.setText(jsonObject.getString("sentence"));
 						List<SentenceResource> resources = new ArrayList<SentenceResource>();
 											
 						// Looping into the resources element
@@ -263,7 +244,7 @@ public class TranslationResultActivity extends FragmentActivity implements
 						sentence.setSentenceResource(resources);
 						
 						datasource = new SentenceDataSource(getApplication());
-						datasource.createSentence(sentence);
+						datasource.createSentence(getApplicationContext(), sentence);
 	
 						Log.i(TAG, jsonObject.toString());
 					} catch (JSONException e) {
@@ -281,7 +262,7 @@ public class TranslationResultActivity extends FragmentActivity implements
 		@Override
 		protected void onPostExecute(Sentence s) {			
 
-			pDlg.dismiss();
+			hideDialog();
 			sentence = s;
 			playTranslation(s);
 
@@ -377,6 +358,16 @@ public class TranslationResultActivity extends FragmentActivity implements
 				.setCancelable(false)
 				.setTag("custom-tag")
 				.show();
+	}
+	
+	private void showDialog()
+	{
+		pDlg = ProgressDialog.show(this, Utils.getStringResource(getApplicationContext(), R.string.tlatoa_translation_result_progess_dialog_title), Utils.getStringResource(getApplicationContext(), R.string.tlatoa_translation_result_progess_dialog_message), true);
+	}
+
+	private void hideDialog()
+	{
+		pDlg.dismiss();
 	}
 
 	@Override

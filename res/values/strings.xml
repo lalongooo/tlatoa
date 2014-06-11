@@ -42,6 +42,8 @@
     <string name="tlatoa_translation_result_msg_no_result_title">Cancel</string>
     <string name="tlatoa_translation_result_msg_no_result_message">Oops! We did not find that phrase</string>
     <string name="tlatoa_translation_result_msg_no_result_positive_button">OK</string>
+    <string name="tlatoa_translation_result_progess_dialog_title">Processing&#8230;</string>
+    <string name="tlatoa_translation_result_progess_dialog_message">We are translating&#8230;</string>
     <string name="tlatoa_registration_button_confirm_registration">CONTINUE</string>
     <string name="tlatoa_registration_username_default">"@unknown"</string>
     <string name="tlatoa_registration_email_default">email@mail.com</string>

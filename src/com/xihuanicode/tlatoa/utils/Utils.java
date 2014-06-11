@@ -9,6 +9,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Locale;
+import java.util.Properties;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -28,7 +29,9 @@ import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.ResolveInfo;
 import android.content.pm.Signature;
+import android.content.res.AssetManager;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -320,6 +323,39 @@ public class Utils {
 		} else{
 			return GeneralizedScreenSize.SCREENLAYOUT_SIZE_UNDEFINED;
 		}
+	}
+
+	
+	/**
+	 * Returns the property identified by name. There must be placed an "app.properties" file in the assets folder.
+	 * 
+	 * @param c The current android application {@link android.content.Context}
+	 * @param name The name of the property
+	 * @return The property value if it exists, null otherwise.
+	 * 
+	 * @see java.util.Properties
+	 */	
+	public static String getApplicationProperty(Context c, String name){
+
+		String property= null;
+		Resources resources = c.getResources();
+		AssetManager assetManager = resources.getAssets();
+
+		// Read from the /assets directory
+		try {
+			
+		    InputStream inputStream = assetManager.open("app.properties");
+		    Properties properties = new Properties();
+		    properties.load(inputStream);
+		    
+		    property = properties.getProperty(name);
+		    
+		} catch (IOException e) {
+			exceptionToGa(c, e, false);
+
+		}
+		
+		return property;
 	}
 
 }

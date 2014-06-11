@@ -20,8 +20,9 @@ public class SentenceDatabaseHelper extends SQLiteOpenHelper {
 	
     // Columns of table: SENTENCE
 	public static final String SENTENCE_ID = "_id";
-	public static final String SENTENCE = "sentence";
+	public static final String SENTENCE_TEXT = "text";
 	public static final String SENTENCE_CREATED_AT = "created_at";
+	public static final String SENTENCE_EXPIRES_AT = "expires_at";
 	
 	// Columns of table: SENTENCE_RESOURCES
 	public static final String RESOURCES_SENTENCE_ID = "sentence_id";
@@ -34,8 +35,9 @@ public class SentenceDatabaseHelper extends SQLiteOpenHelper {
 	private static final String CREATE_TABLE_SENTENCE =
 			"CREATE TABLE " + TABLE_SENTENCE + "(" 
 			+ SENTENCE_ID + " 			INTEGER  NOT NULL, "
-			+ SENTENCE + "    			TEXT     NOT NULL, "
+			+ SENTENCE_TEXT + "    		TEXT     NOT NULL, "
 			+ SENTENCE_CREATED_AT + "  	INTEGER  NOT NULL,"
+			+ SENTENCE_EXPIRES_AT + "  	INTEGER  NOT NULL,"
 			+ "PRIMARY KEY ( " + SENTENCE_ID + "  ));";
 	
 	private static final String CREATE_TABLE_SENTENCE_RESOURCES =
