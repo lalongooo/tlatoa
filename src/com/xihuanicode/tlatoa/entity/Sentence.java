@@ -48,7 +48,7 @@ public class Sentence {
 	
 	// Expires at
 	public void setExpiresAt(long expiresAt) {
-		this.createdAt = expiresAt;
+		this.expiresAt = expiresAt;
 	}
 
 	public long getExpiresAt() {

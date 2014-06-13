@@ -57,7 +57,7 @@ public class TranslationResultActivity extends FragmentActivity implements
 	private static final int ANIMATION_DURATION = 500;
 	private static final int INFORMATION_MESSAGE_REQUEST_CODE = 42;
 
-	private final String TLATOA_SENTENCE_WS_URL = Utils.getApplicationProperty(this, "tlatoa_web_service_url");
+//	private final String TLATOA_SENTENCE_WS_URL = Utils.getApplicationProperty(getApplicationContext(), "tlatoa_web_service_url");
 
 	private Typeface typeface;
 	
@@ -169,17 +169,17 @@ public class TranslationResultActivity extends FragmentActivity implements
 			
 			// Check for sentence in the local database			
 			sentence.setText(phrase[0]);			
-			long sentenceId = datasource.existsInLocalDb(sentence);
+			sentence = datasource.existsInLocalDb(sentence);
 			
-			if(sentenceId > 0){
-				sentence = datasource.getSentenceById(sentenceId);
+			if(!datasource.hasExpired(sentence)){
+				sentence = datasource.getSentenceById(sentence.getId());
 			}else{
 				
 				// Get the first JSON result from the Tlatoa Web Service
 				try {
 	
 					String url = URLEncoder.encode(phrase[0], "UTF8");
-					response = Utils.doResponse(TLATOA_SENTENCE_WS_URL + url, 2);
+					response = Utils.doResponse(Utils.getApplicationProperty(getApplicationContext(), "tlatoa_web_service_url") + url, 2);
 					
 					if (response != null) {
 						jsonResult = Utils.inputStreamToString(response.getEntity().getContent());

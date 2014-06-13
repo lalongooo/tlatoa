@@ -254,14 +254,12 @@ public class SentenceDataSource {
 	 * <p>
 	 * Checks if the Sentence (s) pased as the parameter is saved in the local database. 
 	 * <p>
-	 * @param  s  A Sentence type for searching for it in the local database.
-	 * @return The SentenceId if it exists in the local database, 0 otherwise.  
-	 * @see    Sentence
+	 * @param  s  A {@link com.xihuanicode.tlatoa.entity.Sentence} type for searching for it in the local database.
+	 * @return The same {@link com.xihuanicode.tlatoa.entity.Sentence} object if it exists in the local database, null otherwise.
+	 * @see    {@link com.xihuanicode.tlatoa.entity.Sentence}
 	 */
 	
-	public long existsInLocalDb(Sentence s){
-		
-		long exists = 0;
+	public Sentence existsInLocalDb(Sentence s){
 		
 		// Open database
 		open();		
@@ -282,18 +280,31 @@ public class SentenceDataSource {
 		
 		if(cursor.moveToFirst()){
 			
+			s = null;
 			while (!cursor.isAfterLast()) {
 				s = cursorToSentence(cursor);
-				cursor.moveToNext();
+				break;
 			}
-			
-			exists = s.getId();
 		}
-		
+		 
 		// Close database
 		close();
 		
-		return exists;
+		return s;
+	}
+	
+	
+	/**
+	 * <p>
+	 * Checks if the {@link com.xihuanicode.tlatoa.entity.Sentence} object passed as a parameter has expired. 
+	 * <p>
+	 * @param  s  A {@link com.xihuanicode.tlatoa.entity.Sentence} object.
+	 * @return True, if the {@link com.xihuanicode.tlatoa.entity.Sentence} has expired, false otherwise.
+	 * @see    {@link com.xihuanicode.tlatoa.entity.Sentence}
+	 */
+	
+	public boolean hasExpired(Sentence s){		
+		return new java.util.Date().getTime() > existsInLocalDb(s).getExpiresAt();
 	}
 	
 	private Sentence cursorToSentence(Cursor c){

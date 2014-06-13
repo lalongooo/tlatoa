@@ -19,7 +19,7 @@ import com.xihuanicode.tlatoa.customlistview.AboutDeveloperListAdapter;
 public class AboutActivity extends Activity  implements View.OnClickListener {
 	
 	private Typeface typeface;
-	private ListView lvAboutDevelopersList;
+	private ListView lvAboutDevelopersList ;
 	private AboutDeveloperListAdapter adapter;
 	
 	// ActionBar item
