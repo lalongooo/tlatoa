@@ -17,7 +17,7 @@ import android.widget.TextView;
 
 import com.google.analytics.tracking.android.EasyTracker;
 import com.sromku.simple.fb.SimpleFacebook;
-import com.sromku.simple.fb.SimpleFacebook.OnLogoutListener;
+import com.sromku.simple.fb.listeners.OnLogoutListener;
 import com.xihuanicode.tlatoa.enums.TlatoaStorageFileName;
 import com.xihuanicode.tlatoa.utils.Utils;
 
@@ -171,6 +171,12 @@ implements View.OnClickListener, ISimpleDialogListener, ISimpleDialogCancelListe
 		if (requestCode == 40) {
 			mSimpleFacebook.logout(mOnLogoutListener);
 		}
+	}
+	
+	@Override
+	public void onNeutralButtonClicked(int requestCode) {
+		if (requestCode == 40) {
+		}	
 	}
 	
 	// Logout listener

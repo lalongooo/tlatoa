@@ -16,9 +16,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.analytics.tracking.android.EasyTracker;
+import com.sromku.simple.fb.Permission.Type;
 import com.sromku.simple.fb.SimpleFacebook;
-import com.sromku.simple.fb.SimpleFacebook.OnLoginListener;
-import com.sromku.simple.fb.SimpleFacebook.OnProfileRequestListener;
+import com.sromku.simple.fb.listeners.OnLoginListener;
+import com.sromku.simple.fb.listeners.OnProfileListener;
 import com.sromku.simple.fb.entities.Profile;
 import com.viewpagerindicator.CirclePageIndicator;
 import com.viewpagerindicator.PageIndicator;
@@ -113,13 +114,36 @@ public class AppOverviewActivity extends Activity implements
 
 		@Override
 		public void onLogin() {
-			mSimpleFacebook.getProfile(new OnProfileRequestAdapter());
+			mSimpleFacebook.getProfile(new OnProfileListener() {
+				
+				@Override
+				public void onThinking() {
+					
+				}
+
+				@Override
+				public void onException(Throwable throwable) {
+					// TODO: Candidate code to send for reporting
+				}
+
+				@Override
+				public void onFail(String reason) {
+					// TODO: Candidate code to send for reporting
+				}
+
+				@Override
+				public void onComplete(Profile profile) {			
+					handleFbProfile(profile);
+				}
+			});
 		}
 
 		@Override
-		public void onNotAcceptingPermissions() {
+		public void onNotAcceptingPermissions(Type type) {
 			toast("You didn't accept read permissions");
+			
 		}
+		
 	};
 
 	void showYesMessage() {
@@ -200,30 +224,6 @@ public class AppOverviewActivity extends Activity implements
 
 	private void toast(String message) {
 		Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
-	}
-
-	public class OnProfileRequestAdapter implements OnProfileRequestListener {
-
-		@Override
-		public void onThinking() {
-			
-		}
-
-		@Override
-		public void onException(Throwable throwable) {
-			// TODO: Candidate code to send for reporting
-		}
-
-		@Override
-		public void onFail(String reason) {
-			// TODO: Candidate code to send for reporting
-		}
-
-		@Override
-		public void onComplete(Profile profile) {			
-			handleFbProfile(profile);
-		}
-
 	}
 	
 	private void handleFbProfile(Profile profile){

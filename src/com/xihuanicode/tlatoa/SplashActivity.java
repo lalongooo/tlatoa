@@ -114,6 +114,11 @@ public class SplashActivity extends FragmentActivity implements
 	@Override
 	public void onNegativeButtonClicked(int requestCode) {
 	}
+	
+	@Override
+	public void onNeutralButtonClicked(int requestCode) {
+
+	}
 
 	// ISimpleDialogListener
 	@Override

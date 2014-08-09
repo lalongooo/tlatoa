@@ -27,7 +27,7 @@ import android.widget.TextView;
 import com.google.analytics.tracking.android.EasyTracker;
 import com.makeramen.RoundedImageView;
 import com.sromku.simple.fb.SimpleFacebook;
-import com.sromku.simple.fb.SimpleFacebook.OnPublishListener;
+import com.sromku.simple.fb.listeners.OnPublishListener;
 import com.sromku.simple.fb.entities.Feed;
 import com.xihuanicode.tlatoa.entity.User;
 import com.xihuanicode.tlatoa.enums.NetworkAccessResultCode;
@@ -296,7 +296,7 @@ public class RegistrationActivity extends FragmentActivity  implements OnClickLi
 	 * Listener for publishing action
 	 * 
 	 * */
-	final OnPublishListener onPublishListener = new SimpleFacebook.OnPublishListener()
+	final OnPublishListener onPublishListener = new OnPublishListener()
 	{
 
 		@Override

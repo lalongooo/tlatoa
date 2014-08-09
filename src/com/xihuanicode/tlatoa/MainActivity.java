@@ -301,6 +301,11 @@ public class MainActivity extends FragmentActivity implements
 		}
 	}
 
+	public void onNeutralButtonClicked(int requestCode) {
+		if (requestCode == NOTIFICATION_MESSAGE_REQUEST_CODE) {
+		}	
+	}
+	
 	// View.OnClickListener
 	@Override
 	public void onClick(View v) {

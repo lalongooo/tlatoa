@@ -6,7 +6,7 @@ import com.facebook.SessionDefaultAudience;
 import com.google.analytics.tracking.android.GoogleAnalytics;
 import com.google.analytics.tracking.android.Logger.LogLevel;
 import com.google.analytics.tracking.android.Tracker;
-import com.sromku.simple.fb.Permissions;
+import com.sromku.simple.fb.Permission;
 import com.sromku.simple.fb.SimpleFacebook;
 import com.sromku.simple.fb.SimpleFacebookConfiguration;
 import com.sromku.simple.fb.utils.Logger;
@@ -53,9 +53,9 @@ public class Tlatoa extends Application {
 		Logger.DEBUG_WITH_STACKTRACE = true;
 
 		// Initialize facebook configuration
-		Permissions[] permissions = new Permissions[] { Permissions.BASIC_INFO,
-				Permissions.PUBLISH_ACTION, Permissions.PUBLISH_STREAM,
-				Permissions.EMAIL };
+		Permission[] permissions = new Permission[] { Permission.PUBLIC_PROFILE,
+				Permission.PUBLISH_ACTION,
+				Permission.EMAIL };
 
 		SimpleFacebookConfiguration configuration = new SimpleFacebookConfiguration.Builder()
 				.setAppId(APP_ID).setNamespace(APP_NAMESPACE)

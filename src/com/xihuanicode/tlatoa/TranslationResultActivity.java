@@ -407,6 +407,13 @@ public class TranslationResultActivity extends FragmentActivity implements
 		}
 	}
 	
+	
+	@Override
+	public void onNeutralButtonClicked(int requestCode) {
+		if (requestCode == INFORMATION_MESSAGE_REQUEST_CODE) {
+		}	
+	}
+
 	@Override
 	public void onStart() {
 		super.onStart();
