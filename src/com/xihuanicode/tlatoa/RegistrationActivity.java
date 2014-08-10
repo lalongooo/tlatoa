@@ -22,10 +22,10 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.analytics.tracking.android.EasyTracker;
-import com.makeramen.RoundedImageView;
 import com.sromku.simple.fb.SimpleFacebook;
 import com.sromku.simple.fb.listeners.OnPublishListener;
 import com.sromku.simple.fb.entities.Feed;
@@ -73,7 +73,7 @@ public class RegistrationActivity extends FragmentActivity  implements OnClickLi
 	private TextView tvFirstName;
 	private TextView tvEmail;
 	private Button btnConfirmRegistration;
-	private RoundedImageView ivProfilePhoto;
+	private ImageView ivProfilePhoto;
 	private ProgressDialog pDlg;
 	
 	private Context c;
@@ -116,7 +116,7 @@ public class RegistrationActivity extends FragmentActivity  implements OnClickLi
 		tvFirstName = (TextView) findViewById(R.id.txRegistrationUsername);
 		tvEmail = (TextView) findViewById(R.id.txRegistrationEmail);
 		btnConfirmRegistration = (Button) findViewById(R.id.btnConfirmRegistration);
-		ivProfilePhoto = (RoundedImageView) findViewById(R.id.ivProfilePhoto);
+		ivProfilePhoto = (ImageView) findViewById(R.id.ivUserProfilePhoto);
 
 		tvFirstName.setText(fbUsername);
 		tvEmail.setText(fbEmail);

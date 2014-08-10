@@ -50,16 +50,15 @@
             android:layout_height="match_parent"
             android:background="@color/tlatoa_main_color_gray" >
 
-            <com.makeramen.RoundedImageView
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/ivUserProfilePhoto"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:padding="10dip"
-                android:scaleType="fitCenter"
+                android:layout_width="160dp"
+                android:layout_height="160dp"
+                android:layout_centerInParent="true"
                 android:src="@drawable/tlatoa_profile_default_photo"
-                app:border_color="#FFFFFF"
-                app:border_width="4dip"
-                app:corner_radius="10dp" />
+                app:circle_border_color="@color/tlatoa_main_color_orange"
+                app:circle_border_width="2dp" />
+            
         </RelativeLayout>
 
         <LinearLayout
@@ -110,7 +109,6 @@
                     style="@style/facebook_button"
                     android:layout_margin="20dp"
                     android:text="@string/facebook_button_logout" />
-                
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
