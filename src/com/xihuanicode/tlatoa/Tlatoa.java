@@ -53,14 +53,19 @@ public class Tlatoa extends Application {
 		Logger.DEBUG_WITH_STACKTRACE = true;
 
 		// Initialize facebook configuration
-		Permission[] permissions = new Permission[] { Permission.PUBLIC_PROFILE,
+		Permission[] permissions = new Permission[] {
+				Permission.PUBLIC_PROFILE,
 				Permission.PUBLISH_ACTION,
-				Permission.EMAIL };
+				Permission.EMAIL,
+				Permission.PUBLIC_PROFILE };
 
 		SimpleFacebookConfiguration configuration = new SimpleFacebookConfiguration.Builder()
-				.setAppId(APP_ID).setNamespace(APP_NAMESPACE)
+				.setAppId(APP_ID)
+				.setNamespace(APP_NAMESPACE)
 				.setPermissions(permissions)
-				.setDefaultAudience(SessionDefaultAudience.FRIENDS).build();
+				.setDefaultAudience(SessionDefaultAudience.FRIENDS)
+				.setAskForAllPermissionsAtOnce(true)
+				.build();
 
 		SimpleFacebook.setConfiguration(configuration);
 	}

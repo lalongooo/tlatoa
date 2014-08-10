@@ -108,13 +108,9 @@
                 <Button
                     android:id="@+id/btnFacebookLogout"
                     style="@style/facebook_button"
-                    android:background="@drawable/facebook_button"
-                    android:drawableLeft="@drawable/facebook_icon_60"
-                    android:paddingBottom="4dp"
-                    android:paddingLeft="4dp"
-                    android:paddingTop="4dp"
-                    android:text="@string/facebook_button_logout"
-                    android:textSize="24sp" />
+                    android:layout_margin="20dp"
+                    android:text="@string/facebook_button_logout" />
+                
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

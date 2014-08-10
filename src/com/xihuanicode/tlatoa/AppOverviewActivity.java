@@ -234,7 +234,7 @@ public class AppOverviewActivity extends Activity implements
 				
 				fbUserId = profile.getId() != null ? profile.getId() : "" ;
 				fbName = profile.getName();
-				fbUsername = profile.getUsername();
+				fbUsername = profile.getFirstName();
 				fbFirstName = profile.getFirstName();
 				fbMiddleName = profile.getMiddleName();
 				fbLastName = profile.getLastName();

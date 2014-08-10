@@ -66,6 +66,7 @@
             android:paddingBottom="4dp"
             android:paddingLeft="4dp"
             android:paddingTop="4dp"
+            android:layout_margin="24dp"
             android:text="@string/facebook_button_login"
             android:textSize="24sp" />
 

@@ -63,10 +63,7 @@
             android:id="@+id/btnFacebookLogin"
             style="@style/facebook_button"
             android:layout_margin="20dp"
-            android:background="@drawable/facebook_button"
-            android:drawableLeft="@drawable/facebook_icon_60"
-            android:text="@string/facebook_button_login"
-            android:textSize="16sp" />
+            android:text="@string/facebook_button_login" />
 
         <Button
             android:id="@+id/btnStart"

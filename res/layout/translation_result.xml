@@ -63,6 +63,13 @@
             android:divider="@color/tlatoa_main_color_orange"
             android:dividerHeight="1dp"
             android:listSelector="@drawable/tlatoa_translations_list_item" />
+
+        <TextView
+            android:id="@+id/empty"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:gravity="center"
+            android:text="There are not items in the list" />
     </LinearLayout>
 
 </LinearLayout>
