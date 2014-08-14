@@ -20,7 +20,7 @@ public class ComplexAdapter extends PagerAdapter {
 	private int[] imagesArray = new int[]
 	        {
 				R.drawable.test_app_overview_image1,
-				R.drawable.test_app_overview_image2
+				R.drawable.tlatoa_microphone_icon
 			};
 
 	public ComplexAdapter(Context context) {

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="@drawable/tlatoa_background_main_activity"
@@ -40,15 +41,27 @@
             android:src="@drawable/actionbar_more" />
     </FrameLayout>
 
-    <ImageView
+    <at.markushi.ui.CircleButton
         android:id="@+id/ivMicrophone"
+        android:layout_width="256dp"
+        android:layout_height="256dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:clickable="true"
+        android:src="@drawable/tlatoa_microphone_icon"
+        app:cb_color="@color/tlatoa_main_color_orange"
+        app:cb_pressed_ring_width="12dp" />
+
+    <ImageView
+        android:id="@+id/ivMicrophone_"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:clickable="true"
         android:contentDescription="@string/tlatoa_splash_content_description"
-        android:src="@drawable/tlatoa_microphone_icon" />
+        android:src="@drawable/tlatoa_microphone_icon"
+        android:visibility="gone" />
 
     <Button
         android:id="@+id/button1"
@@ -57,7 +70,7 @@
         android:layout_below="@+id/ivMicrophone"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="26dp"
-        android:text="Go to results"
-        android:onClick="goToResults" />
+        android:onClick="goToResults"
+        android:text="Go to results" />
 
 </RelativeLayout>
