@@ -371,7 +371,7 @@ public class TranslationResultActivity extends FragmentActivity implements
 	
 	private void showDialog()
 	{
-		pDlg = ProgressDialog.show(this, Utils.getStringResource(getApplicationContext(), R.string.tlatoa_translation_result_progess_dialog_title), Utils.getStringResource(getApplicationContext(), R.string.tlatoa_translation_result_progess_dialog_message), true);
+		pDlg = ProgressDialog.show(this, getString(R.string.tlatoa_translation_result_progess_dialog_title), getString(R.string.tlatoa_translation_result_progess_dialog_message), true);
 	}
 
 	private void hideDialog()

@@ -49,13 +49,13 @@ public class ComplexAdapter extends PagerAdapter {
 		TextView tv = (TextView) vi.findViewById(R.id.tvViewPagerTextView);
 		switch (position) {
 		case 0:
-			tv.setText(Utils.getStringResource(context, R.string.tlatoa_appoverview_1st_viewpager_item_text));
+			tv.setText(context.getString(R.string.tlatoa_appoverview_1st_viewpager_item_text));
 			break;
 		case 1:
-			tv.setText(Utils.getStringResource(context, R.string.tlatoa_appoverview_2nd_viewpager_item_text));
+			tv.setText(context.getString(R.string.tlatoa_appoverview_2nd_viewpager_item_text));
 			break;
 		case 2:
-			tv.setText(Utils.getStringResource(context, R.string.tlatoa_appoverview_3rd_viewpager_item_text));
+			tv.setText(context.getString(R.string.tlatoa_appoverview_3rd_viewpager_item_text));
 			break;
 		}
 		

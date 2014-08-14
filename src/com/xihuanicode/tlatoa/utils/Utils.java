@@ -198,17 +198,6 @@ public class Utils {
         // Return full string
         return total.toString();
     }
-
-	/**
-	 * Returns a String resource identified by the id parameter
-	 * 
-	 * @param c The current {@link android.content.Context}
-	 * @param id The resource id
-	 * @return The String resource 
-	 */	
-    public static String getStringResource(Context c, int id){
-    	return c.getResources().getString(id);
-    }
     
     
     public static HttpResponse doResponse(String url, int taskType) {

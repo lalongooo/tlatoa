@@ -124,8 +124,6 @@ public class RegistrationActivity extends FragmentActivity  implements OnClickLi
 		
 		// Set profile picture
 		setProfilePicture(fbProfilePictureUrl, ivProfilePhoto);
-		
-//		new GetProfilePhoto().execute(fbProfilePictureUrl);
 	}
 	
 	private void setProfilePicture(String url, final ImageView iv){
@@ -242,12 +240,12 @@ public class RegistrationActivity extends FragmentActivity  implements OnClickLi
     	
 		// feed builder
 		final Feed feed = new Feed.Builder()
-			.setMessage(Utils.getStringResource(getApplicationContext(), R.string.tlatoa_registration_publish_feed_message))
-			.setName(Utils.getStringResource(getApplicationContext(), R.string.tlatoa_registration_publish_feed_name))
-			.setCaption(Utils.getStringResource(getApplicationContext(), R.string.tlatoa_registration_publish_feed_caption))
-			.setDescription(Utils.getStringResource(getApplicationContext(), R.string.tlatoa_registration_publish_feed_description))
-			.setPicture(Utils.getStringResource(getApplicationContext(), R.string.tlatoa_registration_publish_feed_picture_url))
-			.setLink(Utils.getStringResource(getApplicationContext(), R.string.tlatoa_registration_publish_feed_link))
+			.setMessage(getString(R.string.tlatoa_registration_publish_feed_message))
+			.setName(getString(R.string.tlatoa_registration_publish_feed_name))
+			.setCaption(getString(R.string.tlatoa_registration_publish_feed_caption))
+			.setPicture(getString(R.string.tlatoa_registration_publish_feed_picture_url))
+			.setDescription(getString(R.string.tlatoa_registration_publish_feed_description))
+			.setLink(getString(R.string.tlatoa_registration_publish_feed_link))
 			.build();
 		mSimpleFacebook.publish(feed, onPublishListener);
     }
