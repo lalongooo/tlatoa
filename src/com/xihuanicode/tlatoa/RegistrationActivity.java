@@ -1,19 +1,12 @@
 package com.xihuanicode.tlatoa;
 
-import java.io.ByteArrayOutputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-
 import org.apache.http.HttpResponse;
 
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -24,8 +17,6 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.ImageLoader.ImageContainer;
@@ -35,8 +26,6 @@ import com.sromku.simple.fb.SimpleFacebook;
 import com.sromku.simple.fb.listeners.OnPublishListener;
 import com.sromku.simple.fb.entities.Feed;
 import com.xihuanicode.tlatoa.entity.User;
-import com.xihuanicode.tlatoa.enums.NetworkAccessResultCode;
-import com.xihuanicode.tlatoa.enums.TlatoaStorageFileName;
 import com.xihuanicode.tlatoa.utils.PrefUtils;
 import com.xihuanicode.tlatoa.utils.Utils;
 
@@ -140,6 +129,9 @@ public class RegistrationActivity extends FragmentActivity  implements OnClickLi
 	}
 	
 	private void setProfilePicture(String url, final ImageView iv){
+		
+		this.showDialog();
+		
 		ImageLoader il = Tlatoa.getInstance().getImageLoader();
 		
 		il.get(url, new ImageListener() {
@@ -158,6 +150,8 @@ public class RegistrationActivity extends FragmentActivity  implements OnClickLi
 		
 		PrefUtils.saveUserName(getApplicationContext(), fbFirstName);
 		PrefUtils.saveUserEmail(getApplicationContext(), fbEmail);
+		
+		this.hideDialog();
 	}
 
 	private void goToMainActivity() {
@@ -293,7 +287,7 @@ public class RegistrationActivity extends FragmentActivity  implements OnClickLi
 	
 	private void showDialog()
 	{
-		pDlg = ProgressDialog.show(this, PROGRESS_DIALOG_TITLE , PROGRESS_DIALOG_MESSAGE, true);
+		pDlg = ProgressDialog.show(this, getString(R.string.tlatoa_registration_progress_dialog_title) , getString(R.string.tlatoa_registration_progress_dialog_message), true);
 	}
 
 	private void hideDialog()

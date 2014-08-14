@@ -62,6 +62,10 @@
     <string name="tlatoa_registration_publish_feed_description">Tlatoa rompe la brecha existente entre las personas con discapacidad auditiva y la educación de calidad, servicios médicos y legales..</string>
     <string name="tlatoa_registration_publish_feed_picture_url">http://i.imgur.com/xwpXEkE.png</string>
     <string name="tlatoa_registration_publish_feed_link">http://tlatoa.co</string>
+    
+    <string name="tlatoa_registration_progress_dialog_title">Processing&#8230;</string>
+    <string name="tlatoa_registration_progress_dialog_message">We\'re processing your request</string>
+    
     <string name="tlatoa_share_button_title">Share</string>
     <string name="tlatoa_splash_app_name">TLATOA</string>
     <string name="tlatoa_splash_content_description"></string>
