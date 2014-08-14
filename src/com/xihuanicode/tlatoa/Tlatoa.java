@@ -1,6 +1,7 @@
 package com.xihuanicode.tlatoa;
 
 import android.app.Application;
+import android.text.TextUtils;
 
 import com.facebook.SessionDefaultAudience;
 import com.google.analytics.tracking.android.GoogleAnalytics;
@@ -10,6 +11,11 @@ import com.sromku.simple.fb.Permission;
 import com.sromku.simple.fb.SimpleFacebook;
 import com.sromku.simple.fb.SimpleFacebookConfiguration;
 import com.sromku.simple.fb.utils.Logger;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.Volley;
+import com.xihuanicode.tlatoa.utils.LruBitmapCache;
 
 public class Tlatoa extends Application {
 
@@ -34,13 +40,28 @@ public class Tlatoa extends Application {
 	private static final String APP_ID = "143269149215368";
 	private static final String APP_NAMESPACE = "com.xihuanicode.tlatoa.activity";
 
+	/*
+	 * Volley Library variables
+	 * */
+	private RequestQueue mRequestQueue;
+	private ImageLoader mImageLoader;
+	private static Tlatoa mInstance;
+	
+	public static final String TAG = Tlatoa.class.getSimpleName();
+	
 	@Override
 	public void onCreate() {
 		super.onCreate();
 
 		initializeFb();
 		initializeGa();
+		
+		mInstance = this;
 
+	}
+	
+	public static synchronized Tlatoa getInstance(){
+		return mInstance;
 	}
 
 	/*
@@ -100,4 +121,35 @@ public class Tlatoa extends Application {
 		return mGa;
 	}
 
+	public RequestQueue getRequestQueue(){
+		if(mRequestQueue == null){
+			mRequestQueue = Volley.newRequestQueue(getApplicationContext());			
+		}
+		return mRequestQueue;
+	}
+	
+	public ImageLoader getImageLoader() {
+		getRequestQueue();
+		if(mImageLoader == null){
+			mImageLoader = new ImageLoader(mRequestQueue, new LruBitmapCache());
+		}
+		return this.mImageLoader;
+	}
+	
+	public <T> void addToRequestQueue(Request <T> req, String tag){
+		req.setTag(TextUtils.isEmpty(tag) ? TAG : tag);
+		getRequestQueue().add(req);
+	}
+	
+	public <T> void addToRequestQueue(Request <T> req){
+		req.setTag(TAG);
+		getRequestQueue().add(req);
+	}	
+	
+	public void cancelPendingRequest(Object tag){
+		if(mRequestQueue != null){
+			mRequestQueue.cancelAll(tag);
+		}
+	}
+	
 }

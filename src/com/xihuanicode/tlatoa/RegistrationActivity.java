@@ -24,7 +24,12 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.ImageLoader.ImageContainer;
+import com.android.volley.toolbox.ImageLoader.ImageListener;
 import com.google.analytics.tracking.android.EasyTracker;
 import com.sromku.simple.fb.SimpleFacebook;
 import com.sromku.simple.fb.listeners.OnPublishListener;
@@ -32,11 +37,10 @@ import com.sromku.simple.fb.entities.Feed;
 import com.xihuanicode.tlatoa.entity.User;
 import com.xihuanicode.tlatoa.enums.NetworkAccessResultCode;
 import com.xihuanicode.tlatoa.enums.TlatoaStorageFileName;
+import com.xihuanicode.tlatoa.utils.PrefUtils;
 import com.xihuanicode.tlatoa.utils.Utils;
 
 public class RegistrationActivity extends FragmentActivity  implements OnClickListener {
-
-	private static final String SERVICE_URL = "http://tlatoa.herokuapp.com/kerberos/api/user";
 	
 	private static final String PROGRESS_DIALOG_TITLE = "Processing...";
 	private static final String PROGRESS_DIALOG_MESSAGE = "We're processing your request";
@@ -129,7 +133,31 @@ public class RegistrationActivity extends FragmentActivity  implements OnClickLi
 		// Add listeners
 		btnConfirmRegistration.setOnClickListener(this);
 		
-		new GetProfilePhoto().execute(fbProfilePictureUrl);
+		// Set profile picture
+		setProfilePicture(fbProfilePictureUrl, ivProfilePhoto);
+		
+//		new GetProfilePhoto().execute(fbProfilePictureUrl);
+	}
+	
+	private void setProfilePicture(String url, final ImageView iv){
+		ImageLoader il = Tlatoa.getInstance().getImageLoader();
+		
+		il.get(url, new ImageListener() {
+			
+			@Override
+			public void onErrorResponse(VolleyError error) {
+				iv.setImageDrawable(getResources().getDrawable(R.drawable.tlatoa_profile_default_photo));
+			}
+			
+			@Override
+			public void onResponse(ImageContainer response, boolean b) {
+				iv.setImageBitmap(response.getBitmap());
+				PrefUtils.saveUserProfilePicture(getApplicationContext(), response.getBitmap());
+			}
+		});
+		
+		PrefUtils.saveUserName(getApplicationContext(), fbFirstName);
+		PrefUtils.saveUserEmail(getApplicationContext(), fbEmail);
 	}
 
 	private void goToMainActivity() {
@@ -139,71 +167,11 @@ public class RegistrationActivity extends FragmentActivity  implements OnClickLi
 		this.finish();
 	}
 
-	private class GetProfilePhoto extends AsyncTask<String, Void, String> {
-
-		@Override
-		protected String doInBackground(String... urls) {
-
-			// TODO: Candidate code to send for reporting
-			try {
-				try {
-					
-					// Get profile photo from Facebook
-//					profilePhotoBitmap = BitmapFactory.decodeStream((InputStream) new URL(urls[0]).getContent());
-					
-					URL imageURL = new URL(urls[0]);
-					profilePhotoBitmap = BitmapFactory.decodeStream(imageURL.openConnection().getInputStream());
-					
-					try{
-						
-						// Get bytes from bitmap
-						ByteArrayOutputStream stream = new ByteArrayOutputStream();
-						profilePhotoBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-						
-						// Save the image to internal storage
-						FileOutputStream fos = openFileOutput(TlatoaStorageFileName.TLATOA_USER_PROFILE_PHOTO.name(), Context.MODE_PRIVATE);
-						fos.write(stream.toByteArray());
-						fos.close();
-						
-						fos = openFileOutput(TlatoaStorageFileName.TLATOA_FB_USER_NAME.name(), Context.MODE_PRIVATE);
-						fos.write(fbFirstName.getBytes());
-						fos.close();
-						
-						fos = openFileOutput(TlatoaStorageFileName.TLATOA_FB_USER_EMAIL.name(), Context.MODE_PRIVATE);
-						fos.write(fbEmail.getBytes());
-						fos.close();
-						
-					}catch (FileNotFoundException ex){
-						// TODO: Candidate code to send for reporting
-					}catch (IOException ex){
-						// TODO: Candidate code to send for reporting
-					}
-					
-					return NetworkAccessResultCode.SUCCESSFUL_OPERATION.name();
-					
-				} catch (MalformedURLException e) {
-					// TODO: Candidate code to send for reporting
-					return NetworkAccessResultCode.MAL_FORMED_URL.name();
-				} catch (IOException e) {
-					// TODO: Candidate code to send for reporting
-					return NetworkAccessResultCode.IO_EXCEPTION.name();
-				}
-			} catch (Exception e) {
-				// TODO: Candidate code to send for reporting
-				return NetworkAccessResultCode.GENERAL_EXCEPTION.name();
-			}
-		}
-
-		@Override
-		protected void onPostExecute(String result) {
-			ivProfilePhoto.setImageBitmap(profilePhotoBitmap);
-		}
-	}
 
 	private void saveUserData(){
 
 		WebServiceTask wst = new WebServiceTask(WebServiceTask.POST_TASK, this, "We are registering you...");
-        wst.execute(new String[] { SERVICE_URL });
+        wst.execute(new String[] { Config.USER_REGISTRARION_URL });
 	}
 	
 	@Override
@@ -275,7 +243,6 @@ public class RegistrationActivity extends FragmentActivity  implements OnClickLi
             
         }
     }
-
     
     private void publishTlatoaFeed(){
     	

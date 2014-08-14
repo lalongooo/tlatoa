@@ -19,6 +19,7 @@ import com.google.analytics.tracking.android.EasyTracker;
 import com.sromku.simple.fb.SimpleFacebook;
 import com.sromku.simple.fb.listeners.OnLogoutListener;
 import com.xihuanicode.tlatoa.enums.TlatoaStorageFileName;
+import com.xihuanicode.tlatoa.utils.PrefUtils;
 import com.xihuanicode.tlatoa.utils.Utils;
 
 import eu.inmite.android.lib.dialogs.ISimpleDialogCancelListener;
@@ -81,9 +82,9 @@ implements View.OnClickListener, ISimpleDialogListener, ISimpleDialogCancelListe
 
 		
 		// Set values on screen
-		tvUsername.setText(userName);
-		tvEmail.setText(userEmail);
-		ivProfilePhoto.setImageBitmap(bitmap);
+		tvUsername.setText(PrefUtils.getUserName(getApplicationContext()));
+		tvEmail.setText(PrefUtils.getUserEmail(getApplicationContext()));
+		ivProfilePhoto.setImageBitmap(PrefUtils.getUserProfilePicture(getApplicationContext()));
 		
 		// Set facebook typeface
 		typeface = Typeface.createFromAsset(getAssets(), "FACEBOLF.TTF");
