@@ -259,8 +259,7 @@ public class Utils {
 
 			HttpPost httppost = new HttpPost(url);
 			httppost.setHeader("Content-Type", "application/json");
-			httppost.setEntity(new ByteArrayEntity(jsonEn.toString().getBytes(
-					"UTF8")));
+			httppost.setEntity(new ByteArrayEntity(jsonEn.toString().getBytes("UTF8")));
 
 			response = httpclient.execute(httppost);
 

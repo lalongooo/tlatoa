@@ -90,7 +90,7 @@ public class MainActivity extends FragmentActivity implements
 		// Add listeners
 		ivMicrophone.setOnClickListener(this);
 		actionBarMore.setOnClickListener(this);
-		menuOptions.setOnItemClickListener(new DrawerItemClickListener());
+//		menuOptions.setOnItemClickListener(new DrawerItemClickListener());
 
 		// With this piece of code, when the Menu key is pressed, we'll show the
 		// menu from the ActionBar
@@ -385,6 +385,7 @@ public class MainActivity extends FragmentActivity implements
 	
 	public void goToResults(View v) {
 		Intent intent = new Intent(this, TranslationResultActivity.class);
+		intent.putExtra("phrase_test", "hola");
 		startActivity(intent); 
 	}
 

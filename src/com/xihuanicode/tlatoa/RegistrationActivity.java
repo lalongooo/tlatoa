@@ -6,7 +6,6 @@ import org.apache.http.HttpResponse;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -30,9 +29,6 @@ import com.xihuanicode.tlatoa.utils.PrefUtils;
 import com.xihuanicode.tlatoa.utils.Utils;
 
 public class RegistrationActivity extends FragmentActivity  implements OnClickListener {
-	
-	private static final String PROGRESS_DIALOG_TITLE = "Processing...";
-	private static final String PROGRESS_DIALOG_MESSAGE = "We're processing your request";
 
 	private Typeface typeface;
 	
@@ -60,7 +56,6 @@ public class RegistrationActivity extends FragmentActivity  implements OnClickLi
 	private String fbLocationId;
 	private String fbLocale;
 	private String fbProfilePictureUrl;
-	private Bitmap profilePhotoBitmap;
 
 	// Views
 	private TextView tvFirstName;

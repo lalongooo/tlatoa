@@ -5,7 +5,9 @@ import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.http.HttpResponse;
 import org.json.JSONArray;
@@ -35,6 +37,13 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.android.volley.Request.Method;
+import com.android.volley.AuthFailureError;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.analytics.tracking.android.EasyTracker;
 import com.xihuanicode.tlatoa.customlistview.TranslationPlayListAdapter;
 import com.xihuanicode.tlatoa.db.SentenceDataSource;
@@ -48,19 +57,20 @@ import eu.inmite.android.lib.dialogs.ISimpleDialogListener;
 import eu.inmite.android.lib.dialogs.SimpleDialogFragment;
 
 public class TranslationResultActivity extends FragmentActivity implements
-		View.OnClickListener,
-		ISimpleDialogListener,
-		ISimpleDialogCancelListener{
+		View.OnClickListener, ISimpleDialogListener,
+		ISimpleDialogCancelListener {
 
 	private static final String TAG = "ResultActivity";
 
 	private static final int ANIMATION_DURATION = 500;
 	private static final int INFORMATION_MESSAGE_REQUEST_CODE = 42;
 
-//	private final String TLATOA_SENTENCE_WS_URL = Utils.getApplicationProperty(getApplicationContext(), "tlatoa_web_service_url");
+	// private final String TLATOA_SENTENCE_WS_URL =
+	// Utils.getApplicationProperty(getApplicationContext(),
+	// "tlatoa_web_service_url");
 
 	private Typeface typeface;
-	
+
 	// Action bar items
 	private TextView actionBarTitle;
 
@@ -68,7 +78,8 @@ public class TranslationResultActivity extends FragmentActivity implements
 	private Sentence sentence;
 
 	// UI items
-	private ImageView ivTranslationResultAnimation, ivTranslationResultPlayButton;
+	private ImageView ivTranslationResultAnimation,
+			ivTranslationResultPlayButton;
 	private ListView lvTranslationList;
 	private TranslationPlayListAdapter adapter;
 	private ProgressDialog pDlg;
@@ -85,40 +96,83 @@ public class TranslationResultActivity extends FragmentActivity implements
 		datasource = new SentenceDataSource(this);
 
 		setUI();
-		
+
 		Bundle extras = getIntent().getExtras();
 		String phrase = null;
-		
-		if(extras != null){
+
+		if (extras != null) {
 			phrase = extras.getString("phrase");
 		}
-		
-		if(phrase != null){
+
+		if (phrase != null) {
 			new Translate().execute(phrase);
 		}
 		
+		if(extras.getString("phrase_test") != null){
+			translate(extras.getString("phrase_test"));
+		}
+		
+
+	}
+
+	private void translate(final String phrase) {
+
+		showDialog();
+		
+		Response.ErrorListener el = new Response.ErrorListener() {
+
+			@Override
+			public void onErrorResponse(VolleyError error) {
+				VolleyLog.e(TAG, error.getMessage());
+				hideDialog();				
+			}
+		};
+		
+		JsonArrayRequest jor = new JsonArrayRequest(
+				Config.PHRASE_TRANSLATION_URL + phrase,
+				new Response.Listener<JSONArray>() {
+					@Override
+					public void onResponse(JSONArray response) {
+						Log.e(TAG, response.toString());
+						hideDialog();
+					}
+				}, el
+
+		) {
+
+//			@Override
+//			protected Map<String, String> getParams() throws AuthFailureError {
+//				Map<String, String> params = new HashMap<String, String>();
+//				params.put("phrase", phrase);
+//				return params;
+//			}
+
+		};
+		
+		Tlatoa.getInstance().addToRequestQueue(jor, "-VOLLEY-TRANSLATE-");
+
 	}
 
 	@Override
 	public void onContentChanged() {
 		super.onContentChanged();
-		
-	    View empty = findViewById(R.id.empty);
-	    ListView list = (ListView) findViewById(R.id.list);
-	    list.setEmptyView(empty);
+
+		View empty = findViewById(R.id.empty);
+		ListView list = (ListView) findViewById(R.id.list);
+		list.setEmptyView(empty);
 	}
 
 	private void setUI() {
 
 		// TODO: Configure theme
 		setTheme(R.style.CustomDarkTheme);
-		
+
 		// Get views
 		lvTranslationList = (ListView) findViewById(R.id.list);
 		ivTranslationResultAnimation = (ImageView) findViewById(R.id.ivTranslationResultAnimation);
 		ivTranslationResultPlayButton = (ImageView) findViewById(R.id.ivTranslationResultPlayButton);
 		actionBarTitle = (TextView) findViewById(R.id.actionbar_title);
-		
+
 		// set typeface
 		typeface = Typeface.createFromAsset(getAssets(), "DANUBE.TTF");
 		actionBarTitle.setTypeface(typeface);
@@ -128,24 +182,26 @@ public class TranslationResultActivity extends FragmentActivity implements
 
 		// Load all translated sentences
 		List<Sentence> phrases = datasource.getAllSentences();
-		
+
 		// Listview configuration
 		if (phrases.size() > 0) {
 			adapter = new TranslationPlayListAdapter(this, phrases);
 			lvTranslationList.setAdapter(adapter);
 		}
-		
+
 		lvTranslationList.setOnItemClickListener(new OnItemClickListener() {
 			@Override
-			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				
-				int sentenceId = Integer.valueOf(((TextView)view.findViewById(R.id.tlatoa_phrase_id)).getText().toString());
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+
+				int sentenceId = Integer.valueOf(((TextView) view
+						.findViewById(R.id.tlatoa_phrase_id)).getText()
+						.toString());
 				Sentence s = datasource.getSentenceById(sentenceId);
 				playTranslation(s);
-				
-				
+
 			}
-		});		
+		});
 
 	}
 
@@ -171,31 +227,36 @@ public class TranslationResultActivity extends FragmentActivity implements
 
 			// Creating the entity object to store it in the database
 			Sentence sentence = new Sentence();
-			
+
 			// Http request objects
 			String jsonResult = null;
 			HttpResponse response = null;
-			
-			// Check for sentence in the local database			
-			sentence.setText(phrase[0]);			
+
+			// Check for sentence in the local database
+			sentence.setText(phrase[0]);
 			sentence = datasource.existsInLocalDb(sentence);
-			
-			if(!datasource.hasExpired(sentence)){
+
+			if (!datasource.hasExpired(sentence)) {
 				sentence = datasource.getSentenceById(sentence.getId());
-			}else{
-				
+			} else {
+
 				// Get the first JSON result from the Tlatoa Web Service
 				try {
-	
+
 					String url = URLEncoder.encode(phrase[0], "UTF8");
-					response = Utils.doResponse(Utils.getApplicationProperty(getApplicationContext(), "tlatoa_web_service_url") + url, 2);
-					
+					response = Utils.doResponse(
+							Utils.getApplicationProperty(
+									getApplicationContext(),
+									"tlatoa_web_service_url")
+									+ url, 2);
+
 					if (response != null) {
-						jsonResult = Utils.inputStreamToString(response.getEntity().getContent());
+						jsonResult = Utils.inputStreamToString(response
+								.getEntity().getContent());
 					}
-					
+
 					Log.i(TAG, jsonResult);
-					
+
 				} catch (IllegalStateException e) {
 					// TODO: Candidate code to send for reporting
 					Log.i(TAG, e.getMessage());
@@ -204,57 +265,58 @@ public class TranslationResultActivity extends FragmentActivity implements
 					// TODO: Candidate code to send for reporting
 					Log.i(TAG, e.getMessage());
 					e.printStackTrace();
-				}catch (Exception e) {
+				} catch (Exception e) {
 					// TODO: Candidate code to send for reporting
 					e.printStackTrace();
 				}
-				
-				
+
 				// Get the image elements
 				if (response == null) {
 					return null;
 				} else {
-					
+
 					try {
-						
+
 						// Getting the first and unique element
 						JSONArray jsonArray = new JSONArray(jsonResult);
 						JSONObject jsonObject = jsonArray.getJSONObject(0);
-	
+
 						sentence.setId(jsonObject.getInt("sentenceId"));
 						sentence.setText(jsonObject.getString("sentence"));
 						List<SentenceResource> resources = new ArrayList<SentenceResource>();
-											
+
 						// Looping into the resources element
 						JSONArray resourcesArray = (JSONArray) jsonObject.get("resources");
-	
+
 						for (int i = 0; i < resourcesArray.length(); i++) {
 							jsonObject = resourcesArray.getJSONObject(i);
-	
+
 							Bitmap bitmap;
-	
+
 							// Get bitmap from HerokuApp
 							BitmapDownloader bitmapDownloader = new BitmapDownloader();
 							bitmap = bitmapDownloader.downloadBitmap(jsonObject.getString("resourceURL"));
-	
+
 							// Get bytes from bitmap
 							ByteArrayOutputStream stream = new ByteArrayOutputStream();
-							bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-							
+							bitmap.compress(Bitmap.CompressFormat.PNG, 100,
+									stream);
+
 							SentenceResource sr = new SentenceResource();
 							sr.setResourceId(jsonObject.getInt("resourceId"));
 							sr.setResourceURL(jsonObject.getString("resourceURL"));
 							sr.setSequenceOrder(jsonObject.getInt("sequenceOrder"));
 							sr.setResourceImage(stream.toByteArray());
-							
+
 							resources.add(sr);
 						}
-						
+
 						sentence.setSentenceResource(resources);
-						
+
 						datasource = new SentenceDataSource(getApplication());
-						datasource.createSentence(getApplicationContext(), sentence);
-	
+						datasource.createSentence(getApplicationContext(),
+								sentence);
+
 						Log.i(TAG, jsonObject.toString());
 					} catch (JSONException e) {
 						// TODO: Candidate code to send for reporting
@@ -269,7 +331,7 @@ public class TranslationResultActivity extends FragmentActivity implements
 		}
 
 		@Override
-		protected void onPostExecute(Sentence s) {			
+		protected void onPostExecute(Sentence s) {
 
 			hideDialog();
 			sentence = s;
@@ -294,9 +356,9 @@ public class TranslationResultActivity extends FragmentActivity implements
 
 	@SuppressWarnings("deprecation")
 	private void playTranslation(Sentence s) {
-		
-		if(s != null && s.getSentenceResource() != null){
-		
+
+		if (s != null && s.getSentenceResource() != null) {
+
 			int resourceCount = s.getSentenceResource().size();
 			List<SentenceResource> sr = s.getSentenceResource();
 			Collections.sort(sr);
@@ -306,33 +368,42 @@ public class TranslationResultActivity extends FragmentActivity implements
 				try {
 					ivTranslationResultPlayButton.setVisibility(View.INVISIBLE);
 
-					AnimationDrawable animationDrawable = (AnimationDrawable) getResources().getDrawable(R.drawable.tlatoa_translation_result_anim);
+					AnimationDrawable animationDrawable = (AnimationDrawable) getResources()
+							.getDrawable(
+									R.drawable.tlatoa_translation_result_anim);
 					animationDrawable.setOneShot(true);
 
 					if (animationDrawable.getNumberOfFrames() == 0) {
 						for (int i = 0; i < resourceCount; i++) {
-							
+
 							SentenceResource r = sr.get(i);
-							
-							Bitmap bitmap = BitmapFactory.decodeByteArray(r.getResourceImage(), 0, r.getResourceImage().length);
-							
-							BitmapDrawable bitmapDrawable = new BitmapDrawable(getResources(), bitmap);
+
+							Bitmap bitmap = BitmapFactory.decodeByteArray(
+									r.getResourceImage(), 0,
+									r.getResourceImage().length);
+
+							BitmapDrawable bitmapDrawable = new BitmapDrawable(
+									getResources(), bitmap);
 							Drawable drawable = (Drawable) bitmapDrawable;
-							animationDrawable.addFrame(drawable, ANIMATION_DURATION);
+							animationDrawable.addFrame(drawable,
+									ANIMATION_DURATION);
 
 						}
 					}
 
 					// Pass our animation drawable to our custom drawable class
-					CustomAnimationDrawable cad = new CustomAnimationDrawable(animationDrawable) {
+					CustomAnimationDrawable cad = new CustomAnimationDrawable(
+							animationDrawable) {
 						@Override
 						void onAnimationFinish() {
-							ivTranslationResultPlayButton.setVisibility(View.VISIBLE);
+							ivTranslationResultPlayButton
+									.setVisibility(View.VISIBLE);
 						}
 					};
 
 					// Set the views drawable to our custom drawable
-					ivTranslationResultAnimation.setImageResource(android.R.color.transparent);
+					ivTranslationResultAnimation
+							.setImageResource(android.R.color.transparent);
 					if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
 						setBakgroundJELLYBean(cad);
 					} else {
@@ -349,14 +420,14 @@ public class TranslationResultActivity extends FragmentActivity implements
 				}
 
 			}
-			
-		} else{
-			
+
+		} else {
+
 			showNotificationMessage();
 		}
 
 	}
-	
+
 	private void showNotificationMessage() {
 		SimpleDialogFragment
 				.createBuilder(this, getSupportFragmentManager())
@@ -364,18 +435,18 @@ public class TranslationResultActivity extends FragmentActivity implements
 				.setMessage(R.string.tlatoa_translation_result_msg_no_result_message)
 				.setPositiveButtonText(R.string.tlatoa_translation_result_msg_no_result_positive_button)
 				.setRequestCode(INFORMATION_MESSAGE_REQUEST_CODE)
-				.setCancelable(false)
-				.setTag("custom-tag")
-				.show();
-	}
-	
-	private void showDialog()
-	{
-		pDlg = ProgressDialog.show(this, getString(R.string.tlatoa_translation_result_progess_dialog_title), getString(R.string.tlatoa_translation_result_progess_dialog_message), true);
+				.setCancelable(false).setTag("custom-tag").show();
 	}
 
-	private void hideDialog()
-	{
+	private void showDialog() {
+		pDlg = ProgressDialog
+				.show(this,
+						getString(R.string.tlatoa_translation_result_progess_dialog_title),
+						getString(R.string.tlatoa_translation_result_progess_dialog_message),
+						true);
+	}
+
+	private void hideDialog() {
 		pDlg.dismiss();
 	}
 
@@ -415,12 +486,11 @@ public class TranslationResultActivity extends FragmentActivity implements
 		if (requestCode == INFORMATION_MESSAGE_REQUEST_CODE) {
 		}
 	}
-	
-	
+
 	@Override
 	public void onNeutralButtonClicked(int requestCode) {
 		if (requestCode == INFORMATION_MESSAGE_REQUEST_CODE) {
-		}	
+		}
 	}
 
 	@Override
@@ -434,5 +504,5 @@ public class TranslationResultActivity extends FragmentActivity implements
 		super.onStop();
 		EasyTracker.getInstance(this).activityStop(this);
 	}
-	
+
 }
