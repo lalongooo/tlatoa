@@ -44,7 +44,8 @@
         <activity
             android:name=".MainActivity"
             android:label="@string/tlatoa_app_name"
-            android:theme="@style/TlatoaMainTheme" />
+            android:theme="@style/TlatoaMainTheme"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".TranslationResultActivity"
             android:label="@string/tlatoa_app_name"
