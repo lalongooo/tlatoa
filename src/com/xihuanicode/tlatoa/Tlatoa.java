@@ -39,7 +39,7 @@ public class Tlatoa extends Application {
 	 * Facebook configuration values.
 	 */
 	private static final String APP_ID = "143269149215368";
-	private static final String APP_NAMESPACE = "com.xihuanicode.tlatoa.activity";
+	private static final String APP_NAMESPACE = "com.xihuanicode.tlatoa";
 
 	/*
 	 * Volley Library variables
