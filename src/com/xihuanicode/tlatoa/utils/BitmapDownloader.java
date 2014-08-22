@@ -11,10 +11,18 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.ImageLoader.ImageContainer;
+import com.android.volley.toolbox.ImageLoader.ImageListener;
+import com.xihuanicode.tlatoa.Tlatoa;
+
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.http.AndroidHttpClient;
 import android.util.Log;
+import android.widget.Toast;
 
 public class BitmapDownloader {
 
@@ -22,6 +30,7 @@ public class BitmapDownloader {
 
     public enum Mode { NO_ASYNC_TASK, NO_DOWNLOADED_DRAWABLE, CORRECT }
     private Mode mode = Mode.NO_ASYNC_TASK;
+    private static Bitmap bitmap;
 	
 	public Bitmap downloadBitmap(String url) {
 
@@ -69,6 +78,28 @@ public class BitmapDownloader {
 		return null;
 	}
 
+	public static Bitmap downloadBitmap_(final Context context, String url){
+		
+		ImageLoader il = Tlatoa.getInstance().getImageLoader();
+		
+		ImageListener ilistener = new ImageListener() {
+			
+			@Override
+			public void onErrorResponse(VolleyError arg0) {
+				Toast.makeText(context, "An error occurred while downloading the image", Toast.LENGTH_LONG).show();
+			}
+			
+			@Override
+			public void onResponse(ImageContainer response, boolean b) {
+				bitmap = response.getBitmap();
+			}
+		};
+		
+		il.get(url, ilistener);
+		
+		return bitmap;	
+	}
+	
 	/*
 	 * An InputStream that skips the exact number of bytes provided, unless it
 	 * reaches EOF.

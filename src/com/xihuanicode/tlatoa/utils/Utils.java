@@ -7,6 +7,8 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Properties;
@@ -344,6 +346,14 @@ public class Utils {
 		}
 		
 		return property;
+	}
+	
+	
+	public static String getCurrentTimeStamp() {
+	    SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+	    Date now = new Date();
+	    String strDate = sdfDate.format(now);
+	    return strDate;
 	}
 
 }

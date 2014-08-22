@@ -10,6 +10,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:name=".Tlatoa"
@@ -19,7 +20,7 @@
         android:label="@string/tlatoa_app_name"
         android:theme="@style/TlatoaTheme" >
         <activity
-            android:name="com.xihuanicode.tlatoa.SplashActivity"
+            android:name=".SplashActivity"
             android:label="@string/tlatoa_app_name"
             android:theme="@style/TlatoaSplashTheme"
             android:screenOrientation="portrait" >
@@ -49,7 +50,8 @@
         <activity
             android:name=".TranslationResultActivity"
             android:label="@string/tlatoa_app_name"
-            android:theme="@style/TlatoaMainTheme" />
+            android:theme="@style/TlatoaMainTheme"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".RegistrationActivity"
             android:label="@string/tlatoa_app_name"

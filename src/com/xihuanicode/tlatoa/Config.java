@@ -13,5 +13,10 @@ public class Config {
 	 */
 	public static final String PHRASE_TRANSLATION_URL = "http://tlatoa.herokuapp.com/manager/api/sentence?phrase=";
 	
+	/**
+	 * Enable caching 
+	 */
+	public static final boolean PHRASE_CACHE = false;
+	
 
 }

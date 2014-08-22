@@ -7,6 +7,7 @@ import com.facebook.SessionDefaultAudience;
 import com.google.analytics.tracking.android.GoogleAnalytics;
 import com.google.analytics.tracking.android.Logger.LogLevel;
 import com.google.analytics.tracking.android.Tracker;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.sromku.simple.fb.Permission;
 import com.sromku.simple.fb.SimpleFacebook;
 import com.sromku.simple.fb.SimpleFacebookConfiguration;
@@ -47,7 +48,11 @@ public class Tlatoa extends Application {
 	private ImageLoader mImageLoader;
 	private static Tlatoa mInstance;
 	
+
+	
 	public static final String TAG = Tlatoa.class.getSimpleName();
+	
+	protected com.nostra13.universalimageloader.core.ImageLoader imageLoader = com.nostra13.universalimageloader.core.ImageLoader.getInstance();
 	
 	@Override
 	public void onCreate() {
@@ -57,6 +62,8 @@ public class Tlatoa extends Application {
 		initializeGa();
 		
 		mInstance = this;
+		ImageLoaderConfiguration config = ImageLoaderConfiguration.createDefault(this);
+		com.nostra13.universalimageloader.core.ImageLoader.getInstance().init(config);
 
 	}
 	
