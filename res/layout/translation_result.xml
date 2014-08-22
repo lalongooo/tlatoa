@@ -30,7 +30,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:background="@color/tlatoa_main_color_orange" >
+        android:background="@color/black" >
 
         <ImageView
             android:id="@+id/ivTranslationResultAnimation"
