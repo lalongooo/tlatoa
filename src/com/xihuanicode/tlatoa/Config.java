@@ -14,9 +14,14 @@ public class Config {
 	public static final String PHRASE_TRANSLATION_URL = "http://tlatoa.herokuapp.com/manager/api/sentence?phrase=";
 	
 	/**
-	 * Enable caching 
+	 * Enable caching.
 	 */
 	public static final boolean PHRASE_CACHE = false;
+	
+	/**
+	 * Default animation time of each image in the translation result activity (milliseconds). 
+	 */	
+	public static final int ANIMATION_DURATION = 500;
 	
 
 }

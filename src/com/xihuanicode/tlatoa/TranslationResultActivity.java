@@ -52,7 +52,6 @@ public class TranslationResultActivity extends FragmentActivity implements
 
 	private static final String TAG = "ResultActivity";
 
-	private static final int ANIMATION_DURATION = 500;
 	private static final int INFORMATION_MESSAGE_REQUEST_CODE = 42;
 
 	// private final String TLATOA_SENTENCE_WS_URL =
@@ -245,12 +244,12 @@ public class TranslationResultActivity extends FragmentActivity implements
 	}
 
 	@SuppressWarnings("deprecation")
-	private void playTranslation(Sentence s) {
+	private void playTranslation(Sentence sentence) {
 
-		if (s != null && s.getSentenceResource() != null) {
+		if (sentence != null && sentence.getSentenceResource() != null) {
 
-			int resourceCount = s.getSentenceResource().size();
-			List<SentenceResource> sr = s.getSentenceResource();
+			int resourceCount = sentence.getSentenceResource().size();
+			List<SentenceResource> sr = sentence.getSentenceResource();
 			Collections.sort(sr);
 
 			if (resourceCount > 0) {
@@ -267,10 +266,9 @@ public class TranslationResultActivity extends FragmentActivity implements
 							SentenceResource r = sr.get(i);
 
 							Bitmap bitmap = BitmapFactory.decodeByteArray(r.getResourceImage(), 0, r.getResourceImage().length);
-
 							BitmapDrawable bitmapDrawable = new BitmapDrawable(getResources(), bitmap);
 							Drawable drawable = (Drawable) bitmapDrawable;
-							animationDrawable.addFrame(drawable, ANIMATION_DURATION);
+							animationDrawable.addFrame(drawable, Config.ANIMATION_DURATION);
 
 						}
 					}
