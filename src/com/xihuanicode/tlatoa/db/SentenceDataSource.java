@@ -9,9 +9,9 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.xihuanicode.tlatoa.Config;
 import com.xihuanicode.tlatoa.entity.Sentence;
 import com.xihuanicode.tlatoa.entity.SentenceResource;
-import com.xihuanicode.tlatoa.utils.*;
 
 public class SentenceDataSource {
 
@@ -83,7 +83,7 @@ public class SentenceDataSource {
 			values.put(SentenceDatabaseHelper.SENTENCE_ID, s.getId());
 			values.put(SentenceDatabaseHelper.SENTENCE_TEXT, s.getText());
 			values.put(SentenceDatabaseHelper.SENTENCE_CREATED_AT,new java.util.Date().getTime());
-			values.put(SentenceDatabaseHelper.SENTENCE_EXPIRES_AT,new java.util.Date().getTime() + Long.parseLong(Utils.getApplicationProperty(c, "cache_expiration_valid_time")));
+			values.put(SentenceDatabaseHelper.SENTENCE_EXPIRES_AT,new java.util.Date().getTime() + Config.CACHE_EXPIRATION_VALID_TIME);
 			
 			
 			insertId = database.insert(SentenceDatabaseHelper.TABLE_SENTENCE, null, values);
@@ -296,10 +296,10 @@ public class SentenceDataSource {
 	
 	/**
 	 * <p>
-	 * Checks if the {@link com.xihuanicode.tlatoa.entity.Sentence} object passed as a parameter has expired. 
+	 * Checks if the {@link Sentence} object passed as a parameter has expired. 
 	 * <p>
-	 * @param  s  A {@link com.xihuanicode.tlatoa.entity.Sentence} object.
-	 * @return True, if the {@link com.xihuanicode.tlatoa.entity.Sentence} has expired, false otherwise.
+	 * @param  s  A {@link Sentence} object.
+	 * @return True, if the {@link Sentence} has expired, false otherwise.
 	 * @see    {@link com.xihuanicode.tlatoa.entity.Sentence}
 	 */
 	

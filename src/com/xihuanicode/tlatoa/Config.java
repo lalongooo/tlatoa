@@ -23,5 +23,10 @@ public class Config {
 	 */	
 	public static final int ANIMATION_DURATION = 500;
 	
+	/**
+	 * Default cache expiration time 
+	 */		
+	public static final long CACHE_EXPIRATION_VALID_TIME = 21600000;
+	
 
 }
