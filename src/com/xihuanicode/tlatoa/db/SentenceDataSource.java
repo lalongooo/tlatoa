@@ -207,32 +207,49 @@ public class SentenceDataSource {
 	 * @see    {@link com.xihuanicode.tlatoa.entity.Sentence}
 	 */
 	public Sentence getSentenceById(long sentenceId) throws IllegalArgumentException {
-
-		if(sentenceId < 1){
-			throw new IllegalArgumentException("The sentenceId parameter must be greater than zero.");
-		}
 		
 		// Open database
 		open();
+		Sentence s = new Sentence();
 		
-		Sentence sentence = new Sentence();
-		List<SentenceResource> resources = new ArrayList<SentenceResource>();
-				
-		Cursor cursor = database.query(
-				
-				SentenceDatabaseHelper.TABLE_SENTENCE_RESOURCES, 				// Table
-				TABLE_SENTENCE_RESOURCE_COLUMNS, 							// Columns
-				SentenceDatabaseHelper.RESOURCES_SENTENCE_ID + " = " + sentenceId, 	// Where (condition)
-				null,												// Group By
-				null,												// Order By
-				null,												// Having
-				null												// Limit
-				);
+		// Get the Sentence from local database
+		Cursor cursor = database.query
+		(
+				SentenceDatabaseHelper.TABLE_SENTENCE, 								// Table
+				TABLE_SENTENCE_COLUMNS, 											// Columns
+				SentenceDatabaseHelper.SENTENCE_ID + " = '" + sentenceId + "'",	    // Where (condition)
+				null,																// Group By
+				null,																// Order By
+				null,																// Having
+				null																// Limit
+		);
 		
 		
 		if(cursor.moveToFirst()){
 			
-			sentence.setId(sentenceId);
+			s = null;
+			while (!cursor.isAfterLast()) {
+				s = cursorToSentence(cursor);
+				break;
+			}
+		}
+
+
+		// Now retrieve the sentence resources
+		List<SentenceResource> resources = new ArrayList<SentenceResource>();
+		cursor = database.query(
+			SentenceDatabaseHelper.TABLE_SENTENCE_RESOURCES, 				// Table
+			TABLE_SENTENCE_RESOURCE_COLUMNS, 							// Columns
+			SentenceDatabaseHelper.RESOURCES_SENTENCE_ID + " = " + s.getId(), 	// Where (condition)
+			null,												// Group By
+			null,												// Order By
+			null,												// Having
+			null												// Limit
+		);
+
+		if(cursor.moveToFirst()){
+			
+			s.setId(s.getId());
 			
 			while (!cursor.isAfterLast()) {
 				SentenceResource sr = cursorToSentenceResource(cursor);
@@ -240,14 +257,14 @@ public class SentenceDataSource {
 				cursor.moveToNext();
 			}
 			
-			sentence.setSentenceResource(resources);
+			s.setSentenceResource(resources);
 			
-		}
-		
+		}		
+		 
 		// Close database
 		close();
 		
-		return sentence;
+		return s;
 	}
 	
 	/**
@@ -262,12 +279,11 @@ public class SentenceDataSource {
 	public Sentence existsInLocalDb(Sentence s){
 		
 		// Open database
-		open();		
+		open();
 		
 		// Get the Sentence from local database
 		Cursor cursor = database.query
 		(
-				
 				SentenceDatabaseHelper.TABLE_SENTENCE, 								// Table
 				TABLE_SENTENCE_COLUMNS, 											// Columns
 				SentenceDatabaseHelper.SENTENCE_TEXT + " = '" + s.getText() + "'",	// Where (condition)
@@ -286,6 +302,33 @@ public class SentenceDataSource {
 				break;
 			}
 		}
+
+
+		// Now retrieve the sentence resources
+		List<SentenceResource> resources = new ArrayList<SentenceResource>();
+		cursor = database.query(
+			SentenceDatabaseHelper.TABLE_SENTENCE_RESOURCES, 				// Table
+			TABLE_SENTENCE_RESOURCE_COLUMNS, 							// Columns
+			SentenceDatabaseHelper.RESOURCES_SENTENCE_ID + " = " + s.getId(), 	// Where (condition)
+			null,												// Group By
+			null,												// Order By
+			null,												// Having
+			null												// Limit
+		);
+
+		if(cursor.moveToFirst()){
+			
+			s.setId(s.getId());
+			
+			while (!cursor.isAfterLast()) {
+				SentenceResource sr = cursorToSentenceResource(cursor);
+				resources.add(sr);
+				cursor.moveToNext();
+			}
+			
+			s.setSentenceResource(resources);
+			
+		}		
 		 
 		// Close database
 		close();
