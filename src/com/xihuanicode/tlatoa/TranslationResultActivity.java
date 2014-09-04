@@ -18,10 +18,10 @@ import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.MenuItem;
@@ -31,17 +31,19 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.nostra13.universalimageloader.core.ImageLoader;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.google.analytics.tracking.android.EasyTracker;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.xihuanicode.tlatoa.customlistview.TranslationPlayListAdapter;
 import com.xihuanicode.tlatoa.db.SentenceDataSource;
 import com.xihuanicode.tlatoa.entity.Sentence;
 import com.xihuanicode.tlatoa.entity.SentenceResource;
+
 import eu.inmite.android.lib.dialogs.ISimpleDialogCancelListener;
 import eu.inmite.android.lib.dialogs.ISimpleDialogListener;
 import eu.inmite.android.lib.dialogs.SimpleDialogFragment;
@@ -53,24 +55,19 @@ public class TranslationResultActivity extends FragmentActivity implements
 	private static final String TAG = "ResultActivity";
 
 	private static final int INFORMATION_MESSAGE_REQUEST_CODE = 42;
-
-	// private final String TLATOA_SENTENCE_WS_URL =
-	// Utils.getApplicationProperty(getApplicationContext(),
-	// "tlatoa_web_service_url");
-
-	private Typeface typeface;
+	
+	private long currentSentenceId;
 
 	// Action bar items
 	private TextView actionBarTitle;
-
-	// The images sequence returned for the phrase from the web service
-	private Sentence sentence;
 
 	// UI items
 	private ImageView ivTranslationResultAnimation, ivTranslationResultPlayButton;
 	private ListView lvTranslationList;
 	private TranslationPlayListAdapter adapter;
 	private ProgressDialog pDlg;
+	private AnimationDrawable a;
+	private Typeface typeface;
 
 	// Database classes
 	private SentenceDataSource datasource;
@@ -134,9 +131,9 @@ public class TranslationResultActivity extends FragmentActivity implements
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-				int sentenceId = Integer.valueOf(((TextView) view.findViewById(R.id.tlatoa_phrase_id)).getText().toString());
-				Sentence s = datasource.getSentenceById(sentenceId);
-				playTranslation(s);
+				long sentenceId = Integer.valueOf(((TextView) view.findViewById(R.id.tlatoa_phrase_id)).getText().toString());
+				currentSentenceId = sentenceId;
+				playTranslation(sentenceId);
 
 			}
 		});
@@ -173,18 +170,25 @@ public class TranslationResultActivity extends FragmentActivity implements
 		
 	}
 	
-	private class Translate extends AsyncTask<JSONObject, Integer, Sentence> {
+	private class Translate extends AsyncTask<JSONObject, Integer, Long> {
 
 		@Override
-		protected Sentence doInBackground(JSONObject... params) {
-			
-			JSONObject jsonSentence = params[0];
+		protected Long doInBackground(JSONObject... params) {
+
 			Sentence sentence = new Sentence();
+			JSONObject jsonSentence = params[0];
+			
+			try {
+				sentence.setText(jsonSentence.getString("sentence"));
+			} catch (JSONException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 
 			// Check for sentence in the local database
 			sentence = datasource.existsInLocalDb(sentence);
 			
-			if (Config.PHRASE_CACHE) {
+			if (sentence.getId() > 0 && sentence.getExpiresAt() > sentence.getCreatedAt()) {
 				sentence = datasource.getSentenceById(sentence.getId());
 			} else {
 				
@@ -200,10 +204,7 @@ public class TranslationResultActivity extends FragmentActivity implements
 					for (int i = 0; i < resourcesArray.length(); i++) {
 						jsonSentence = resourcesArray.getJSONObject(i);
 
-						// Get bitmap from HerokuApp
 						Bitmap bitmap = ImageLoader.getInstance().loadImageSync(jsonSentence.getString("resourceURL"));
-
-						// Get bytes from bitmap
 						ByteArrayOutputStream stream = new ByteArrayOutputStream();
 						bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
 
@@ -219,8 +220,9 @@ public class TranslationResultActivity extends FragmentActivity implements
 					sentence.setSentenceResource(resources);
 
 					datasource = new SentenceDataSource(getApplication());
+					datasource.deletePhrase(sentence);
 					datasource.createSentence(getApplicationContext(), sentence);
-					
+
 				} catch (JSONException e) {
 					// TODO: Candidate code to send for reporting
 					Log.i(TAG, e.getMessage());
@@ -228,23 +230,23 @@ public class TranslationResultActivity extends FragmentActivity implements
 				}
 			}
 
-			return sentence;
+			return sentence.getId();
 
 		}
 
 		@Override
-		protected void onPostExecute(Sentence s) {
+		protected void onPostExecute(Long sentenceId) {
 			hideDialog();
-			if(s != null){
-				sentence = s;
-				playTranslation(s);				
-			}
+			currentSentenceId = sentenceId;
+			playTranslation(sentenceId);
 		}
 
 	}
-
+	
 	@SuppressWarnings("deprecation")
-	private void playTranslation(Sentence sentence) {
+	private void playTranslation(Long sentenceId) {
+
+		Sentence sentence = datasource.getSentenceById(sentenceId);
 
 		if (sentence != null && sentence.getSentenceResource() != null) {
 
@@ -255,42 +257,20 @@ public class TranslationResultActivity extends FragmentActivity implements
 			if (resourceCount > 0) {
 
 				try {
+					
 					ivTranslationResultPlayButton.setVisibility(View.INVISIBLE);
-
-					AnimationDrawable animationDrawable = (AnimationDrawable) getResources().getDrawable(R.drawable.tlatoa_translation_result_anim);
-					animationDrawable.setOneShot(true);
-
-					if (animationDrawable.getNumberOfFrames() == 0) {
-						for (int i = 0; i < resourceCount; i++) {
-
-							SentenceResource r = sr.get(i);
-
-							Bitmap bitmap = BitmapFactory.decodeByteArray(r.getResourceImage(), 0, r.getResourceImage().length);
-							BitmapDrawable bitmapDrawable = new BitmapDrawable(getResources(), bitmap);
-							Drawable drawable = (Drawable) bitmapDrawable;
-							animationDrawable.addFrame(drawable, Config.ANIMATION_DURATION);
-
-						}
-					}
-
-					// Pass our animation drawable to our custom drawable class
-					CustomAnimationDrawable cad = new CustomAnimationDrawable(animationDrawable) {
-						@Override
-						void onAnimationFinish() {
-							ivTranslationResultPlayButton.setVisibility(View.VISIBLE);
-						}
-					};
-
-					// Set the views drawable to our custom drawable
 					ivTranslationResultAnimation.setImageResource(android.R.color.transparent);
-					if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-						setBakgroundJELLYBean(cad);
-					} else {
-						ivTranslationResultAnimation.setBackgroundDrawable(cad);
+					
+					a = new AnimationDrawable();
+					for (int i = 0; i < resourceCount; i++) {
+						Bitmap bitmap = BitmapFactory.decodeByteArray(sr.get(i).getResourceImage(), 0, sr.get(i).getResourceImage().length);
+						a.addFrame(new BitmapDrawable(getResources(), bitmap),Config.ANIMATION_DURATION);
 					}
+					ivTranslationResultAnimation.setBackgroundDrawable(a);
 
-					// Start the animation
-					cad.start();
+					a.setOneShot(true);
+					a.start();
+					checkIfAnimationDone(a);
 
 				} catch (NotFoundException e) {
 					// TODO: Candidate code to send for reporting
@@ -302,11 +282,33 @@ public class TranslationResultActivity extends FragmentActivity implements
 
 		} else {
 
-			showNotificationMessage();
+			Toast.makeText(getApplicationContext(), "No results returned", Toast.LENGTH_LONG).show();
 		}
 
 	}
-
+	
+	@TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+	private void setBakgroundJELLYBean(AnimationDrawable cad) {
+		ivTranslationResultAnimation.setBackground(cad);
+	}
+	
+	private void checkIfAnimationDone(AnimationDrawable anim){
+	    final AnimationDrawable a = anim;
+	    int timeBetweenChecks = 300;
+	    Handler h = new Handler();
+	    h.postDelayed(new Runnable(){
+	        public void run(){
+	            if (a.getCurrent() != a.getFrame(a.getNumberOfFrames() - 1)){
+	                checkIfAnimationDone(a);
+	            } else{
+	            	if(!ivTranslationResultPlayButton.isShown()){
+	            		ivTranslationResultPlayButton.setVisibility(View.VISIBLE);
+	            	}
+	            }
+	        }
+	    }, timeBetweenChecks);
+	}
+	
 	private void showNotificationMessage() {
 		SimpleDialogFragment
 				.createBuilder(this, getSupportFragmentManager())
@@ -318,11 +320,7 @@ public class TranslationResultActivity extends FragmentActivity implements
 	}
 
 	private void showDialog() {
-		pDlg = ProgressDialog
-				.show(this,
-						getString(R.string.tlatoa_translation_result_progess_dialog_title),
-						getString(R.string.tlatoa_translation_result_progess_dialog_message),
-						true);
+		pDlg = ProgressDialog.show(this, getString(R.string.tlatoa_translation_result_progess_dialog_title), getString(R.string.tlatoa_translation_result_progess_dialog_message), true);
 	}
 
 	private void hideDialog() {
@@ -408,7 +406,7 @@ public class TranslationResultActivity extends FragmentActivity implements
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.ivTranslationResultPlayButton:
-			playTranslation(this.sentence);
+			playTranslation(currentSentenceId);
 			break;
 		}
 	}

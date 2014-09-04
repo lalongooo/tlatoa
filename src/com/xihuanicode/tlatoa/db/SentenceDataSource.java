@@ -113,28 +113,6 @@ public class SentenceDataSource {
 			ex.printStackTrace();
 		}
 		
-		// Get the last inserted row
-//		Cursor cursor = null;
-//		try {
-//			
-//			if(insertId > 0){
-//				
-//				cursor = database.query(
-//						SentenceDatabaseHelper.TABLE_SENTENCE, 				// Table
-//						TABLE_SENTENCE_COLUMNS, 							// Columns
-//						SentenceDatabaseHelper.SENTENCE_ID + " = " + s.getSentenceId(), 	// Where (condition)
-//						null,												// Group By
-//						null,												// Order By
-//						null,												// Having
-//						null												// Limit
-//						);
-//			}
-//
-//		} catch (Exception e) {
-//			// TODO: Candidate code to send for reporting
-//			e.printStackTrace();
-//		}
-		
 		// Close database
 		close();
 
@@ -201,10 +179,10 @@ public class SentenceDataSource {
 
 	/**
 	 * <p>
-	 * Returns the {@link com.xihuanicode.tlatoa.entity.Sentence} object identified by the sentenceId parameter.
+	 * Returns the {@link Sentence} object identified by the sentenceId parameter.
 	 * <p>
-	 * @return The {@link com.xihuanicode.tlatoa.entity.Sentence} object identified by the sentenceId parameter.
-	 * @see    {@link com.xihuanicode.tlatoa.entity.Sentence}
+	 * @return The {@link Sentence} object identified by the sentenceId parameter.
+	 * @see    {@link Sentence}
 	 */
 	public Sentence getSentenceById(long sentenceId) throws IllegalArgumentException {
 		
