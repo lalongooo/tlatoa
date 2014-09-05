@@ -337,11 +337,6 @@ public class TranslationResultActivity extends FragmentActivity implements
 		super.onPause();
 	}
 
-	@TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-	private void setBakgroundJELLYBean(CustomAnimationDrawable cad) {
-		ivTranslationResultAnimation.setBackground(cad);
-	}
-
 	// ISimpleDialogCancelListener
 	@Override
 	public void onCancelled(int requestCode) {
