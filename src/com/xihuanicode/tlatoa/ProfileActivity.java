@@ -169,7 +169,7 @@ implements View.OnClickListener, ISimpleDialogListener, ISimpleDialogCancelListe
 		@Override
 		public void onFail(String reason)
 		{
-			Log.w(TAG, "Failed to login");
+			Log.w(TAG, "Failed to logout");
 		}
 
 		@Override
@@ -191,6 +191,7 @@ implements View.OnClickListener, ISimpleDialogListener, ISimpleDialogCancelListe
 			Intent mainIntent = new Intent().setClass(ProfileActivity.this, AppOverviewActivity.class);
 			startActivity(mainIntent);
 			overridePendingTransition(R.anim.open_next, R.anim.close_main);
+			new UserDataSource(getApplicationContext()).deleteCurrentUser();
 			finish();
 			
 		}

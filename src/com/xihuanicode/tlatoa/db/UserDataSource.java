@@ -127,6 +127,7 @@ public class UserDataSource {
 	}
 	
 	public byte[] getCurrentProfilePicture(){
+		
 		open();
 		
 		// Get the Sentence from local database
@@ -146,6 +147,14 @@ public class UserDataSource {
 		
 		close();
 		return null;
+		
+	}
+
+	public void deleteCurrentUser(){
+		
+		open();
+		database.delete(TlatoaDatabaseHelper.TABLE_USER, null, null);		
+		close();
 		
 	}
 	
