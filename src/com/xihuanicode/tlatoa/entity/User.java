@@ -13,7 +13,7 @@ public class User {
 	private String locationName;
 	private String email;
 	private String profilePictureUrl;
-	private Role [] roles = { new Role("169", "Tlatoa Android App User") };	
+	private Role [] roles = { new Role("49", "TestRole") };	
 	
 	public User(long id, String name, String firstName, String lastName,
 			String middleName, String socialMediaId, String gender,

@@ -2,8 +2,11 @@ package com.xihuanicode.tlatoa;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.http.HttpResponse;
+import org.json.JSONObject;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -20,11 +23,16 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request.Method;
+import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.ImageLoader.ImageContainer;
 import com.android.volley.toolbox.ImageLoader.ImageListener;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.analytics.tracking.android.EasyTracker;
+import com.google.gson.Gson;
 import com.sromku.simple.fb.SimpleFacebook;
 import com.sromku.simple.fb.listeners.OnPublishListener;
 import com.sromku.simple.fb.entities.Feed;
@@ -156,8 +164,47 @@ public class RegistrationActivity extends FragmentActivity  implements OnClickLi
 	}
 
 	private void saveUserData(){
+		
 		WebServiceTask wst = new WebServiceTask(WebServiceTask.POST_TASK, this, "We are registering you...");
         wst.execute(new String[] { Config.USER_REGISTRARION_URL });
+
+//        showDialog();
+//        
+//        Response.Listener<JSONObject> rl = new Response.Listener<JSONObject>() {
+//
+//			@Override
+//			public void onResponse(JSONObject response) {
+//				hideDialog();
+//			}
+//		};
+//        
+//		Response.ErrorListener er = new Response.ErrorListener() {
+//			@Override
+//			public void onErrorResponse(VolleyError error) {
+//				hideDialog();
+//			}
+//		};
+//		
+//		JsonObjectRequest jsonObjReq = new JsonObjectRequest(Method.POST,Config.USER_REGISTRARION_URL, null, rl, er) {
+//
+//			@Override
+//			protected Map<String, String> getParams() {
+//				Map<String, String> params = new HashMap<String, String>();
+//				params.put("user", new Gson().toJson(new User(fbName, fbFirstName, fbLastName, fbMiddleName, fbUserId, fbGender, fbLocationId, fbLocale, fbEmail, fbProfilePictureUrl)));
+//				return params;
+//			}
+//
+//			@Override
+//			public Map<String, String> getHeaders() throws AuthFailureError {
+//				HashMap<String, String> headers = new HashMap<String, String>();
+//				headers.put("Content-Type", "application/json");
+//				return headers;
+//			}
+//
+//		};
+//         
+//        // Adding request to request queue
+//        Tlatoa.getInstance().addToRequestQueue(jsonObjReq, "json_obj_req");
 	}
 	
 	private void goToMainActivity() {
@@ -175,10 +222,6 @@ public class RegistrationActivity extends FragmentActivity  implements OnClickLi
 			break;
 		}
 	}
-	
-	public void handleResponse(String response) {
-		goToMainActivity();
-    }
 	
     private class WebServiceTask extends AsyncTask<String, Integer, String> {
     	 
@@ -231,7 +274,6 @@ public class RegistrationActivity extends FragmentActivity  implements OnClickLi
             
         	hideDialog();
         	publishTlatoaFeed();
-            handleResponse(response);            
         }
     }
     
@@ -261,6 +303,7 @@ public class RegistrationActivity extends FragmentActivity  implements OnClickLi
 		public void onFail(String reason)
 		{
 			hideDialog();
+			goToMainActivity();
 		}
 
 		@Override
@@ -279,6 +322,7 @@ public class RegistrationActivity extends FragmentActivity  implements OnClickLi
 		public void onComplete(String postId)
 		{
 			hideDialog();
+			goToMainActivity();
 		}
 	};
 	

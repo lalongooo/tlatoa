@@ -96,7 +96,7 @@ public class UserDataSource {
 		close();
 	}	
 
-	public User getUserById(long userId) throws IllegalArgumentException {
+	public User getUserById() throws IllegalArgumentException {
 		
 		User u = new User();
 		open();
@@ -106,7 +106,7 @@ public class UserDataSource {
 		(
 				TlatoaDatabaseHelper.TABLE_USER, 									// Table
 				TABLE_USER_COLUMNS, 												// Columns
-				TlatoaDatabaseHelper.USER_ID + " = '" + userId + "'",	    		// Where (condition)
+				null,	    														// Where (condition)
 				null,																// Group By
 				null,																// Order By
 				null,																// Having
