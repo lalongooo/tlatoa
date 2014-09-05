@@ -1,9 +1,6 @@
 package com.xihuanicode.tlatoa;
 
-import java.io.FileNotFoundException;
-
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -20,10 +17,6 @@ import com.sromku.simple.fb.SimpleFacebook;
 import com.sromku.simple.fb.listeners.OnLogoutListener;
 import com.xihuanicode.tlatoa.db.UserDataSource;
 import com.xihuanicode.tlatoa.entity.User;
-import com.xihuanicode.tlatoa.enums.TlatoaStorageFileName;
-import com.xihuanicode.tlatoa.utils.PrefUtils;
-import com.xihuanicode.tlatoa.utils.Utils;
-
 import eu.inmite.android.lib.dialogs.ISimpleDialogCancelListener;
 import eu.inmite.android.lib.dialogs.ISimpleDialogListener;
 import eu.inmite.android.lib.dialogs.SimpleDialogFragment;
@@ -68,12 +61,12 @@ implements View.OnClickListener, ISimpleDialogListener, ISimpleDialogCancelListe
 		tvUsername = (TextView) findViewById(R.id.txProfileUsername);
 		tvEmail = (TextView) findViewById(R.id.txProfileEmail);
 		
-		Bitmap bitmap = BitmapFactory.decodeFile(getFileStreamPath(TlatoaStorageFileName.TLATOA_USER_PROFILE_PHOTO.name()).getAbsolutePath());
+		byte b [] = new UserDataSource(getApplicationContext()).getCurrentProfilePicture();
 		
 		// Set values on screen
 		tvUsername.setText(user.getName());
 		tvEmail.setText(user.getEmail());
-		ivProfilePhoto.setImageBitmap(null);
+		ivProfilePhoto.setImageBitmap(BitmapFactory.decodeByteArray(b, 0, b.length));
 		
 		// Set facebook typeface
 		typeface = Typeface.createFromAsset(getAssets(), "FACEBOLF.TTF");

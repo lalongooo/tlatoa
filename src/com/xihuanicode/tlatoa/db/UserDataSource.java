@@ -1,15 +1,12 @@
 package com.xihuanicode.tlatoa.db;
 
 
-import java.util.Collection;
-
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.xihuanicode.tlatoa.entity.User;
 import com.xihuanicode.tlatoa.entity.Role;;
 
@@ -127,6 +124,29 @@ public class UserDataSource {
 		close();
 		
 		return u;
+	}
+	
+	public byte[] getCurrentProfilePicture(){
+		open();
+		
+		// Get the Sentence from local database
+		Cursor cursor = database.query
+		(
+				TlatoaDatabaseHelper.TABLE_USER, 									// Table
+				TABLE_USER_COLUMNS, 												// Columns
+				null,	    														// Where (condition)
+				null,																// Group By
+				null,																// Order By
+				null,																// Having
+				null																// Limit
+		);
+		if (cursor.moveToFirst()){
+			return cursor.getBlob(12);
+		}
+		
+		close();
+		return null;
+		
 	}
 	
 	private User cursorToUser(Cursor c){
