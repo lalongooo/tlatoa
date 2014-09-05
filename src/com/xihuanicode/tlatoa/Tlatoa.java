@@ -26,20 +26,11 @@ public class Tlatoa extends Application {
 	private static GoogleAnalytics mGa;
 	private static Tracker mTracker;
 
-	// Placeholder property ID.
-	private static final String GA_PROPERTY_ID = "UA-45551921-1";
-
 	// Prevent hits from being sent to reports, i.e. during testing.
 	private static final boolean GA_IS_DRY_RUN = false;
 
 	// GA Logger verbosity.
 	private static final LogLevel GA_LOG_VERBOSITY = LogLevel.INFO;
-
-	/*
-	 * Facebook configuration values.
-	 */
-	private static final String APP_ID = "143269149215368";
-	private static final String APP_NAMESPACE = "com.xihuanicode.tlatoa";
 
 	/*
 	 * Volley Library variables
@@ -85,11 +76,12 @@ public class Tlatoa extends Application {
 				Permission.PUBLIC_PROFILE,
 				Permission.PUBLISH_ACTION,
 				Permission.EMAIL,
-				Permission.PUBLIC_PROFILE };
+				Permission.PUBLIC_PROFILE
+		};
 
 		SimpleFacebookConfiguration configuration = new SimpleFacebookConfiguration.Builder()
-				.setAppId(APP_ID)
-				.setNamespace(APP_NAMESPACE)
+				.setAppId(Config.FACEBOOK_APP_ID)
+				.setNamespace(Config.FACEBOOK_APP_NAMESPACE)
 				.setPermissions(permissions)
 				.setDefaultAudience(SessionDefaultAudience.FRIENDS)
 				.setAskForAllPermissionsAtOnce(true)
@@ -105,7 +97,7 @@ public class Tlatoa extends Application {
 	private void initializeGa() {
 
 		mGa = GoogleAnalytics.getInstance(this);
-		mTracker = mGa.getTracker(GA_PROPERTY_ID);
+		mTracker = mGa.getTracker(Config.GA_PROPERTY_ID);
 
 		// Set dryRun flag.
 		mGa.setDryRun(GA_IS_DRY_RUN);

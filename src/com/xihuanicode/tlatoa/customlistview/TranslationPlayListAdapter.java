@@ -1,7 +1,7 @@
 package com.xihuanicode.tlatoa.customlistview;
 
 import java.util.List;
-
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Typeface;
@@ -11,10 +11,8 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.TextView;
-
 import com.xihuanicode.tlatoa.R;
 import com.xihuanicode.tlatoa.entity.Sentence;
-import com.xihuanicode.tlatoa.utils.ImageLoader;
 import com.xihuanicode.tlatoa.utils.TimeAgo;
 
 public class TranslationPlayListAdapter extends BaseAdapter {
@@ -22,13 +20,11 @@ public class TranslationPlayListAdapter extends BaseAdapter {
 	private static LayoutInflater inflater;
 	private Activity activity;
 	private List<Sentence> data;
-	public ImageLoader imageLoader;
 
 	public TranslationPlayListAdapter(Activity a, List<Sentence> sentences) {
 		activity = a;
 		data = sentences;
 		inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		imageLoader = new ImageLoader(activity.getApplicationContext());
 	}
 
 
@@ -44,6 +40,7 @@ public class TranslationPlayListAdapter extends BaseAdapter {
 		return position;
 	}
 
+	@SuppressLint("InflateParams")
 	public View getView(int position, View convertView, ViewGroup parent) {
 		View vi = convertView;
 		

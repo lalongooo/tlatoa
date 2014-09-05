@@ -10,7 +10,6 @@ public class Sentence {
 	private long createdAt;
 	private long expiresAt;
 
-	// Resources
 	public List<SentenceResource> getSentenceResource() {
 		return this.resources;
 	}
@@ -19,7 +18,6 @@ public class Sentence {
 		this.resources = resources;
 	}
 
-	// Sentence Id
 	public long getId() {
 		return this.id;
 	}
@@ -28,7 +26,6 @@ public class Sentence {
 		this.id = id;
 	}
 	
-	// Text
 	public String getText() {
 		return this.text;
 	}
@@ -37,7 +34,6 @@ public class Sentence {
 		this.text = text;
 	}
 
-	// Created at
 	public void setCreatedAt(long createdAt) {
 		this.createdAt = createdAt;
 	}
@@ -46,7 +42,6 @@ public class Sentence {
 		return createdAt;
 	}
 	
-	// Expires at
 	public void setExpiresAt(long expiresAt) {
 		this.expiresAt = expiresAt;
 	}

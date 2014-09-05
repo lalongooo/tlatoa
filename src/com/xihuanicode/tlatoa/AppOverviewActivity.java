@@ -27,7 +27,7 @@ import com.xihuanicode.tlatoa.enums.GeneralizedScreenSize;
 public class AppOverviewActivity extends Activity implements
 		View.OnClickListener {
 
-	protected static final String TAG = "TLATOA";
+	protected static final String TAG = AppOverviewActivity.class.getSimpleName();
 	private Typeface typeface;
 	private Button btnFacebookLogin, btnStart;
 	private PageIndicator pIndicator;

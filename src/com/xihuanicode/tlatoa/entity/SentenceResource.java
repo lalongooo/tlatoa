@@ -7,7 +7,6 @@ public class SentenceResource implements Comparable<SentenceResource> {
 	private int sequenceOrder;
 	private byte[] resourceImage;
 
-	// Resource Id
 	public int getResourceId() {
 		return this.resourceId;
 	}
@@ -16,7 +15,6 @@ public class SentenceResource implements Comparable<SentenceResource> {
 		this.resourceId = resourceId;
 	}
 
-	// Resource URL
 	public String getResourceURL() {
 		return this.resourceURL;
 	}
@@ -25,7 +23,6 @@ public class SentenceResource implements Comparable<SentenceResource> {
 		this.resourceURL = resourceURL;
 	}
 
-	// Resource sequenceOrder
 	public int getSequenceOrder() {
 		return this.sequenceOrder;
 	}
@@ -34,7 +31,6 @@ public class SentenceResource implements Comparable<SentenceResource> {
 		this.sequenceOrder = sequenceOrder;
 	}
 
-	// Resource image
 	public byte[] getResourceImage() {
 		return resourceImage;
 	}

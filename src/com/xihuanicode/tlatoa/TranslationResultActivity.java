@@ -51,8 +51,8 @@ public class TranslationResultActivity extends FragmentActivity implements
 		View.OnClickListener, ISimpleDialogListener,
 		ISimpleDialogCancelListener {
 
-	private static final String TAG = "ResultActivity";
-
+	protected static final String TAG = TranslationResultActivity.class.getSimpleName();
+	
 	private static final int INFORMATION_MESSAGE_REQUEST_CODE = 42;
 	
 	private long currentSentenceId;

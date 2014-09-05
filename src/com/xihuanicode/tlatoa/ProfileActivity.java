@@ -17,6 +17,7 @@ import com.sromku.simple.fb.SimpleFacebook;
 import com.sromku.simple.fb.listeners.OnLogoutListener;
 import com.xihuanicode.tlatoa.db.UserDataSource;
 import com.xihuanicode.tlatoa.entity.User;
+
 import eu.inmite.android.lib.dialogs.ISimpleDialogCancelListener;
 import eu.inmite.android.lib.dialogs.ISimpleDialogListener;
 import eu.inmite.android.lib.dialogs.SimpleDialogFragment;
@@ -24,8 +25,8 @@ import eu.inmite.android.lib.dialogs.SimpleDialogFragment;
 public class ProfileActivity extends FragmentActivity
 implements View.OnClickListener, ISimpleDialogListener, ISimpleDialogCancelListener {
 	
-	protected static final String TAG = "ProfileActivity";
-
+	protected static final String TAG = ProfileActivity.class.getSimpleName();
+	
 	private User user;
 	private SimpleFacebook mSimpleFacebook;
 	private Typeface typeface;

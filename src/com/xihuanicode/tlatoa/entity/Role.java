@@ -5,10 +5,7 @@ public class Role {
 	private String id;
 	private String roleName;
 
-	
-	
 	public Role(String id, String roleName) {
-		super();
 		this.id = id;
 		this.roleName = roleName;
 	}
