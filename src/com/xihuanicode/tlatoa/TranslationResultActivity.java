@@ -69,7 +69,6 @@ public class TranslationResultActivity extends FragmentActivity implements
 	private AnimationDrawable a;
 	private Typeface typeface;
 
-	// Database classes
 	private SentenceDataSource datasource;
 
 	@Override

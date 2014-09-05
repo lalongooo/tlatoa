@@ -41,7 +41,6 @@ public class AppOverviewActivity extends Activity implements
 	private TextView actionBarTitle;
 
 	// Facebook user properties
-	private static final String FB_PROFILE_PICTURE_URL_BASE = "https://graph.facebook.com/fbUserId/picture?type=";
 	private String fbUserId;
 	private String fbName;
 	private String fbUsername;
@@ -245,7 +244,7 @@ public class AppOverviewActivity extends Activity implements
 				fbBio = profile.getId();
 				fbLocationId = profile.getLocation() != null ? profile.getLocation().getName() : "" ;
 				fbLocale = profile.getLocale();
-				fbProfilePictureUrl = getFacebookProfilePictureURL(fbUserId, FB_PROFILE_PICTURE_URL_BASE);
+				fbProfilePictureUrl = getFacebookProfilePictureURL(fbUserId, Config.FB_PROFILE_PICTURE_URL_BASE);
 				
 				goToRegistrationActivity();
 				

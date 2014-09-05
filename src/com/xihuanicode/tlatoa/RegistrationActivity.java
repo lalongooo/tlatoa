@@ -1,11 +1,14 @@
 package com.xihuanicode.tlatoa;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+
 import org.apache.http.HttpResponse;
 
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -16,6 +19,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.ImageLoader.ImageContainer;
@@ -24,8 +28,8 @@ import com.google.analytics.tracking.android.EasyTracker;
 import com.sromku.simple.fb.SimpleFacebook;
 import com.sromku.simple.fb.listeners.OnPublishListener;
 import com.sromku.simple.fb.entities.Feed;
+import com.xihuanicode.tlatoa.db.UserDataSource;
 import com.xihuanicode.tlatoa.entity.User;
-import com.xihuanicode.tlatoa.utils.PrefUtils;
 import com.xihuanicode.tlatoa.utils.Utils;
 
 public class RegistrationActivity extends FragmentActivity  implements OnClickListener {
@@ -65,6 +69,7 @@ public class RegistrationActivity extends FragmentActivity  implements OnClickLi
 	private ProgressDialog pDlg;
 	
 	private Context c;
+	private UserDataSource dataSource;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -72,9 +77,12 @@ public class RegistrationActivity extends FragmentActivity  implements OnClickLi
 		super.onCreate(savedInstanceState);
 		this.setContentView(R.layout.registration);
 		c = this;
+		dataSource = new UserDataSource(this);
 
 		getIntentData();
 		setUI();
+		// Set profile picture
+		setProfilePicture(fbProfilePictureUrl, ivProfilePhoto);
 	}
 	
 	private void getIntentData(){
@@ -116,14 +124,11 @@ public class RegistrationActivity extends FragmentActivity  implements OnClickLi
 
 		// Add listeners
 		btnConfirmRegistration.setOnClickListener(this);
-		
-		// Set profile picture
-		setProfilePicture(fbProfilePictureUrl, ivProfilePhoto);
 	}
 	
 	private void setProfilePicture(String url, final ImageView iv){
 		
-		this.showDialog();
+		showDialog();
 		
 		ImageLoader il = Tlatoa.getInstance().getImageLoader();
 		
@@ -132,33 +137,34 @@ public class RegistrationActivity extends FragmentActivity  implements OnClickLi
 			@Override
 			public void onErrorResponse(VolleyError error) {
 				iv.setImageDrawable(getResources().getDrawable(R.drawable.tlatoa_profile_default_photo));
+				hideDialog();
 			}
 			
 			@Override
 			public void onResponse(ImageContainer response, boolean b) {
-				iv.setImageBitmap(response.getBitmap());
-				PrefUtils.saveUserProfilePicture(getApplicationContext(), response.getBitmap());
+				if(response.getBitmap() != null){
+					iv.setImageBitmap(response.getBitmap());				
+					ByteArrayOutputStream stream = new ByteArrayOutputStream();
+					Bitmap bitmap = response.getBitmap();
+					bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+					User user = new User(fbName, fbFirstName, fbLastName, fbMiddleName, fbUserId, fbGender, fbLocationId, fbLocale, fbEmail, fbProfilePictureUrl);
+					dataSource.createUser(getApplicationContext(), user, bitmap == null ? null : stream.toByteArray());					
+					hideDialog();
+				}
 			}
 		});
-		
-		PrefUtils.saveUserName(getApplicationContext(), fbFirstName);
-		PrefUtils.saveUserEmail(getApplicationContext(), fbEmail);
-		
-		this.hideDialog();
 	}
 
+	private void saveUserData(){
+		WebServiceTask wst = new WebServiceTask(WebServiceTask.POST_TASK, this, "We are registering you...");
+        wst.execute(new String[] { Config.USER_REGISTRARION_URL });
+	}
+	
 	private void goToMainActivity() {
 		Intent intent = new Intent(this, MainActivity.class);
 		startActivity(intent);
 		overridePendingTransition(R.anim.open_next, R.anim.close_main);
 		this.finish();
-	}
-
-
-	private void saveUserData(){
-
-		WebServiceTask wst = new WebServiceTask(WebServiceTask.POST_TASK, this, "We are registering you...");
-        wst.execute(new String[] { Config.USER_REGISTRARION_URL });
 	}
 	
 	@Override
@@ -225,9 +231,7 @@ public class RegistrationActivity extends FragmentActivity  implements OnClickLi
             
         	hideDialog();
         	publishTlatoaFeed();
-            handleResponse(response);
-            
-            
+            handleResponse(response);            
         }
     }
     
@@ -268,7 +272,7 @@ public class RegistrationActivity extends FragmentActivity  implements OnClickLi
 		@Override
 		public void onThinking()
 		{
-//			showDialog();
+			showDialog();
 		}
 
 		@Override

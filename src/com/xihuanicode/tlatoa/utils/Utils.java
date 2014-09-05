@@ -211,8 +211,7 @@ public class Utils {
             switch (taskType) {
 
             case 1:
-        		Role [] roles = new Role[] { new Role("49", "TestRole" ) };
-        		User user = new User("fbName", "fbFirstName", "fbLastName", "fbMiddleName", "fbUserId", "fbGender", "fbLocationId", "fbLocale", "fbEmail", "fbProfilePictureUrl", roles);
+        		User user = new User("fbName", "fbFirstName", "fbLastName", "fbMiddleName", "fbUserId", "fbGender", "fbLocationId", "fbLocale", "fbEmail", "fbProfilePictureUrl");
                 String jsonEn = new Gson().toJson(user);
 
                 HttpPost httppost = new HttpPost(url);

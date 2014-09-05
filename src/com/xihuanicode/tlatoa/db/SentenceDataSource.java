@@ -17,28 +17,28 @@ public class SentenceDataSource {
 
 	// Database fields
 	private SQLiteDatabase database;
-	private SentenceDatabaseHelper dbHelper;
+	private TlatoaDatabaseHelper dbHelper;
 	
 	private static final String[] TABLE_SENTENCE_COLUMNS =
 	{
-		SentenceDatabaseHelper.SENTENCE_ID,
-		SentenceDatabaseHelper.SENTENCE_TEXT,
-		SentenceDatabaseHelper.SENTENCE_CREATED_AT,
-		SentenceDatabaseHelper.SENTENCE_EXPIRES_AT
+		TlatoaDatabaseHelper.SENTENCE_ID,
+		TlatoaDatabaseHelper.SENTENCE_TEXT,
+		TlatoaDatabaseHelper.SENTENCE_CREATED_AT,
+		TlatoaDatabaseHelper.SENTENCE_EXPIRES_AT
 	};
 	
 	
 	public static final String[] TABLE_SENTENCE_RESOURCE_COLUMNS =
 	{
-		SentenceDatabaseHelper.RESOURCES_SENTENCE_ID,
-		SentenceDatabaseHelper.RESOURCES_RESOURCE_ID,
-		SentenceDatabaseHelper.RESOURCES_RESOURCE_URL,
-		SentenceDatabaseHelper.RESOURCES_SEQUENCE_ORDER,
-		SentenceDatabaseHelper.RESOURCES_SENTENCE_IMAGE
+		TlatoaDatabaseHelper.RESOURCES_SENTENCE_ID,
+		TlatoaDatabaseHelper.RESOURCES_RESOURCE_ID,
+		TlatoaDatabaseHelper.RESOURCES_RESOURCE_URL,
+		TlatoaDatabaseHelper.RESOURCES_SEQUENCE_ORDER,
+		TlatoaDatabaseHelper.RESOURCES_SENTENCE_IMAGE
 	};
 
 	public SentenceDataSource(Context context) {
-		dbHelper = new SentenceDatabaseHelper(context);
+		dbHelper = new TlatoaDatabaseHelper(context);
 	}
 
 	public void open(){
@@ -80,13 +80,13 @@ public class SentenceDataSource {
 		try {
 
 			values = new ContentValues();
-			values.put(SentenceDatabaseHelper.SENTENCE_ID, s.getId());
-			values.put(SentenceDatabaseHelper.SENTENCE_TEXT, s.getText());
-			values.put(SentenceDatabaseHelper.SENTENCE_CREATED_AT,new java.util.Date().getTime());
-			values.put(SentenceDatabaseHelper.SENTENCE_EXPIRES_AT,new java.util.Date().getTime() + Config.CACHE_EXPIRATION_VALID_TIME);
+			values.put(TlatoaDatabaseHelper.SENTENCE_ID, s.getId());
+			values.put(TlatoaDatabaseHelper.SENTENCE_TEXT, s.getText());
+			values.put(TlatoaDatabaseHelper.SENTENCE_CREATED_AT,new java.util.Date().getTime());
+			values.put(TlatoaDatabaseHelper.SENTENCE_EXPIRES_AT,new java.util.Date().getTime() + Config.CACHE_EXPIRATION_VALID_TIME);
 			
 			
-			insertId = database.insert(SentenceDatabaseHelper.TABLE_SENTENCE, null, values);
+			insertId = database.insert(TlatoaDatabaseHelper.TABLE_SENTENCE, null, values);
 
 		} catch (Exception e) {
 			// TODO: Candidate code to send for reporting
@@ -98,13 +98,13 @@ public class SentenceDataSource {
 				
 				for (SentenceResource sr : s.getSentenceResource()){
 					values = new ContentValues();
-					values.put(SentenceDatabaseHelper.RESOURCES_SENTENCE_ID, s.getId());
-					values.put(SentenceDatabaseHelper.RESOURCES_RESOURCE_ID, sr.getResourceId());
-					values.put(SentenceDatabaseHelper.RESOURCES_RESOURCE_URL, sr.getResourceURL());
-					values.put(SentenceDatabaseHelper.RESOURCES_SEQUENCE_ORDER, sr.getSequenceOrder());
-					values.put(SentenceDatabaseHelper.RESOURCES_SENTENCE_IMAGE, sr.getResourceImage());
+					values.put(TlatoaDatabaseHelper.RESOURCES_SENTENCE_ID, s.getId());
+					values.put(TlatoaDatabaseHelper.RESOURCES_RESOURCE_ID, sr.getResourceId());
+					values.put(TlatoaDatabaseHelper.RESOURCES_RESOURCE_URL, sr.getResourceURL());
+					values.put(TlatoaDatabaseHelper.RESOURCES_SEQUENCE_ORDER, sr.getSequenceOrder());
+					values.put(TlatoaDatabaseHelper.RESOURCES_SENTENCE_IMAGE, sr.getResourceImage());
 					
-					database.insert(SentenceDatabaseHelper.TABLE_SENTENCE_RESOURCES, null, values);
+					database.insert(TlatoaDatabaseHelper.TABLE_SENTENCE_RESOURCES, null, values);
 				}				
 
 			}
@@ -138,7 +138,7 @@ public class SentenceDataSource {
 		}		
 		
 		open();
-		database.delete(SentenceDatabaseHelper.TABLE_SENTENCE, SentenceDatabaseHelper.SENTENCE_ID + " = " + id, null);
+		database.delete(TlatoaDatabaseHelper.TABLE_SENTENCE, TlatoaDatabaseHelper.SENTENCE_ID + " = " + id, null);
 		close();
 	}
 
@@ -158,7 +158,7 @@ public class SentenceDataSource {
 		open();
 		
 		// Cursor cursor = database.query(SentenceDatabaseHelper.TABLE_SENTENCE, allColumns, null, null, null, null, null);
-		Cursor cursor = database.query(true, SentenceDatabaseHelper.TABLE_SENTENCE, TABLE_SENTENCE_COLUMNS, null, null, null, null, null, null);		
+		Cursor cursor = database.query(true, TlatoaDatabaseHelper.TABLE_SENTENCE, TABLE_SENTENCE_COLUMNS, null, null, null, null, null, null);		
 		cursor.moveToFirst();
 		while (!cursor.isAfterLast()) {
 			Sentence phrase = cursorToSentence(cursor);
@@ -193,9 +193,9 @@ public class SentenceDataSource {
 		// Get the Sentence from local database
 		Cursor cursor = database.query
 		(
-				SentenceDatabaseHelper.TABLE_SENTENCE, 								// Table
+				TlatoaDatabaseHelper.TABLE_SENTENCE, 								// Table
 				TABLE_SENTENCE_COLUMNS, 											// Columns
-				SentenceDatabaseHelper.SENTENCE_ID + " = '" + sentenceId + "'",	    // Where (condition)
+				TlatoaDatabaseHelper.SENTENCE_ID + " = '" + sentenceId + "'",	    // Where (condition)
 				null,																// Group By
 				null,																// Order By
 				null,																// Having
@@ -216,9 +216,9 @@ public class SentenceDataSource {
 		// Now retrieve the sentence resources
 		List<SentenceResource> resources = new ArrayList<SentenceResource>();
 		cursor = database.query(
-			SentenceDatabaseHelper.TABLE_SENTENCE_RESOURCES, 				// Table
+			TlatoaDatabaseHelper.TABLE_SENTENCE_RESOURCES, 				// Table
 			TABLE_SENTENCE_RESOURCE_COLUMNS, 							// Columns
-			SentenceDatabaseHelper.RESOURCES_SENTENCE_ID + " = " + s.getId(), 	// Where (condition)
+			TlatoaDatabaseHelper.RESOURCES_SENTENCE_ID + " = " + s.getId(), 	// Where (condition)
 			null,												// Group By
 			null,												// Order By
 			null,												// Having
@@ -262,9 +262,9 @@ public class SentenceDataSource {
 		// Get the Sentence from local database
 		Cursor cursor = database.query
 		(
-				SentenceDatabaseHelper.TABLE_SENTENCE, 								// Table
+				TlatoaDatabaseHelper.TABLE_SENTENCE, 								// Table
 				TABLE_SENTENCE_COLUMNS, 											// Columns
-				SentenceDatabaseHelper.SENTENCE_TEXT + " = '" + s.getText() + "'",	// Where (condition)
+				TlatoaDatabaseHelper.SENTENCE_TEXT + " = '" + s.getText() + "'",	// Where (condition)
 				null,																// Group By
 				null,																// Order By
 				null,																// Having
@@ -285,9 +285,9 @@ public class SentenceDataSource {
 		// Now retrieve the sentence resources
 		List<SentenceResource> resources = new ArrayList<SentenceResource>();
 		cursor = database.query(
-			SentenceDatabaseHelper.TABLE_SENTENCE_RESOURCES, 				// Table
+			TlatoaDatabaseHelper.TABLE_SENTENCE_RESOURCES, 				// Table
 			TABLE_SENTENCE_RESOURCE_COLUMNS, 							// Columns
-			SentenceDatabaseHelper.RESOURCES_SENTENCE_ID + " = " + s.getId(), 	// Where (condition)
+			TlatoaDatabaseHelper.RESOURCES_SENTENCE_ID + " = " + s.getId(), 	// Where (condition)
 			null,												// Group By
 			null,												// Order By
 			null,												// Having

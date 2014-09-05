@@ -28,5 +28,10 @@ public class Config {
 	 */		
 	public static final long CACHE_EXPIRATION_VALID_TIME = 21600000;
 	
+	/**
+	 * The URL provided by Facebook for downloading the users profile pictures.
+	 */	
+	public static final String FB_PROFILE_PICTURE_URL_BASE = "https://graph.facebook.com/fbUserId/picture?type=";
+	
 
 }

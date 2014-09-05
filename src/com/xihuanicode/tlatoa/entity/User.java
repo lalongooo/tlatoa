@@ -2,6 +2,7 @@ package com.xihuanicode.tlatoa.entity;
 
 public class User {
 	
+	private long id;
 	private String name;
 	private String firstName;
 	private String lastName;
@@ -12,16 +13,13 @@ public class User {
 	private String locationName;
 	private String email;
 	private String profilePictureUrl;
+	private Role [] roles = { new Role("169", "Tlatoa Android App User") };	
 	
-	private Role [] roles = { new Role("169", "Tlatoa Android App User") };
-	
-	
-	
-	public User(String name, String firstName, String lastName,
+	public User(long id, String name, String firstName, String lastName,
 			String middleName, String socialMediaId, String gender,
 			String locationId, String locationName, String email,
-			String profilePictureUrl, Role [] roles) {
-		super();
+			String profilePictureUrl) {
+		this.id = id;
 		this.name = name;
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -32,14 +30,12 @@ public class User {
 		this.locationName = locationName;
 		this.email = email;
 		this.profilePictureUrl = profilePictureUrl;
-		this.roles = roles;
 	}
-
+	
 	public User(String name, String firstName, String lastName,
 			String middleName, String socialMediaId, String gender,
 			String locationId, String locationName, String email,
 			String profilePictureUrl) {
-		super();
 		this.name = name;
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -52,6 +48,14 @@ public class User {
 		this.profilePictureUrl = profilePictureUrl;
 	}
 	
+	public User() {}
+
+	public long getId() {
+		return id;
+	}
+	public void setId(long id) {
+		this.id = id;
+	}
 	public String getName() {
 		return name;
 	}
