@@ -2,9 +2,6 @@
 package com.xihuanicode.tlatoa;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -33,7 +30,6 @@ public class AppOverviewActivity extends Activity implements
 	protected static final String TAG = "TLATOA";
 	private Typeface typeface;
 	private Button btnFacebookLogin, btnStart;
-	private ProgressDialog mProgress;
 	private PageIndicator pIndicator;
 	private ViewPager viewPager;
 	
@@ -156,71 +152,7 @@ public class AppOverviewActivity extends Activity implements
 	void showNeutralMessage() {
 		Toast.makeText(getApplicationContext(), "NEUTRAL option has been selected!", Toast.LENGTH_SHORT).show();
 	}
-
-	private void showTermsAndConditions() {
-
-		DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				switch (which) {
-				case DialogInterface.BUTTON_POSITIVE: // yes
-					showYesMessage();
-					break;
-				case DialogInterface.BUTTON_NEGATIVE: // no
-					showNoMessage();
-					break;
-				case DialogInterface.BUTTON_NEUTRAL: // neutral
-					showNeutralMessage();
-					break;
-				default:
-					// nothing
-					break;
-				}
-			}
-		};
-
-		AlertDialog ad = new AlertDialog
-				.Builder(this)
-				.setMessage("Blah blah blah.\n Fine pring.\n Do you accept all our terms and conditions?")
-				.setIcon(R.drawable.tlatoa_icon).setTitle("Terms of Service")
-				.setPositiveButton("Yes", dialogClickListener)
-				.setNegativeButton("No", dialogClickListener)
-				.setNeutralButton("Cancel", dialogClickListener)
-				.setCancelable(false)
-				.create();
-		ad.show();
-
-	}
-
-	private void showDialog() {
-		mProgress = ProgressDialog.show(this, "Thinking", "Waiting for Facebook", true);
-	}
-
-	private void hideDialog() {
-		mProgress.hide();
-	}
-
-	private void startTranslating() {
-		DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				switch (which) {
-				case DialogInterface.BUTTON_POSITIVE:
-					goToMainActivity();
-					break;
-				case DialogInterface.BUTTON_NEGATIVE:
-					break;
-				}
-			}
-		};
-
-		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setMessage("Are you sure?")
-				.setPositiveButton("Yes", dialogClickListener)
-				.setNegativeButton("No", dialogClickListener)
-				.show();
-	}
-
+	
 	private void toast(String message) {
 		Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
 	}

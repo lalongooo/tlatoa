@@ -2,7 +2,7 @@ package com.xihuanicode.tlatoa;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -18,7 +18,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -28,11 +27,9 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.PopupWindow.OnDismissListener;
 import android.widget.Toast;
-
 import com.google.analytics.tracking.android.EasyTracker;
 import com.navdrawer.SimpleSideDrawer;
 import com.xihuanicode.tlatoa.utils.Utils;
-
 import eu.inmite.android.lib.dialogs.ISimpleDialogCancelListener;
 import eu.inmite.android.lib.dialogs.ISimpleDialogListener;
 import eu.inmite.android.lib.dialogs.SimpleDialogFragment;
@@ -130,16 +127,7 @@ public class MainActivity extends FragmentActivity implements
 			return view;
 		}
 	}
-
-	/* The click listener for ListView in the navigation drawer */
-	private class DrawerItemClickListener implements
-			ListView.OnItemClickListener {
-		@Override
-		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-			Toast.makeText(getApplicationContext(), "Selected option is: " + menuOptionsTitles[position], Toast.LENGTH_SHORT).show();
-		}
-	}
-
+	
 	private void showNotificationMessage() {
 		SimpleDialogFragment
 				.createBuilder(this, getSupportFragmentManager())
@@ -328,6 +316,7 @@ public class MainActivity extends FragmentActivity implements
     	return false;
     }
 	
+	@SuppressLint("InflateParams")
 	private void actionBarMoreClicked(){
 		actionBarMore.setSelected(true);
 		

@@ -46,7 +46,6 @@ import com.xihuanicode.tlatoa.entity.SentenceResource;
 
 import eu.inmite.android.lib.dialogs.ISimpleDialogCancelListener;
 import eu.inmite.android.lib.dialogs.ISimpleDialogListener;
-import eu.inmite.android.lib.dialogs.SimpleDialogFragment;
 
 public class TranslationResultActivity extends FragmentActivity implements
 		View.OnClickListener, ISimpleDialogListener,
@@ -306,16 +305,6 @@ public class TranslationResultActivity extends FragmentActivity implements
 	            }
 	        }
 	    }, timeBetweenChecks);
-	}
-	
-	private void showNotificationMessage() {
-		SimpleDialogFragment
-				.createBuilder(this, getSupportFragmentManager())
-				.setTitle(R.string.tlatoa_translation_result_msg_no_result_title)
-				.setMessage(R.string.tlatoa_translation_result_msg_no_result_message)
-				.setPositiveButtonText(R.string.tlatoa_translation_result_msg_no_result_positive_button)
-				.setRequestCode(INFORMATION_MESSAGE_REQUEST_CODE)
-				.setCancelable(false).setTag("custom-tag").show();
 	}
 
 	private void showDialog() {

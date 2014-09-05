@@ -1,5 +1,6 @@
 package com.xihuanicode.tlatoa.viewpager;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -8,9 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.xihuanicode.tlatoa.utils.Utils;
-
 import com.xihuanicode.tlatoa.R;
 
 public class ComplexAdapter extends PagerAdapter {
@@ -37,6 +35,7 @@ public class ComplexAdapter extends PagerAdapter {
 		return view == ((View) object);
 	}
 
+	@SuppressLint("InflateParams")
 	@Override
 	public Object instantiateItem(ViewGroup container, int position) {
 		
