@@ -1,12 +1,15 @@
 package com.xihuanicode.tlatoa.db;
 
 
+import java.util.Collection;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.xihuanicode.tlatoa.entity.User;
 import com.xihuanicode.tlatoa.entity.Role;;
 
@@ -96,7 +99,7 @@ public class UserDataSource {
 		close();
 	}	
 
-	public User getUserById() throws IllegalArgumentException {
+	public User getCurrentUser() throws IllegalArgumentException {
 		
 		User u = new User();
 		open();
@@ -131,17 +134,17 @@ public class UserDataSource {
 		User u = new User();
 		
 		u.setId(c.getLong(0));
-		u.setName(c.getString(0));
-		u.setFirstName(c.getString(0));
-		u.setLastName(c.getString(0));
-		u.setMiddleName(c.getString(0));
-		u.setSocialMediaId(c.getString(0));
-		u.setGender(c.getString(0));
-		u.setLocationId(c.getString(0));
-		u.setLocationName(c.getString(0));
-		u.setEmail(c.getString(0));
-		u.setProfilePictureUrl(c.getString(0));
-		u.setRoles(new Gson().fromJson(c.getString(0), Role[].class));
+		u.setName(c.getString(1));
+		u.setFirstName(c.getString(2));
+		u.setLastName(c.getString(3));
+		u.setMiddleName(c.getString(4));
+		u.setSocialMediaId(c.getString(5));
+		u.setGender(c.getString(6));
+		u.setLocationId(c.getString(7));
+		u.setLocationName(c.getString(8));
+		u.setEmail(c.getString(9));
+		u.setProfilePictureUrl(c.getString(10));
+		u.setRoles(new Gson().fromJson(c.getString(11), Role[].class));
 		
 		return u;
 	}

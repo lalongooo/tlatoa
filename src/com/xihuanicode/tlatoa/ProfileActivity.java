@@ -18,6 +18,8 @@ import android.widget.TextView;
 import com.google.analytics.tracking.android.EasyTracker;
 import com.sromku.simple.fb.SimpleFacebook;
 import com.sromku.simple.fb.listeners.OnLogoutListener;
+import com.xihuanicode.tlatoa.db.UserDataSource;
+import com.xihuanicode.tlatoa.entity.User;
 import com.xihuanicode.tlatoa.enums.TlatoaStorageFileName;
 import com.xihuanicode.tlatoa.utils.PrefUtils;
 import com.xihuanicode.tlatoa.utils.Utils;
@@ -31,6 +33,7 @@ implements View.OnClickListener, ISimpleDialogListener, ISimpleDialogCancelListe
 	
 	protected static final String TAG = "ProfileActivity";
 
+	private User user;
 	private SimpleFacebook mSimpleFacebook;
 	private Typeface typeface;
 	private TextView tvUsername, tvEmail;
@@ -48,7 +51,7 @@ implements View.OnClickListener, ISimpleDialogListener, ISimpleDialogCancelListe
 		this.setContentView(R.layout.profile);
 		
 		mSimpleFacebook = SimpleFacebook.getInstance(this);
-		
+		user = new UserDataSource(getApplicationContext()).getCurrentUser();		
 		setUI();
 	}
 
@@ -65,26 +68,12 @@ implements View.OnClickListener, ISimpleDialogListener, ISimpleDialogCancelListe
 		tvUsername = (TextView) findViewById(R.id.txProfileUsername);
 		tvEmail = (TextView) findViewById(R.id.txProfileEmail);
 		
-		Bitmap bitmap = null;
-		String userName = "";
-		String userEmail = "";
-		
-		try {
-			
-			userName = Utils.inputStreamToString(openFileInput(TlatoaStorageFileName.TLATOA_FB_USER_NAME.name()));
-			userEmail = Utils.inputStreamToString(openFileInput(TlatoaStorageFileName.TLATOA_FB_USER_EMAIL.name()));
-			bitmap = BitmapFactory.decodeFile(getFileStreamPath(TlatoaStorageFileName.TLATOA_USER_PROFILE_PHOTO.name()).getAbsolutePath());
-			
-			
-		} catch (FileNotFoundException e) {
-			// TODO: Candidate code to send for reporting
-		}
-
+		Bitmap bitmap = BitmapFactory.decodeFile(getFileStreamPath(TlatoaStorageFileName.TLATOA_USER_PROFILE_PHOTO.name()).getAbsolutePath());
 		
 		// Set values on screen
-		tvUsername.setText(PrefUtils.getUserName(getApplicationContext()));
-		tvEmail.setText(PrefUtils.getUserEmail(getApplicationContext()));
-		ivProfilePhoto.setImageBitmap(PrefUtils.getUserProfilePicture(getApplicationContext()));
+		tvUsername.setText(user.getName());
+		tvEmail.setText(user.getEmail());
+		ivProfilePhoto.setImageBitmap(null);
 		
 		// Set facebook typeface
 		typeface = Typeface.createFromAsset(getAssets(), "FACEBOLF.TTF");
