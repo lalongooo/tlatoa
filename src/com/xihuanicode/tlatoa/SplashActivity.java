@@ -124,7 +124,7 @@ public class SplashActivity extends FragmentActivity implements
 	@Override
 	public void onPositiveButtonClicked(int requestCode) {
 		if (requestCode == 42) {
-			startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
+			startActivity(new Intent(Settings.ACTION_WIRELESS_SETTINGS));
 		}
 	}
 

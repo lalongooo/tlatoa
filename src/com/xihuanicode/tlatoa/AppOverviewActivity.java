@@ -1,10 +1,11 @@
 
 package com.xihuanicode.tlatoa;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.provider.Settings;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
@@ -24,8 +25,12 @@ import com.xihuanicode.tlatoa.utils.Utils;
 import com.xihuanicode.tlatoa.viewpager.ComplexAdapter;
 import com.xihuanicode.tlatoa.enums.GeneralizedScreenSize;
 
-public class AppOverviewActivity extends Activity implements
-		View.OnClickListener {
+import eu.inmite.android.lib.dialogs.ISimpleDialogCancelListener;
+import eu.inmite.android.lib.dialogs.ISimpleDialogListener;
+import eu.inmite.android.lib.dialogs.SimpleDialogFragment;
+
+public class AppOverviewActivity extends FragmentActivity implements
+		View.OnClickListener, ISimpleDialogListener, ISimpleDialogCancelListener {
 
 	protected static final String TAG = AppOverviewActivity.class.getSimpleName();
 	private Typeface typeface;
@@ -265,7 +270,11 @@ public class AppOverviewActivity extends Activity implements
 	public void onClick(View view) {
 		switch (view.getId()) {
 		case R.id.btnFacebookLogin:
-			mSimpleFacebook.login(mOnLoginListener);
+			if(!Utils.isNetworkAvailable(getApplicationContext())){
+				showNetworkWarningMessage();
+			}else{
+				mSimpleFacebook.login(mOnLoginListener);
+			}			
 			break;
 		case R.id.btnStart:
 			goToMainActivity();
@@ -284,5 +293,38 @@ public class AppOverviewActivity extends Activity implements
 		super.onStop();
 		EasyTracker.getInstance(this).activityStop(this);
 	}
+	
+	
+	private void showNetworkWarningMessage() {
+		SimpleDialogFragment.createBuilder(this, getSupportFragmentManager())
+				.setTitle(R.string.tlatoa_network_warning_title)
+				.setMessage(R.string.tlatoa_network_warning_message)
+				.setPositiveButtonText(android.R.string.ok)
+				.setNegativeButtonText(android.R.string.no).setRequestCode(42)
+				.setTag("custom-tag").show();
+	}
+
+// ISimpleDialogCancelListener
+@Override
+public void onCancelled(int requestCode) {
+}
+
+// ISimpleDialogListener
+@Override
+public void onNegativeButtonClicked(int requestCode) {
+}
+
+@Override
+public void onNeutralButtonClicked(int requestCode) {
+
+}
+
+// ISimpleDialogListener
+@Override
+public void onPositiveButtonClicked(int requestCode) {
+	if (requestCode == 42) {
+		startActivity(new Intent(Settings.ACTION_WIRELESS_SETTINGS));
+	}
+}
 
 }
