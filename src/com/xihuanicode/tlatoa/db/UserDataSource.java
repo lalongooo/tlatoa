@@ -128,6 +128,7 @@ public class UserDataSource {
 	
 	public byte[] getCurrentProfilePicture(){
 		
+		byte [] p = null;
 		open();
 		
 		// Get the Sentence from local database
@@ -142,11 +143,12 @@ public class UserDataSource {
 				null																// Limit
 		);
 		if (cursor.moveToFirst()){
-			return cursor.getBlob(12);
+			p = cursor.getBlob(12);
 		}
 		
 		close();
-		return null;
+		
+		return p;
 		
 	}
 
