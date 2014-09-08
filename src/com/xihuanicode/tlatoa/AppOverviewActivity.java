@@ -57,7 +57,7 @@ public class AppOverviewActivity extends FragmentActivity implements
 	private String fbLocale;
 	private String fbProfilePictureUrl;
 	
-	SimpleFacebook mSimpleFacebook;
+	private SimpleFacebook mSimpleFacebook;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -304,27 +304,27 @@ public class AppOverviewActivity extends FragmentActivity implements
 				.setTag("custom-tag").show();
 	}
 
-// ISimpleDialogCancelListener
-@Override
-public void onCancelled(int requestCode) {
-}
-
-// ISimpleDialogListener
-@Override
-public void onNegativeButtonClicked(int requestCode) {
-}
-
-@Override
-public void onNeutralButtonClicked(int requestCode) {
-
-}
-
-// ISimpleDialogListener
-@Override
-public void onPositiveButtonClicked(int requestCode) {
-	if (requestCode == 42) {
-		startActivity(new Intent(Settings.ACTION_WIRELESS_SETTINGS));
+	// ISimpleDialogCancelListener
+	@Override
+	public void onCancelled(int requestCode) {
 	}
-}
+
+	// ISimpleDialogListener
+	@Override
+	public void onNegativeButtonClicked(int requestCode) {
+	}
+
+	@Override
+	public void onNeutralButtonClicked(int requestCode) {
+
+	}
+
+	// ISimpleDialogListener
+	@Override
+	public void onPositiveButtonClicked(int requestCode) {
+		if (requestCode == 42) {
+			startActivity(new Intent(Settings.ACTION_WIRELESS_SETTINGS));
+		}
+	}
 
 }

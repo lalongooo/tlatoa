@@ -59,8 +59,6 @@
     </style>
 
     <style name="DialogStyleDark.Custom">
-
-        <!-- anything can be left out: -->
         <item name="titleTextColor">@color/tlatoa_main_color_orange</item>
         <item name="titleSeparatorColor">@color/tlatoa_main_color_orange</item>
         <item name="messageTextColor">@color/dialog_message_text_dark</item>
