@@ -11,7 +11,7 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="25dp"
         android:contentDescription="@string/tlatoa_content_descr_for_imageviews"
-        android:src="@drawable/test_app_overview_image1" />
+        android:src="@drawable/app_overview_img_0" />
 
     <TextView
         android:id="@+id/tvViewPagerTextView"
