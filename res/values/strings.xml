@@ -16,8 +16,8 @@
     <string name="tlatoa_app_overview_start">START</string>
     <string name="tlatoa_app_version">Tlatoa</string>
     <string name="tlatoa_app_version_label">Version 1.0.0</string>
-    <string name="tlatoa_appoverview_1st_viewpager_item_text">Con Tlatoa tendrás contigo siempre un traductor de voz a lengua de señas.</string>
-    <string name="tlatoa_appoverview_2nd_viewpager_item_text">Para comenzar a usarlo, solo tendrás que acceder a la aplicación y presionar el ícono del micrófono.</string>
+    <string name="tlatoa_appoverview_1st_viewpager_item_text">Lleva contigo siempre un traductor de voz a lengua de señas.</string>
+    <string name="tlatoa_appoverview_2nd_viewpager_item_text">Solo presiona el ícono del micrófono y comienza a traducir.</string>
     <string name="tlatoa_appoverview_3rd_viewpager_item_text">Inmediatamente comenzarás a recibir en lengua de señas todo lo que le dictes a tu teléfono.</string>
     <string name="tlatoa_content_descr_for_imageviews"></string>
     <string name="tlatoa_facebook_login_button">facebook login</string>
