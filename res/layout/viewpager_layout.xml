@@ -1,27 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/RelativeLayout1"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:orientation="vertical" >
 
     <ImageView
         android:id="@+id/ivViewPagerImageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
+        android:layout_gravity="center_horizontal"
         android:layout_marginTop="25dp"
         android:contentDescription="@string/tlatoa_content_descr_for_imageviews"
-        android:src="@drawable/test_app_overview_image2" />
+        android:src="@drawable/test_app_overview_image1" />
 
     <TextView
         android:id="@+id/tvViewPagerTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/ivViewPagerImageView"
-        android:layout_centerHorizontal="true"
-        android:layout_gravity="center"
+        android:layout_gravity="center_horizontal"
         android:layout_marginTop="15dp"
         android:paddingLeft="25dp"
         android:paddingRight="25dp"
@@ -31,4 +27,4 @@
         android:textStyle="bold"
         android:gravity="center" />
 
-</RelativeLayout>
+</LinearLayout>
