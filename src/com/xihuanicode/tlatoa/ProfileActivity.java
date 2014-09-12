@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -12,7 +11,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.analytics.tracking.android.EasyTracker;
 import com.sromku.simple.fb.SimpleFacebook;
 import com.sromku.simple.fb.listeners.OnLogoutListener;
 import com.xihuanicode.tlatoa.db.UserDataSource;
@@ -22,7 +20,7 @@ import eu.inmite.android.lib.dialogs.ISimpleDialogCancelListener;
 import eu.inmite.android.lib.dialogs.ISimpleDialogListener;
 import eu.inmite.android.lib.dialogs.SimpleDialogFragment;
 
-public class ProfileActivity extends FragmentActivity
+public class ProfileActivity extends BaseActivity
 implements View.OnClickListener, ISimpleDialogListener, ISimpleDialogCancelListener {
 	
 	protected static final String TAG = ProfileActivity.class.getSimpleName();
@@ -198,17 +196,5 @@ implements View.OnClickListener, ISimpleDialogListener, ISimpleDialogCancelListe
 		}
 
 	};
-
-	@Override
-	public void onStart() {
-		super.onStart();
-		EasyTracker.getInstance(this).activityStart(this);
-	}
-
-	@Override
-	public void onStop() {
-		super.onStop();
-		EasyTracker.getInstance(this).activityStop(this);
-	}
 	
 }

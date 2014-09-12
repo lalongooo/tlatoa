@@ -1,6 +1,5 @@
 package com.xihuanicode.tlatoa;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.net.Uri;
@@ -13,10 +12,9 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.google.analytics.tracking.android.EasyTracker;
 import com.xihuanicode.tlatoa.customlistview.AboutDeveloperListAdapter;
 
-public class AboutActivity extends Activity  implements View.OnClickListener {
+public class AboutActivity extends BaseActivity  implements View.OnClickListener {
 	
 	private Typeface typeface;
 	private ListView lvAboutDevelopersList ;
@@ -105,18 +103,6 @@ public class AboutActivity extends Activity  implements View.OnClickListener {
 		Intent intent = new Intent().setClass(AboutActivity.this, MainActivity.class);
 		startActivity(intent);
 		finish();
-	}
-	
-	@Override
-	public void onStart() {
-		super.onStart();
-		EasyTracker.getInstance(this).activityStart(this);
-	}
-
-	@Override
-	public void onStop() {
-		super.onStop();
-		EasyTracker.getInstance(this).activityStop(this);
 	}
 
 }

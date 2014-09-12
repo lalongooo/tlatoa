@@ -30,7 +30,7 @@ import com.xihuanicode.tlatoa.db.UserDataSource;
 import com.xihuanicode.tlatoa.entity.User;
 import com.xihuanicode.tlatoa.utils.Utils;
 
-public class RegistrationActivity extends FragmentActivity  implements OnClickListener {
+public class RegistrationActivity extends BaseActivity  implements OnClickListener {
 
 	private Typeface typeface;
 	
@@ -339,17 +339,4 @@ public class RegistrationActivity extends FragmentActivity  implements OnClickLi
 		super.onResume();
 		mSimpleFacebook = SimpleFacebook.getInstance(this);
 	}
-	
-	@Override
-	public void onStart() {
-		super.onStart();
-		EasyTracker.getInstance(this).activityStart(this);
-	}
-
-	@Override
-	public void onStop() {
-		super.onStop();
-		EasyTracker.getInstance(this).activityStop(this);
-	}
-
 }

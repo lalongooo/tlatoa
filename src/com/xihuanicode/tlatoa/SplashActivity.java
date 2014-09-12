@@ -17,7 +17,7 @@ import com.xihuanicode.tlatoa.utils.Utils;
 import eu.inmite.android.lib.dialogs.ISimpleDialogCancelListener;
 import eu.inmite.android.lib.dialogs.ISimpleDialogListener;
 
-public class SplashActivity extends FragmentActivity implements
+public class SplashActivity extends BaseActivity implements
 		ISimpleDialogListener, ISimpleDialogCancelListener {
 
 	// Class members
@@ -68,18 +68,6 @@ public class SplashActivity extends FragmentActivity implements
 
 		Timer timer = new Timer();
 		timer.schedule(task, splashDelay);
-	}
-
-	@Override
-	public void onStart() {
-		super.onStart();
-		EasyTracker.getInstance(this).activityStart(this);
-	}
-
-	@Override
-	public void onStop() {
-		super.onStop();
-		EasyTracker.getInstance(this).activityStop(this);
 	}
 
 	@Override

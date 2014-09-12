@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
@@ -13,23 +12,22 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.analytics.tracking.android.EasyTracker;
 import com.sromku.simple.fb.Permission.Type;
 import com.sromku.simple.fb.SimpleFacebook;
+import com.sromku.simple.fb.entities.Profile;
 import com.sromku.simple.fb.listeners.OnLoginListener;
 import com.sromku.simple.fb.listeners.OnProfileListener;
-import com.sromku.simple.fb.entities.Profile;
 import com.viewpagerindicator.CirclePageIndicator;
 import com.viewpagerindicator.PageIndicator;
+import com.xihuanicode.tlatoa.enums.GeneralizedScreenSize;
 import com.xihuanicode.tlatoa.utils.Utils;
 import com.xihuanicode.tlatoa.viewpager.ComplexAdapter;
-import com.xihuanicode.tlatoa.enums.GeneralizedScreenSize;
 
 import eu.inmite.android.lib.dialogs.ISimpleDialogCancelListener;
 import eu.inmite.android.lib.dialogs.ISimpleDialogListener;
 import eu.inmite.android.lib.dialogs.SimpleDialogFragment;
 
-public class AppOverviewActivity extends FragmentActivity implements
+public class AppOverviewActivity extends BaseActivity implements
 		View.OnClickListener, ISimpleDialogListener, ISimpleDialogCancelListener {
 
 	protected static final String TAG = AppOverviewActivity.class.getSimpleName();
@@ -281,19 +279,6 @@ public class AppOverviewActivity extends FragmentActivity implements
 			break;
 		}
 	}
-	
-	@Override
-	public void onStart() {
-		super.onStart();
-		EasyTracker.getInstance(this).activityStart(this);
-	}
-
-	@Override
-	public void onStop() {
-		super.onStop();
-		EasyTracker.getInstance(this).activityStop(this);
-	}
-	
 	
 	private void showNetworkWarningMessage() {
 		SimpleDialogFragment.createBuilder(this, getSupportFragmentManager())

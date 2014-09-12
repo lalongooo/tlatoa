@@ -22,7 +22,6 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -37,7 +36,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonArrayRequest;
-import com.google.analytics.tracking.android.EasyTracker;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.xihuanicode.tlatoa.customlistview.TranslationPlayListAdapter;
 import com.xihuanicode.tlatoa.db.SentenceDataSource;
@@ -47,7 +45,7 @@ import com.xihuanicode.tlatoa.entity.SentenceResource;
 import eu.inmite.android.lib.dialogs.ISimpleDialogCancelListener;
 import eu.inmite.android.lib.dialogs.ISimpleDialogListener;
 
-public class TranslationResultActivity extends FragmentActivity implements
+public class TranslationResultActivity extends BaseActivity implements
 		View.OnClickListener, ISimpleDialogListener,
 		ISimpleDialogCancelListener {
 
@@ -363,18 +361,6 @@ public class TranslationResultActivity extends FragmentActivity implements
 	public void onNeutralButtonClicked(int requestCode) {
 		if (requestCode == INFORMATION_MESSAGE_REQUEST_CODE) {
 		}
-	}
-
-	@Override
-	public void onStart() {
-		super.onStart();
-		EasyTracker.getInstance(this).activityStart(this);
-	}
-
-	@Override
-	public void onStop() {
-		super.onStop();
-		EasyTracker.getInstance(this).activityStop(this);
 	}
 	
 	@Override
