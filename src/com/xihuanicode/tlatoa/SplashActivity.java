@@ -20,7 +20,6 @@ public class SplashActivity extends BaseActivity implements
 
 	// Class members
 	private boolean isNetworkAvailable;
-	private int splashDelay = 1200;
 
 	// UI items
 	private TextView tvTlatoa;
@@ -65,7 +64,7 @@ public class SplashActivity extends BaseActivity implements
 		};
 
 		Timer timer = new Timer();
-		timer.schedule(task, splashDelay);
+		timer.schedule(task, Config.SPLASH_SCREEN_DELAY);
 	}
 
 	@Override

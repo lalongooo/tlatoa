@@ -47,5 +47,10 @@ public class Config {
 	 * Facebook application namespace (required for the registration on Facebook)
 	 */
 	public static final String FACEBOOK_APP_NAMESPACE = "com.xihuanicode.tlatoa";
+	
+	/**
+	 * The splash screen activity duration (in milliseconds).
+	 */
+	public static final int SPLASH_SCREEN_DELAY = 1200;
 
 }
