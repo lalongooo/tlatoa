@@ -9,7 +9,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="5dp"
         android:contentDescription="@string/tlatoa_content_descr_for_imageviews"
         android:src="@drawable/app_overview_img_0" />
 
@@ -18,12 +18,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="7dp"
         android:paddingLeft="25dp"
         android:paddingRight="25dp"
         android:text="@string/tlatoa_actionbar_title"
         android:textColor="@color/gray"
-        android:textSize="18sp"
+        android:textSize="14sp"
         android:textStyle="bold"
         android:gravity="center" />
 
