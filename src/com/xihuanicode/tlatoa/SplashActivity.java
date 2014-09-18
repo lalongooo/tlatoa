@@ -4,9 +4,11 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.util.Log;
 import android.widget.TextView;
 
 import com.xihuanicode.tlatoa.db.SentenceDataSource;
@@ -32,6 +34,26 @@ public class SplashActivity extends BaseActivity implements
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.splash);
+		Log.e("Screen density: ", String.valueOf(getResources().getDisplayMetrics().density));
+		
+		int screenSize = getResources().getConfiguration().screenLayout &
+		        Configuration.SCREENLAYOUT_SIZE_MASK;
+
+		String toastMsg;
+		switch(screenSize) {
+		    case Configuration.SCREENLAYOUT_SIZE_LARGE:
+		        toastMsg = "Large screen";
+		        break;
+		    case Configuration.SCREENLAYOUT_SIZE_NORMAL:
+		        toastMsg = "Normal screen";
+		        break;
+		    case Configuration.SCREENLAYOUT_SIZE_SMALL:
+		        toastMsg = "Small screen";
+		        break;
+		    default:
+		        toastMsg = "Screen size is neither large, normal or small";
+		}
+		Log.e("Screen size: ", toastMsg);
 		
 		// Create database
 		datasource = new SentenceDataSource(this);
