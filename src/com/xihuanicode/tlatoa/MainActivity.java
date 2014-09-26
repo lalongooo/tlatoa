@@ -4,7 +4,6 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
@@ -17,18 +16,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewConfiguration;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.PopupWindow.OnDismissListener;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.navdrawer.SimpleSideDrawer;
 import com.xihuanicode.tlatoa.utils.Utils;
 
 import eu.inmite.android.lib.dialogs.ISimpleDialogCancelListener;
@@ -45,10 +40,7 @@ public class MainActivity extends BaseActivity implements
 	private static final int CONFIRMATION_MESSAGE_REQUEST_CODE = 43;
 
 	private Typeface typeface;
-	private SimpleSideDrawer mNav;
 	private ImageView ivMicrophone;
-	private ListView menuOptions;
-	private String[] menuOptionsTitles;
 	
 	private LayoutInflater mInflater;
 	
@@ -72,18 +64,11 @@ public class MainActivity extends BaseActivity implements
 		// Get views
 		actionBarMore = (ImageView) findViewById(R.id.actionbar_more);
 		actionBarTitle = (TextView) findViewById(R.id.actionbar_title);
+		ivMicrophone = (ImageView) findViewById(R.id.ivMicrophone);
 		
 		// set typeface
 		typeface = Typeface.createFromAsset(getAssets(), "DANUBE.TTF");
-		actionBarTitle.setTypeface(typeface);
-
-		// Configuration for the right side menu
-//		mNav = new SimpleSideDrawer(this);
-//		mNav.setRightBehindContentView(R.layout.right_side_menu);
-//		menuOptions = (ListView) this.findViewById(R.id.menu_options);
-//		menuOptionsTitles = getResources().getStringArray(R.array.menu_options_string_array);
-//		menuOptions.setAdapter(new MyAdapter<String>(this,android.R.layout.simple_list_item_1, menuOptionsTitles));
-		ivMicrophone = (ImageView) this.findViewById(R.id.ivMicrophone);
+		actionBarTitle.setTypeface(typeface);		
 
 		// Add listeners
 		ivMicrophone.setOnClickListener(this);
@@ -108,25 +93,6 @@ public class MainActivity extends BaseActivity implements
 			showNotificationMessage();
 		}
 
-	}
-
-	/* The Adapter for the right side menu */
-	private class MyAdapter<T> extends ArrayAdapter<String> {
-
-		public MyAdapter(Context context, int resource, String[] objects) {
-			super(context, resource, objects);
-		}
-
-		@Override
-		public View getView(int position, View convertView, ViewGroup parent) {
-			View view = super.getView(position, convertView, parent);
-			if (position % 2 == 1) {
-				view.setBackgroundResource(R.color.tlatoa_main_color_gray);
-			} else {
-				view.setBackgroundResource(R.color.tlatoa_main_color_orange);
-			}
-			return view;
-		}
 	}
 	
 	private void showNotificationMessage() {
