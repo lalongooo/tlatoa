@@ -8,6 +8,11 @@
         android:minSdkVersion="8"
         android:targetSdkVersion="14" />
 
+    <supports-screens
+        android:largeScreens="true"
+        android:normalScreens="true"
+        android:smallScreens="true" />
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -22,8 +27,8 @@
         <activity
             android:name=".SplashActivity"
             android:label="@string/tlatoa_app_name"
-            android:theme="@style/TlatoaSplashTheme"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait"
+            android:theme="@style/TlatoaSplashTheme" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -40,18 +45,18 @@
         <activity
             android:name=".AppOverviewActivity"
             android:label="@string/tlatoa_app_name"
-            android:theme="@style/TlatoaMainTheme"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/TlatoaMainTheme" />
         <activity
             android:name=".MainActivity"
             android:label="@string/tlatoa_app_name"
-            android:theme="@style/TlatoaMainTheme"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/TlatoaMainTheme" />
         <activity
             android:name=".TranslationResultActivity"
             android:label="@string/tlatoa_app_name"
-            android:theme="@style/TlatoaMainTheme"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/TlatoaMainTheme" />
         <activity
             android:name=".RegistrationActivity"
             android:label="@string/tlatoa_app_name"
