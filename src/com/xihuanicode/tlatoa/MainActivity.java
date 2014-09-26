@@ -78,11 +78,11 @@ public class MainActivity extends BaseActivity implements
 		actionBarTitle.setTypeface(typeface);
 
 		// Configuration for the right side menu
-		mNav = new SimpleSideDrawer(this);
-		mNav.setRightBehindContentView(R.layout.right_side_menu);
-		menuOptions = (ListView) this.findViewById(R.id.menu_options);
-		menuOptionsTitles = getResources().getStringArray(R.array.menu_options_string_array);
-		menuOptions.setAdapter(new MyAdapter<String>(this,android.R.layout.simple_list_item_1, menuOptionsTitles));
+//		mNav = new SimpleSideDrawer(this);
+//		mNav.setRightBehindContentView(R.layout.right_side_menu);
+//		menuOptions = (ListView) this.findViewById(R.id.menu_options);
+//		menuOptionsTitles = getResources().getStringArray(R.array.menu_options_string_array);
+//		menuOptions.setAdapter(new MyAdapter<String>(this,android.R.layout.simple_list_item_1, menuOptionsTitles));
 		ivMicrophone = (ImageView) this.findViewById(R.id.ivMicrophone);
 
 		// Add listeners
@@ -361,11 +361,11 @@ public class MainActivity extends BaseActivity implements
         popupWindow.update(moreContentView.getMeasuredWidth(), moreContentView.getMeasuredHeight());
 	}
 	
-	public void goToResults(View v) {
-		android.widget.EditText txt = (android.widget.EditText) findViewById(R.id.txtTestPhrase);
-		Intent intent = new Intent(this, TranslationResultActivity.class);
-		intent.putExtra("phrase_test", txt.getText().toString());
-		startActivity(intent); 
-	}
+//	public void goToResults(View v) {
+//		android.widget.EditText txt = (android.widget.EditText) findViewById(R.id.txtTestPhrase);
+//		Intent intent = new Intent(this, TranslationResultActivity.class);
+//		intent.putExtra("phrase_test", txt.getText().toString());
+//		startActivity(intent); 
+//	}
 
 }
