@@ -327,11 +327,11 @@ public class MainActivity extends BaseActivity implements
         popupWindow.update(moreContentView.getMeasuredWidth(), moreContentView.getMeasuredHeight());
 	}
 	
-//	public void goToResults(View v) {
-//		android.widget.EditText txt = (android.widget.EditText) findViewById(R.id.txtTestPhrase);
-//		Intent intent = new Intent(this, TranslationResultActivity.class);
-//		intent.putExtra("phrase_test", txt.getText().toString());
-//		startActivity(intent); 
-//	}
+	public void goToResults(View v) {
+		android.widget.EditText txt = (android.widget.EditText) findViewById(R.id.txtTestPhrase);
+		Intent intent = new Intent(this, TranslationResultActivity.class);
+		intent.putExtra("phrase_test", txt.getText().toString());
+		startActivity(intent); 
+	}
 
 }

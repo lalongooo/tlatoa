@@ -22,6 +22,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -41,18 +42,20 @@ import com.xihuanicode.tlatoa.customlistview.TranslationPlayListAdapter;
 import com.xihuanicode.tlatoa.db.SentenceDataSource;
 import com.xihuanicode.tlatoa.entity.Sentence;
 import com.xihuanicode.tlatoa.entity.SentenceResource;
+import com.xihuanicode.tlatoa.utils.Utils;
 
 import eu.inmite.android.lib.dialogs.ISimpleDialogCancelListener;
 import eu.inmite.android.lib.dialogs.ISimpleDialogListener;
+import eu.inmite.android.lib.dialogs.SimpleDialogFragment;
 
 public class TranslationResultActivity extends BaseActivity implements
 		View.OnClickListener, ISimpleDialogListener,
 		ISimpleDialogCancelListener {
 
 	protected static final String TAG = TranslationResultActivity.class.getSimpleName();
-	
 	private static final int INFORMATION_MESSAGE_REQUEST_CODE = 42;
-	
+	private static final int NOTIFICATION_MESSAGE_REQUEST_CODE = 43;
+
 	private long currentSentenceId;
 
 	// Action bar items
@@ -88,11 +91,10 @@ public class TranslationResultActivity extends BaseActivity implements
 		if (phrase != null) {
 			translate(phrase);
 		}
-		
-		if(extras.getString("phrase_test") != null){
+
+		if (extras.getString("phrase_test") != null) {
 			translate(extras.getString("phrase_test"));
 		}
-		
 
 	}
 
@@ -136,36 +138,40 @@ public class TranslationResultActivity extends BaseActivity implements
 
 	}
 
-
 	private void translate(final String phrase) {
-		
-		showDialog();
-		
-		Response.ErrorListener el = new Response.ErrorListener() {
-			@Override
-			public void onErrorResponse(VolleyError error) {
-				VolleyLog.e(TAG, error.getMessage());
-				hideDialog();
-			}
-		};
-		
-		Response.Listener<JSONArray> rl = new Response.Listener<JSONArray>() {
-			@Override
-			public void onResponse(JSONArray response) {
-				try {
-					new Translate().execute((JSONObject) response.get(0));
-				} catch (JSONException e) {
-					// TODO: Candidate code to send for reporting
-				}			
-			}
-		}; 
-		
-		JsonArrayRequest jor = new JsonArrayRequest(Config.PHRASE_TRANSLATION_URL + phrase, rl, el);
-		
-		Tlatoa.getInstance().addToRequestQueue(jor, "-VOLLEY-TRANSLATE-");
-		
+
+		if (Utils.isNetworkAvailable(getApplicationContext())) {
+
+			showDialog();
+
+			Response.ErrorListener el = new Response.ErrorListener() {
+				@Override
+				public void onErrorResponse(VolleyError error) {
+					VolleyLog.e(TAG, error.getMessage());
+					hideDialog();
+				}
+			};
+
+			Response.Listener<JSONArray> rl = new Response.Listener<JSONArray>() {
+				@Override
+				public void onResponse(JSONArray response) {
+					try {
+						new Translate().execute((JSONObject) response.get(0));
+					} catch (JSONException e) {
+						// TODO: Candidate code to send for reporting
+					}
+				}
+			};
+
+			JsonArrayRequest jor = new JsonArrayRequest(Config.PHRASE_TRANSLATION_URL + phrase, rl, el);
+			Tlatoa.getInstance().addToRequestQueue(jor, "-VOLLEY-TRANSLATE-");
+
+		} else {
+			showNetworkWarningMessage();
+		}
+
 	}
-	
+
 	private class Translate extends AsyncTask<JSONObject, Integer, Long> {
 
 		@Override
@@ -173,7 +179,7 @@ public class TranslationResultActivity extends BaseActivity implements
 
 			Sentence sentence = new Sentence();
 			JSONObject jsonSentence = params[0];
-			
+
 			try {
 				sentence.setText(jsonSentence.getString("sentence"));
 			} catch (JSONException e1) {
@@ -183,13 +189,14 @@ public class TranslationResultActivity extends BaseActivity implements
 
 			// Check for sentence in the local database
 			sentence = datasource.existsInLocalDb(sentence);
-			
-			if (sentence.getId() > 0 && sentence.getExpiresAt() > sentence.getCreatedAt()) {
+
+			if (sentence.getId() > 0
+					&& sentence.getExpiresAt() > sentence.getCreatedAt()) {
 				sentence = datasource.getSentenceById(sentence.getId());
 			} else {
-				
+
 				try {
-					
+
 					sentence.setId(jsonSentence.getInt("sentenceId"));
 					sentence.setText(jsonSentence.getString("sentence"));
 					List<SentenceResource> resources = new ArrayList<SentenceResource>();
@@ -238,7 +245,7 @@ public class TranslationResultActivity extends BaseActivity implements
 		}
 
 	}
-	
+
 	@SuppressWarnings("deprecation")
 	private void playTranslation(Long sentenceId) {
 
@@ -253,10 +260,10 @@ public class TranslationResultActivity extends BaseActivity implements
 			if (resourceCount > 0) {
 
 				try {
-					
+
 					ivTranslationResultPlayButton.setVisibility(View.INVISIBLE);
 					ivTranslationResultAnimation.setImageResource(android.R.color.transparent);
-					
+
 					a = new AnimationDrawable();
 					for (int i = 0; i < resourceCount; i++) {
 						Bitmap bitmap = BitmapFactory.decodeByteArray(sr.get(i).getResourceImage(), 0, sr.get(i).getResourceImage().length);
@@ -282,35 +289,46 @@ public class TranslationResultActivity extends BaseActivity implements
 		}
 
 	}
-	
+
 	@TargetApi(Build.VERSION_CODES.JELLY_BEAN)
 	private void setBakgroundJELLYBean(AnimationDrawable cad) {
 		ivTranslationResultAnimation.setBackground(cad);
 	}
-	
-	private void checkIfAnimationDone(AnimationDrawable anim){
-	    final AnimationDrawable a = anim;
-	    int timeBetweenChecks = 300;
-	    Handler h = new Handler();
-	    h.postDelayed(new Runnable(){
-	        public void run(){
-	            if (a.getCurrent() != a.getFrame(a.getNumberOfFrames() - 1)){
-	                checkIfAnimationDone(a);
-	            } else{
-	            	if(!ivTranslationResultPlayButton.isShown()){
-	            		ivTranslationResultPlayButton.setVisibility(View.VISIBLE);
-	            	}
-	            }
-	        }
-	    }, timeBetweenChecks);
+
+	private void checkIfAnimationDone(AnimationDrawable anim) {
+		final AnimationDrawable a = anim;
+		int timeBetweenChecks = 300;
+		Handler h = new Handler();
+		h.postDelayed(new Runnable() {
+			public void run() {
+				if (a.getCurrent() != a.getFrame(a.getNumberOfFrames() - 1)) {
+					checkIfAnimationDone(a);
+				} else {
+					if (!ivTranslationResultPlayButton.isShown()) {
+						ivTranslationResultPlayButton.setVisibility(View.VISIBLE);
+					}
+				}
+			}
+		}, timeBetweenChecks);
 	}
 
 	private void showDialog() {
-		pDlg = ProgressDialog.show(this, getString(R.string.tlatoa_translation_result_progess_dialog_title), getString(R.string.tlatoa_translation_result_progess_dialog_message), true);
+		pDlg = ProgressDialog.show(this,getString(R.string.tlatoa_translation_result_progess_dialog_title), getString(R.string.tlatoa_translation_result_progess_dialog_message), true);
 	}
 
 	private void hideDialog() {
 		pDlg.dismiss();
+	}
+
+	private void showNetworkWarningMessage() {
+		SimpleDialogFragment.createBuilder(this, getSupportFragmentManager())
+				.setTitle(R.string.tlatoa_network_warning_title)
+				.setMessage(R.string.tlatoa_network_warning_message)
+				.setPositiveButtonText(android.R.string.ok)
+				.setNegativeButtonText(android.R.string.no)
+				.setRequestCode(NOTIFICATION_MESSAGE_REQUEST_CODE)
+				.setTag("custom-tag")
+				.show();
 	}
 
 	@Override
@@ -324,7 +342,7 @@ public class TranslationResultActivity extends BaseActivity implements
 			return super.onOptionsItemSelected(item);
 		}
 	}
-	
+
 	@Override
 	protected void onResume() {
 		super.onResume();
@@ -347,6 +365,8 @@ public class TranslationResultActivity extends BaseActivity implements
 	public void onPositiveButtonClicked(int requestCode) {
 		if (requestCode == INFORMATION_MESSAGE_REQUEST_CODE) {
 			finish();
+		}else if(requestCode == NOTIFICATION_MESSAGE_REQUEST_CODE){
+			startActivity(new Intent(Settings.ACTION_WIRELESS_SETTINGS));
 		}
 	}
 
@@ -362,7 +382,7 @@ public class TranslationResultActivity extends BaseActivity implements
 		if (requestCode == INFORMATION_MESSAGE_REQUEST_CODE) {
 		}
 	}
-	
+
 	@Override
 	public void onContentChanged() {
 		super.onContentChanged();
@@ -370,7 +390,7 @@ public class TranslationResultActivity extends BaseActivity implements
 		ListView list = (ListView) findViewById(R.id.list);
 		list.setEmptyView(empty);
 	}
-	
+
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {

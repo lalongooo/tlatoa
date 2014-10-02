@@ -39,7 +39,7 @@
             android:paddingTop="8dp"
             android:src="@drawable/actionbar_more" />
     </FrameLayout>
-    
+
     <ImageView
         android:id="@+id/ivMicrophone"
         android:layout_width="wrap_content"
@@ -48,5 +48,30 @@
         android:layout_centerVertical="true"
         android:contentDescription="@string/tlatoa_content_descr_for_imageviews"
         android:src="@drawable/tlatoa_microphone_icon" />
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ivMicrophone"
+        android:layout_centerHorizontal="true" >
+
+        <EditText
+            android:id="@+id/txtTestPhrase"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true" />
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/relativeLayout1"
+        android:layout_centerHorizontal="true"
+        android:onClick="goToResults"
+        android:text="Go to results" />
 
 </RelativeLayout>
