@@ -35,18 +35,18 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/tlatoa_main_color_gray" >
+            android:layout_height="match_parent" >
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/ivUserProfilePhoto"
-                android:layout_width="160dp"
-                android:layout_height="160dp"
-                android:layout_centerInParent="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="35dp"
                 android:src="@drawable/tlatoa_profile_default_photo"
                 app:circle_border_color="@color/tlatoa_main_color_orange"
                 app:circle_border_width="2dp" />
-            
         </RelativeLayout>
 
         <LinearLayout
@@ -95,11 +95,11 @@
                 <Button
                     android:id="@+id/btnConfirmRegistration"
                     style="@style/tlatoa_button"
+                    android:layout_margin="20dp"
                     android:background="@drawable/tlatoa_button"
                     android:paddingBottom="4dp"
                     android:paddingLeft="4dp"
                     android:paddingTop="4dp"
-                    android:layout_margin="20dp"
                     android:text="@string/tlatoa_registration_button_confirm_registration"
                     android:textSize="24sp" />
             </LinearLayout>
