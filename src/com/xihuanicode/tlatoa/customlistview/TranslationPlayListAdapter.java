@@ -49,6 +49,7 @@ public class TranslationPlayListAdapter extends BaseAdapter {
 		}
 
 		TextView tvPhraseId = (TextView) vi.findViewById(R.id.tlatoa_phrase_id);
+		TextView tvPhraseCounter = (TextView) vi.findViewById(R.id.tlatoa_phrase_counter);
 		TextView tvPhrase = (TextView) vi.findViewById(R.id.tlatoa_phrase);
 		TextView tvPhraseCreatedAt = (TextView) vi.findViewById(R.id.tlatoa_phrase_created_at);
 		Button btnSharePhrase = (Button) vi.findViewById(R.id.tlatoa_share_phrase_button);
@@ -64,6 +65,7 @@ public class TranslationPlayListAdapter extends BaseAdapter {
 		
 		// Setting all values in listview items
 		tvPhraseId.setText(String.valueOf(phrase.getId()));
+		tvPhraseCounter.setText(String.valueOf(position + 1));
 		tvPhrase.setText(String.valueOf(phrase.getText()));
 		tvPhraseCreatedAt.setText(new TimeAgo(activity).timeAgo(phrase.getCreatedAt()));
 		
