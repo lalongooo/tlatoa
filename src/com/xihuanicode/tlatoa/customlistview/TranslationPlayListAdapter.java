@@ -66,7 +66,7 @@ public class TranslationPlayListAdapter extends BaseAdapter {
 		// Setting all values in listview items
 		tvPhraseId.setText(String.valueOf(phrase.getId()));
 		tvPhraseCounter.setText(String.valueOf(position + 1));
-		tvPhrase.setText(String.valueOf(phrase.getText()));
+		tvPhrase.setText(String.valueOf(phrase.getText()).length() > 14 ? String.valueOf(phrase.getText()).substring(0, 13).concat("...") : String.valueOf(phrase.getText()));
 		tvPhraseCreatedAt.setText(new TimeAgo(activity).timeAgo(phrase.getCreatedAt()));
 		
 		return vi;
