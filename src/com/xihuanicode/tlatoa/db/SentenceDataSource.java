@@ -280,7 +280,7 @@ public class SentenceDataSource {
 				break;
 			}
 		}
-
+		cursor.close();
 
 		// Now retrieve the sentence resources
 		List<SentenceResource> resources = new ArrayList<SentenceResource>();
@@ -309,6 +309,7 @@ public class SentenceDataSource {
 		}		
 		 
 		// Close database
+		cursor.close();
 		close();
 		
 		return s;
