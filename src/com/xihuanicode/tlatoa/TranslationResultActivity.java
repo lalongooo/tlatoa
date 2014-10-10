@@ -1,6 +1,8 @@
 package com.xihuanicode.tlatoa;
 
 import java.io.ByteArrayOutputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -163,7 +165,12 @@ public class TranslationResultActivity extends BaseActivity implements
 				}
 			};
 
-			JsonArrayRequest jor = new JsonArrayRequest(Config.PHRASE_TRANSLATION_URL + phrase, rl, el);
+			JsonArrayRequest jor = null;
+			try {
+				jor = new JsonArrayRequest(Config.PHRASE_TRANSLATION_URL + URLEncoder.encode(phrase, "UTF-8"), rl, el);
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+			}
 			Tlatoa.getInstance().addToRequestQueue(jor, "-VOLLEY-TRANSLATE-");
 
 		} else {
