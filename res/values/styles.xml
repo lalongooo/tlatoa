@@ -77,12 +77,13 @@
         <item name="sdlDialogStyle">@style/DialogStyleDark.Custom</item>
     </style>
     
-    <style name="TlatoaTheme" parent="@style/Theme.Base.AppCompat.Light">
+    <style name="TlatoaTheme" parent="@style/Theme.AppCompat.Light">
         <item name="android:actionBarStyle">@style/TlatoaActionBar</item>
         <item name="sdlDialogStyle">@style/DialogStyleDark.Custom</item>
     </style>
     
-    <style name="TlatoaActionBar" parent="@style/Widget.AppCompat.Light.Base.ActionBar">
+<!--     <style name="TlatoaActionBar" parent="@style/Widget.AppCompat.Light.Base.ActionBar"> -->
+    <style name="TlatoaActionBar" parent="@style/Widget.AppCompat.Light.ActionBar">
         <item name="android:background">@color/tlatoa_actionbar_background_color</item>
         <item name="android:textColor">@color/tlatoa_main_color_orange</item>
         <item name="android:titleTextStyle">@style/TlatoaActionBarTextAppearance</item>
